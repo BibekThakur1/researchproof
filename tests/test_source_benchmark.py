@@ -3,7 +3,11 @@ import json
 
 from researchproof.ast_baseline import evaluate_ast_baseline, extract_ast_features
 from researchproof.benchmark import FaultFamily
-from researchproof.source_benchmark import build_source_cases, write_source_benchmark
+from researchproof.source_benchmark import (
+    build_source_cases,
+    read_source_benchmark,
+    write_source_benchmark,
+)
 
 
 def test_source_pilot_has_three_blindable_styles() -> None:
@@ -51,3 +55,8 @@ def test_source_report_holds_out_complete_styles(tmp_path) -> None:
     }
     structural = report["evaluations"]["held_out_structural_template"]["folds"]
     assert len(structural) == 6
+
+
+def test_source_index_round_trip(tmp_path) -> None:
+    destination = write_source_benchmark(tmp_path / "cases.jsonl")
+    assert read_source_benchmark(destination) == build_source_cases()

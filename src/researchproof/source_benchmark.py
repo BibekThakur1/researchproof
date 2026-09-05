@@ -11,6 +11,7 @@ from researchproof.benchmark import FaultFamily
 @dataclass(frozen=True)
 class SourceCase:
     source_case_id: str
+    author_id: str
     style_id: str
     template_family: str
     fault_family: str
@@ -180,6 +181,7 @@ def build_source_cases() -> list[SourceCase]:
                 cases.append(
                     SourceCase(
                         source_case_id=case_id,
+                        author_id="initial_repository_author",
                         style_id=style,
                         template_family=family.value,
                         fault_family=family.value,
@@ -193,6 +195,7 @@ def build_source_cases() -> list[SourceCase]:
             cases.append(
                 SourceCase(
                     source_case_id=case_id,
+                    author_id="initial_repository_author",
                     style_id=style,
                     template_family=hard_negative,
                     fault_family=hard_negative,
@@ -211,3 +214,16 @@ def write_source_benchmark(destination: Path) -> Path:
         encoding="utf-8",
     )
     return destination
+
+
+def read_source_benchmark(source: Path) -> list[SourceCase]:
+    cases: list[SourceCase] = []
+    for line_number, line in enumerate(source.read_text(encoding="utf-8").splitlines(), 1):
+        try:
+            payload = json.loads(line)
+            cases.append(SourceCase(**payload))
+        except (json.JSONDecodeError, TypeError) as error:
+            raise ValueError(f"invalid source case at line {line_number}: {error}") from error
+    if not cases:
+        raise ValueError("source benchmark is empty")
+    return cases

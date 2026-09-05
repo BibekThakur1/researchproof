@@ -56,10 +56,14 @@ python scripts/summarize_effects.py \
   --index artifacts/benchmark_v0_3/runs.jsonl \
   --output artifacts/benchmark_v0_3/paired_effects.json
 python scripts/generate_source_pilot.py
+python scripts/build_source_index.py \
+  --contributions artifacts/contributions \
+  --output artifacts/source_pilot_external/cases.jsonl
 python scripts/evaluate_symbolic.py \
   --index artifacts/source_pilot_v0_1/cases.jsonl \
   --output artifacts/source_pilot_v0_1/symbolic_baseline.json
 python scripts/export_blind_review.py \
+  --source-index artifacts/source_pilot_external/cases.jsonl \
   --output artifacts/blind_review_v0_1 \
   --salt 'replace-with-private-random-text'
 # After two independent reviewers complete separate CSV files:
@@ -78,6 +82,12 @@ python scripts/compare_benchmarks.py \
   --reference artifacts/benchmark_v0_3/runs.jsonl \
   --candidate /path/to/second/checkout/artifacts/benchmark_v0_3/runs.jsonl \
   --output artifacts/reproduction_comparison.json
+python scripts/check_release_readiness.py \
+  --benchmark artifacts/benchmark_v0_3/runs.jsonl \
+  --sources artifacts/source_pilot_v0_1/cases.jsonl \
+  --agreement artifacts/blind_review_v0_1/agreement.json \
+  --reproduction artifacts/independent_reproduction.json \
+  --output artifacts/release_readiness.json
 pytest
 ```
 

@@ -45,9 +45,17 @@ def compare_benchmark_indices(reference: Path, candidate: Path) -> dict[str, Any
     }
 
 
-def write_comparison(reference: Path, candidate: Path, destination: Path) -> Path:
+def write_comparison(
+    reference: Path,
+    candidate: Path,
+    destination: Path,
+    *,
+    independent_machine: bool = False,
+    environment_label: str = "unspecified",
+) -> Path:
     report = compare_benchmark_indices(reference, candidate)
+    report["independent_machine"] = independent_machine
+    report["environment_label"] = environment_label
     destination.parent.mkdir(parents=True, exist_ok=True)
     destination.write_text(json.dumps(report, indent=2, sort_keys=True) + "\n", encoding="utf-8")
     return destination
-
