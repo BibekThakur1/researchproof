@@ -66,6 +66,10 @@ python scripts/compare_reviews.py \
   --output artifacts/blind_review_v0_1/agreement.json
 python scripts/seal_artifacts.py artifacts/benchmark_v0_3
 python scripts/seal_artifacts.py artifacts/benchmark_v0_3 --verify
+# Normalize a Jupyter notebook using its recorded execution order:
+python scripts/normalize_notebook.py notebook.ipynb \
+  --ordering execution \
+  --output artifacts/normalized_notebook.py
 # Compare with a benchmark generated from a second checkout or laptop:
 python scripts/compare_benchmarks.py \
   --reference artifacts/benchmark_v0_3/runs.jsonl \
