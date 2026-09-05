@@ -55,6 +55,11 @@ python scripts/generate_source_pilot.py
 python scripts/export_blind_review.py \
   --output artifacts/blind_review_v0_1 \
   --salt 'replace-with-private-random-text'
+# After two independent reviewers complete separate CSV files:
+python scripts/compare_reviews.py \
+  --first artifacts/blind_review_v0_1/review_bibek.csv \
+  --second artifacts/blind_review_v0_1/review_friend.csv \
+  --output artifacts/blind_review_v0_1/agreement.json
 pytest
 ```
 
