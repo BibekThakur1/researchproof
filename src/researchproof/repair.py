@@ -6,13 +6,14 @@ from pathlib import Path
 from typing import Any
 
 from researchproof.audit import runtime_lineage_rules, static_sequence_rules
-from researchproof.benchmark import FaultFamily, run_benchmark_case
+from researchproof.benchmark import FaultFamily, FaultSeverity, run_benchmark_case
 
 
 @dataclass(frozen=True)
 class RepairVerification:
     dataset_id: str
     fault_family: str
+    fault_severity: str
     seed: int
     original_case_id: str
     repaired_case_id: str
@@ -33,10 +34,16 @@ def verify_repair(
     seed: int,
     *,
     dataset_id: str = "sklearn_breast_cancer",
+    severity: FaultSeverity | str = FaultSeverity.MEDIUM,
 ) -> RepairVerification:
     family = FaultFamily(fault_family)
-    _, original = run_benchmark_case(family, "faulty", seed, dataset_id=dataset_id)
-    _, repaired = run_benchmark_case(family, "clean", seed, dataset_id=dataset_id)
+    severity_level = FaultSeverity(severity)
+    _, original = run_benchmark_case(
+        family, "faulty", seed, dataset_id=dataset_id, severity=severity_level
+    )
+    _, repaired = run_benchmark_case(
+        family, "clean", seed, dataset_id=dataset_id, severity=severity_level
+    )
     original_payload = original.to_dict()
     repaired_payload = repaired.to_dict()
     original_static = static_sequence_rules(original_payload).predicted_fault
@@ -59,6 +66,7 @@ def verify_repair(
     return RepairVerification(
         dataset_id=dataset_id,
         fault_family=family.value,
+        fault_severity=severity_level.value,
         seed=seed,
         original_case_id=original.case_id,
         repaired_case_id=repaired.case_id,
@@ -76,13 +84,28 @@ def verify_repair(
 
 
 def verify_repair_suite(
-    dataset_ids: list[str], seeds: list[int], destination: Path
+    dataset_ids: list[str],
+    seeds: list[int],
+    destination: Path,
+    *,
+    severities: list[str] | None = None,
 ) -> Path:
     records: list[dict[str, Any]] = []
+    severity_levels = [FaultSeverity(value) for value in (severities or ["medium"])]
     for dataset_id in dataset_ids:
         for seed in seeds:
             for family in FaultFamily:
-                records.append(asdict(verify_repair(family, seed, dataset_id=dataset_id)))
+                for severity in severity_levels:
+                    records.append(
+                        asdict(
+                            verify_repair(
+                                family,
+                                seed,
+                                dataset_id=dataset_id,
+                                severity=severity,
+                            )
+                        )
+                    )
     payload = {
         "status": "engineering_verification_not_a_research_finding",
         "repairs": records,
@@ -94,4 +117,3 @@ def verify_repair_suite(
     destination.parent.mkdir(parents=True, exist_ok=True)
     destination.write_text(json.dumps(payload, indent=2, sort_keys=True) + "\n", encoding="utf-8")
     return destination
-

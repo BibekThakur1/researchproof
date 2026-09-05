@@ -10,4 +10,8 @@ fault_families:
   - preprocessing_before_split
   - train_test_overlap
   - target_informed_feature_selection
-output_dir: artifacts/benchmark_v0_2
+severities:
+  - low
+  - medium
+  - high
+output_dir: artifacts/benchmark_v0_3

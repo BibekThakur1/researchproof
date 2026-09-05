@@ -1,6 +1,11 @@
 import pytest
 
-from researchproof.benchmark import FaultFamily, generate_benchmark, run_benchmark_case
+from researchproof.benchmark import (
+    FaultFamily,
+    FaultSeverity,
+    generate_benchmark,
+    run_benchmark_case,
+)
 from researchproof.manifest import BenchmarkManifest
 
 
@@ -21,7 +26,7 @@ def test_preprocessing_fault_exposes_only_faulty_test_rows() -> None:
     _, clean = run_benchmark_case(FaultFamily.PREPROCESSING_BEFORE_SPLIT, "clean", 7)
     _, faulty = run_benchmark_case(FaultFamily.PREPROCESSING_BEFORE_SPLIT, "faulty", 7)
     assert clean.evidence.preprocessing_observed_test_rows == 0
-    assert faulty.evidence.preprocessing_observed_test_rows == faulty.model_fit_rows // 3 + 1
+    assert 0 < faulty.evidence.preprocessing_observed_test_rows < faulty.model_fit_rows
 
 
 def test_overlap_fault_adds_evaluation_rows_to_model_fit() -> None:
@@ -72,3 +77,25 @@ def test_generator_supports_multiple_datasets(tmp_path) -> None:
         "sklearn_wine",
     }
 
+
+@pytest.mark.parametrize("family", list(FaultFamily))
+def test_fault_severity_increases_observed_contamination(family: FaultFamily) -> None:
+    counts = []
+    for severity in FaultSeverity:
+        _, run = run_benchmark_case(family, "faulty", seed=7, severity=severity)
+        evidence = run.evidence
+        counts.append(
+            evidence.preprocessing_observed_test_rows
+            or evidence.training_observed_test_rows
+            or evidence.target_observed_test_rows
+        )
+    assert counts[0] < counts[1] < counts[2]
+
+
+def test_generator_crosses_cases_with_severity_levels(tmp_path) -> None:
+    index = generate_benchmark(
+        [7],
+        tmp_path,
+        severities=["low", "medium", "high"],
+    )
+    assert len(index.read_text(encoding="utf-8").splitlines()) == 18

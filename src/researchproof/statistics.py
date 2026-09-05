@@ -57,21 +57,34 @@ def summarize_paired_effects(index: Path, destination: Path) -> Path:
     report: dict[str, Any] = {
         "status": "engineering_effect_summary_not_a_research_finding",
         "difference_direction": "faulty_minus_clean",
+        "dependence_warning": (
+            "Severity contrasts reuse the same clean run conditions. Treat severity-specific "
+            "summaries as related contrasts, not independent samples."
+        ),
         "metrics": {},
+    }
+    severity_by_pair = {
+        run["pair_id"]: run.get("fault_severity", "unspecified") for run in runs
     }
     for metric in metrics:
         differences = paired_differences(runs, metric)
         by_family: dict[str, list[float]] = defaultdict(list)
+        by_severity: dict[str, list[float]] = defaultdict(list)
         for _, family, value in differences:
             by_family[family].append(value)
+        for pair_id, _, value in differences:
+            by_severity[severity_by_pair[pair_id]].append(value)
         report["metrics"][metric] = {
             "overall": bootstrap_mean_interval([value for _, _, value in differences]),
             "by_fault_family": {
                 family: bootstrap_mean_interval(values)
                 for family, values in sorted(by_family.items())
             },
+            "by_fault_severity": {
+                severity: bootstrap_mean_interval(values)
+                for severity, values in sorted(by_severity.items())
+            },
         }
     destination.parent.mkdir(parents=True, exist_ok=True)
     destination.write_text(json.dumps(report, indent=2, sort_keys=True) + "\n", encoding="utf-8")
     return destination
-

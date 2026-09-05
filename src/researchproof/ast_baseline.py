@@ -38,13 +38,13 @@ def extract_ast_features(source: str) -> dict[str, float]:
     return features
 
 
-def leave_one_template_out(cases: list[dict[str, Any]]) -> dict[str, Any]:
+def leave_one_group_out(cases: list[dict[str, Any]], group_field: str) -> dict[str, Any]:
     folds: list[dict[str, Any]] = []
     labels_all: list[bool] = []
     predictions_all: list[bool] = []
-    for held_out in sorted({case["template_family"] for case in cases}):
-        train = [case for case in cases if case["template_family"] != held_out]
-        test = [case for case in cases if case["template_family"] == held_out]
+    for held_out in sorted({case[group_field] for case in cases}):
+        train = [case for case in cases if case[group_field] != held_out]
+        test = [case for case in cases if case[group_field] == held_out]
         vectorizer = DictVectorizer()
         x_train = vectorizer.fit_transform([extract_ast_features(case["source"]) for case in train])
         x_test = vectorizer.transform([extract_ast_features(case["source"]) for case in test])
@@ -54,14 +54,14 @@ def leave_one_template_out(cases: list[dict[str, Any]]) -> dict[str, Any]:
         predictions = model.predict(x_test).astype(bool).tolist()
         folds.append(
             {
-                "held_out_template": held_out,
+                "held_out_group": held_out,
                 "metrics": asdict(classification_metrics(labels, predictions)),
             }
         )
         labels_all.extend(labels)
         predictions_all.extend(predictions)
     return {
-        "protocol": "leave_one_complete_template_family_out",
+        "protocol": f"leave_one_complete_{group_field}_out",
         "aggregate_metrics": asdict(classification_metrics(labels_all, predictions_all)),
         "folds": folds,
     }
@@ -72,7 +72,10 @@ def evaluate_ast_baseline(index: Path, destination: Path) -> Path:
     payload = {
         "status": "small_source_pilot_not_a_research_finding",
         "warning": "Templates are authored by one implementation and are not externally validated.",
-        "evaluation": leave_one_template_out(cases),
+        "evaluations": {
+            "held_out_style": leave_one_group_out(cases, "style_id"),
+            "held_out_structural_template": leave_one_group_out(cases, "template_family"),
+        },
     }
     destination.parent.mkdir(parents=True, exist_ok=True)
     destination.write_text(json.dumps(payload, indent=2, sort_keys=True) + "\n", encoding="utf-8")

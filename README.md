@@ -43,17 +43,17 @@ python -m pip install -e '.[dev]'
 python scripts/run_pilot.py --config configs/pilot.yaml
 python scripts/generate_benchmark.py --config configs/benchmark_pilot.yaml
 python scripts/evaluate_baselines.py \
-  --index artifacts/benchmark_v0_2/runs.jsonl \
-  --output artifacts/benchmark_v0_2/baselines.json
+  --index artifacts/benchmark_v0_3/runs.jsonl \
+  --output artifacts/benchmark_v0_3/baselines.json
 python scripts/verify_repairs.py \
   --config configs/benchmark_pilot.yaml \
-  --output artifacts/benchmark_v0_2/repairs.json
+  --output artifacts/benchmark_v0_3/repairs.json
 python scripts/evaluate_learned.py \
-  --index artifacts/benchmark_v0_2/runs.jsonl \
-  --output artifacts/benchmark_v0_2/learned_baselines.json
+  --index artifacts/benchmark_v0_3/runs.jsonl \
+  --output artifacts/benchmark_v0_3/learned_baselines.json
 python scripts/summarize_effects.py \
-  --index artifacts/benchmark_v0_2/runs.jsonl \
-  --output artifacts/benchmark_v0_2/paired_effects.json
+  --index artifacts/benchmark_v0_3/runs.jsonl \
+  --output artifacts/benchmark_v0_3/paired_effects.json
 python scripts/generate_source_pilot.py
 python scripts/export_blind_review.py \
   --output artifacts/blind_review_v0_1 \
@@ -66,7 +66,12 @@ python scripts/compare_reviews.py \
 pytest
 ```
 
-The commands write results beneath `artifacts/`. That directory is intentionally ignored by Git because generated runs should not be committed as source code. The benchmark command currently creates 90 cases: clean and faulty variants for three fault families, three public scikit-learn datasets, and five seeds. The baseline report compares an always-clean baseline with simple operation-sequence and runtime-lineage rules. These are engineering-validation cases, not paper results. If the explicit rules solve them perfectly, that tells us the current benchmark is too transparent and must be made more realistic before training a detector. A paper-ready result will eventually be rebuilt from versioned configurations and a documented dataset manifest.
+The commands write results beneath `artifacts/`. That directory is intentionally ignored by Git because generated runs should not be committed as source code. Benchmark version 0.3 creates 270 cases: clean and faulty variants for three fault families, three severity settings, three public scikit-learn datasets, and five seeds. The baseline report compares an always-clean baseline with simple operation-sequence and runtime-lineage rules. These are engineering-validation cases, not paper results. If the explicit rules solve them perfectly, that tells us the current benchmark is too transparent and must be made more realistic before training a detector. A paper-ready result will eventually be rebuilt from versioned configurations and a documented dataset manifest.
+
+The separate source pilot contains 27 snippets, including nine valid hard negatives.
+It reports both a naming-style holdout and a stricter structural-template holdout. The
+latter is the meaningful development check; current results expose substantial
+generalization failures and should guide the next feature and benchmark design.
 
 ## Research questions
 

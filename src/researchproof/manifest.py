@@ -33,6 +33,7 @@ class BenchmarkManifest:
     template_id: str
     template_version: str
     fault_family: str
+    fault_severity: str
     injector_version: str
     seed: int
     split_policy: str
@@ -49,6 +50,7 @@ class BenchmarkManifest:
             "template_id",
             "template_version",
             "fault_family",
+            "fault_severity",
             "injector_version",
             "split_policy",
             "model_name",
@@ -124,4 +126,3 @@ def dataset_checksum(features: np.ndarray, target: np.ndarray) -> str:
         hasher.update(array.dtype.str.encode("ascii"))
         hasher.update(array.tobytes(order="C"))
     return hasher.hexdigest()
-

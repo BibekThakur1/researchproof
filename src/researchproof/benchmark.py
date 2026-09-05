@@ -27,6 +27,16 @@ class FaultFamily(str, Enum):
     TARGET_INFORMED_FEATURE_SELECTION = "target_informed_feature_selection"
 
 
+class FaultSeverity(str, Enum):
+    LOW = "low"
+    MEDIUM = "medium"
+    HIGH = "high"
+
+    @property
+    def contamination_fraction(self) -> float:
+        return {self.LOW: 0.02, self.MEDIUM: 0.10, self.HIGH: 1.0}[self]
+
+
 def _stable_f_classif(features: np.ndarray, target: np.ndarray) -> tuple[np.ndarray, np.ndarray]:
     """Run ANOVA scoring while assigning zero importance to constant features."""
 
@@ -41,6 +51,7 @@ def _stable_f_classif(features: np.ndarray, target: np.ndarray) -> tuple[np.ndar
 class RuntimeEvidence:
     preprocessing_observed_test_rows: int
     training_observed_test_rows: int
+    target_observed_test_rows: int
     target_observed_before_split: bool
 
 
@@ -50,6 +61,7 @@ class BenchmarkRun:
     pair_id: str
     dataset_id: str
     fault_family: str
+    fault_severity: str
     variant: str
     seed: int
     base_train_hash: str
@@ -73,6 +85,7 @@ def _manifest(
     seed: int,
     checksum: str,
     dataset_id: str,
+    severity: FaultSeverity,
 ) -> BenchmarkManifest:
     faulty = variant == "faulty"
     expected_evidence = {
@@ -93,6 +106,7 @@ def _manifest(
         template_id="logistic_regression_tabular",
         template_version="0.2.0",
         fault_family=fault_family.value,
+        fault_severity=severity.value,
         injector_version="0.1.0",
         seed=seed,
         split_policy="stratified_random_75_25",
@@ -125,16 +139,15 @@ def run_benchmark_case(
     seed: int,
     *,
     dataset_id: str = "sklearn_breast_cancer",
+    severity: FaultSeverity | str = FaultSeverity.MEDIUM,
     test_size: float = 0.25,
-    overlap_fraction: float = 0.10,
 ) -> tuple[BenchmarkManifest, BenchmarkRun]:
     family = FaultFamily(fault_family)
+    severity_level = FaultSeverity(severity)
     if variant not in {"clean", "faulty"}:
         raise ValueError("variant must be 'clean' or 'faulty'")
     if not 0.0 < test_size < 1.0:
         raise ValueError("test_size must be between zero and one")
-    if not 0.0 < overlap_fraction < 1.0:
-        raise ValueError("overlap_fraction must be between zero and one")
 
     dataset = load_dataset(dataset_id)
     features, target, row_ids = dataset.features, dataset.target, dataset.row_ids
@@ -150,16 +163,21 @@ def run_benchmark_case(
     started = time.perf_counter()
     preprocessing_test_rows = 0
     training_test_rows = 0
+    target_test_rows = 0
     target_before_split = False
     operation_trace: tuple[str, ...]
 
     if family is FaultFamily.PREPROCESSING_BEFORE_SPLIT:
         if variant == "faulty":
-            scaler = StandardScaler().fit(features)
+            contamination_count = max(
+                1, round(len(id_test) * severity_level.contamination_fraction)
+            )
+            scaler_fit_rows = np.concatenate((x_train, x_test[:contamination_count]), axis=0)
+            scaler = StandardScaler().fit(scaler_fit_rows)
             x_train_model = scaler.transform(x_train)
             x_test_model = scaler.transform(x_test)
             model = LogisticRegression(max_iter=2000, random_state=seed)
-            preprocessing_test_rows = len(id_test)
+            preprocessing_test_rows = contamination_count
             operation_trace = (
                 "preprocessing_fit_all_rows",
                 "train_test_split",
@@ -188,7 +206,9 @@ def run_benchmark_case(
         )
         x_train_model, y_train_model = x_train, y_train
         if variant == "faulty":
-            overlap_count = max(1, round(len(id_test) * overlap_fraction))
+            overlap_count = max(
+                1, round(len(id_test) * severity_level.contamination_fraction)
+            )
             x_train_model = np.concatenate((x_train, x_test[:overlap_count]), axis=0)
             y_train_model = np.concatenate((y_train, y_test[:overlap_count]), axis=0)
             training_test_rows = overlap_count
@@ -210,7 +230,16 @@ def run_benchmark_case(
 
     else:
         if variant == "faulty":
-            selector = SelectKBest(score_func=_stable_f_classif, k=10).fit(features, target)
+            contamination_count = max(
+                1, round(len(id_test) * severity_level.contamination_fraction)
+            )
+            selector_features = np.concatenate(
+                (x_train, x_test[:contamination_count]), axis=0
+            )
+            selector_target = np.concatenate((y_train, y_test[:contamination_count]), axis=0)
+            selector = SelectKBest(score_func=_stable_f_classif, k=10).fit(
+                selector_features, selector_target
+            )
             x_train_model = selector.transform(x_train)
             x_test_model = selector.transform(x_test)
             model = make_pipeline(
@@ -218,6 +247,7 @@ def run_benchmark_case(
                 LogisticRegression(max_iter=2000, random_state=seed),
             )
             target_before_split = True
+            target_test_rows = contamination_count
             operation_trace = (
                 "feature_selection_fit_all_labels",
                 "train_test_split",
@@ -241,14 +271,17 @@ def run_benchmark_case(
         model_fit_rows = len(id_train)
 
     accuracy, balanced_accuracy, roc_auc = _score(model, x_test_model, y_test)
-    manifest = _manifest(family, variant, seed, checksum, dataset_id)
-    pair_material = f"{checksum}:{family.value}:{seed}:logistic_regression_tabular"
+    manifest = _manifest(family, variant, seed, checksum, dataset_id, severity_level)
+    pair_material = (
+        f"{checksum}:{family.value}:{severity_level.value}:{seed}:logistic_regression_tabular"
+    )
     pair_id = f"pair-{__import__('hashlib').sha256(pair_material.encode()).hexdigest()[:16]}"
     run = BenchmarkRun(
         case_id=manifest.case_id,
         pair_id=pair_id,
         dataset_id=dataset_id,
         fault_family=family.value,
+        fault_severity=severity_level.value,
         variant=variant,
         seed=seed,
         base_train_hash=_index_hash(id_train),
@@ -258,6 +291,7 @@ def run_benchmark_case(
         evidence=RuntimeEvidence(
             preprocessing_observed_test_rows=preprocessing_test_rows,
             training_observed_test_rows=training_test_rows,
+            target_observed_test_rows=target_test_rows,
             target_observed_before_split=target_before_split,
         ),
         accuracy=accuracy,
@@ -273,25 +307,29 @@ def generate_benchmark(
     output_dir: Path,
     *,
     dataset_ids: list[str] | None = None,
+    severities: list[str] | None = None,
     test_size: float = 0.25,
 ) -> Path:
     output_dir.mkdir(parents=True, exist_ok=True)
     manifests_dir = output_dir / "manifests"
     runs: list[BenchmarkRun] = []
     selected_datasets = dataset_ids or ["sklearn_breast_cancer"]
+    selected_severities = [FaultSeverity(value) for value in (severities or ["medium"])]
     for dataset_id in selected_datasets:
         for seed in seeds:
             for family in FaultFamily:
-                for variant in ("clean", "faulty"):
-                    manifest, run = run_benchmark_case(
-                        family,
-                        variant,
-                        seed,
-                        dataset_id=dataset_id,
-                        test_size=test_size,
-                    )
-                    manifest.write(manifests_dir / f"{manifest.case_id}.json")
-                    runs.append(run)
+                for severity_level in selected_severities:
+                    for variant in ("clean", "faulty"):
+                        manifest, run = run_benchmark_case(
+                            family,
+                            variant,
+                            seed,
+                            dataset_id=dataset_id,
+                            severity=severity_level,
+                            test_size=test_size,
+                        )
+                        manifest.write(manifests_dir / f"{manifest.case_id}.json")
+                        runs.append(run)
 
     destination = output_dir / "runs.jsonl"
     destination.write_text(

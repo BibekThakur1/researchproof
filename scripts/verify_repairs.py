@@ -18,10 +18,10 @@ def main() -> None:
         dataset_ids=[str(dataset_id) for dataset_id in config["datasets"]],
         seeds=[int(seed) for seed in config["seeds"]],
         destination=args.output,
+        severities=[str(severity) for severity in config["severities"]],
     )
     print(f"Repair verification written to {destination}")
 
 
 if __name__ == "__main__":
     main()
-

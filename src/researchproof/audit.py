@@ -63,6 +63,8 @@ def runtime_lineage_rules(run: dict[str, Any]) -> AuditDecision:
         triggered.append("preprocessing_observed_test_rows")
     if int(evidence.get("training_observed_test_rows", 0)) > 0:
         triggered.append("training_observed_test_rows")
+    if int(evidence.get("target_observed_test_rows", 0)) > 0:
+        triggered.append("target_observed_test_rows")
     if bool(evidence.get("target_observed_before_split", False)):
         triggered.append("target_observed_before_split")
     return AuditDecision(

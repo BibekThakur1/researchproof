@@ -13,6 +13,7 @@ def make_manifest(**overrides: object) -> BenchmarkManifest:
         "template_id": "logistic_regression_standardized",
         "template_version": "0.1.0",
         "fault_family": "preprocessing_before_split",
+        "fault_severity": "medium",
         "injector_version": "0.1.0",
         "seed": 7,
         "split_policy": "stratified_random_75_25",
@@ -70,4 +71,3 @@ def test_dataset_checksum_changes_with_content_and_shape() -> None:
     assert original == dataset_checksum(features.copy(), target.copy())
     assert original != dataset_checksum(features + 1.0, target)
     assert original != dataset_checksum(features.reshape(1, 4), target)
-

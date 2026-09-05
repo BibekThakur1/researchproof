@@ -10,7 +10,7 @@ One benchmark case contains a clean pipeline, one controlled faulty variant, a m
 case_id
 dataset_id and dataset_checksum
 template_id and template_version
-fault_family and injector_version
+fault_family, fault_severity, and injector_version
 seed and split policy
 model and hyperparameters
 expected evidence
@@ -23,6 +23,11 @@ Its `case_id` is derived from a canonical serialization of every field, so chang
 the seed, split, dataset checksum, template, fault definition, or environment lock
 produces a different identifier. A stored identifier that no longer matches its
 contents is rejected as a tampered or stale manifest.
+
+Severity is defined by the approximate fraction of held-out rows observed by the
+invalid operation: 2% for low, 10% for medium, and 100% for high severity. The
+runtime record stores the actual observed row count, so evaluation does not rely on
+the requested setting alone.
 
 ## Leakage prevention in the detector study
 

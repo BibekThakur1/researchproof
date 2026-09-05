@@ -17,6 +17,7 @@ def main() -> None:
         seeds=[int(seed) for seed in config["seeds"]],
         output_dir=Path(config["output_dir"]),
         dataset_ids=[str(dataset_id) for dataset_id in config["datasets"]],
+        severities=[str(severity) for severity in config["severities"]],
         test_size=float(config["test_size"]),
     )
     print(f"Benchmark index written to {destination}")

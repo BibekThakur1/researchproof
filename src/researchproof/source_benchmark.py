@@ -11,6 +11,7 @@ from researchproof.benchmark import FaultFamily
 @dataclass(frozen=True)
 class SourceCase:
     source_case_id: str
+    style_id: str
     template_family: str
     fault_family: str
     variant: str
@@ -84,6 +85,41 @@ def _source(family: FaultFamily, variant: str, names: tuple[str, ...]) -> str:
     return "\n".join(body) + "\n"
 
 
+def _hard_negative_sources(names: tuple[str, ...]) -> dict[str, str]:
+    x, y, x_train, x_test, y_train, y_test = names
+    split = _split(names)
+    return {
+        "unused_full_data_diagnostic": "\n".join(
+            [
+                f"diagnostic_only = StandardScaler().fit_transform({x})",
+                split,
+                "pipeline = make_pipeline(StandardScaler(), LogisticRegression(max_iter=2000))",
+                f"pipeline.fit({x_train}, {y_train})",
+                f"score = pipeline.score({x_test}, {y_test})",
+            ]
+        )
+        + "\n",
+        "post_evaluation_refit": "\n".join(
+            [
+                split,
+                "pipeline = make_pipeline(StandardScaler(), LogisticRegression(max_iter=2000))",
+                f"pipeline.fit({x_train}, {y_train})",
+                f"score = pipeline.score({x_test}, {y_test})",
+                f"deployment_model = clone(pipeline).fit({x}, {y})",
+            ]
+        )
+        + "\n",
+        "pipeline_cross_validation": "\n".join(
+            [
+                "pipeline = make_pipeline(StandardScaler(), LogisticRegression(max_iter=2000))",
+                f"scores = cross_val_score(pipeline, {x}, {y}, cv=5)",
+                "score = scores.mean()",
+            ]
+        )
+        + "\n",
+    }
+
+
 def build_source_cases() -> list[SourceCase]:
     cases: list[SourceCase] = []
     for style, names in _STYLES.items():
@@ -95,12 +131,26 @@ def build_source_cases() -> list[SourceCase]:
                 cases.append(
                     SourceCase(
                         source_case_id=case_id,
-                        template_family=style,
+                        style_id=style,
+                        template_family=family.value,
                         fault_family=family.value,
                         variant=variant,
                         source=source,
                     )
                 )
+        for hard_negative, source in _hard_negative_sources(names).items():
+            material = f"{style}:{hard_negative}:clean:{source}"
+            case_id = f"source-{hashlib.sha256(material.encode()).hexdigest()[:16]}"
+            cases.append(
+                SourceCase(
+                    source_case_id=case_id,
+                    style_id=style,
+                    template_family=hard_negative,
+                    fault_family=hard_negative,
+                    variant="clean",
+                    source=source,
+                )
+            )
     return cases
 
 
@@ -112,4 +162,3 @@ def write_source_benchmark(destination: Path) -> Path:
         encoding="utf-8",
     )
     return destination
-
