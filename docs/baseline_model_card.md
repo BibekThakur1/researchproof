@@ -12,6 +12,12 @@ A separate source pilot uses logistic regression over shallow AST call and call-
 features. These models were selected for interpretability and low compute cost, not
 because they are expected to be state of the art.
 
+The repository also includes a deterministic symbolic provenance baseline. It tracks
+whether transformed unsplit values or held-out rows flow into model fitting and stops
+treating later full-data fitting as leakage once the recorded evaluation is complete.
+This is an engineering reference implementation, not a new formal static-analysis
+claim; prior abstract-interpretation systems are substantially more rigorous.
+
 ## Training and evaluation
 
 Executable baselines use leave-one-complete-dataset-out evaluation. The source
@@ -36,4 +42,3 @@ the models should be deployed or described as a validity certificate.
 
 All current baselines run on CPU and are suitable for an Apple M1 laptop. No GPU,
 external model API, or proprietary dataset is required.
-

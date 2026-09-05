@@ -56,6 +56,9 @@ python scripts/summarize_effects.py \
   --index artifacts/benchmark_v0_3/runs.jsonl \
   --output artifacts/benchmark_v0_3/paired_effects.json
 python scripts/generate_source_pilot.py
+python scripts/evaluate_symbolic.py \
+  --index artifacts/source_pilot_v0_1/cases.jsonl \
+  --output artifacts/source_pilot_v0_1/symbolic_baseline.json
 python scripts/export_blind_review.py \
   --output artifacts/blind_review_v0_1 \
   --salt 'replace-with-private-random-text'
