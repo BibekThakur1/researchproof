@@ -46,6 +46,19 @@ def test_invalid_selective_coverage_is_rejected() -> None:
         selective_risk_curve(labels, probabilities, (0.0,))
 
 
+def test_external_confidence_controls_abstention_order() -> None:
+    labels = np.array([0, 1, 1, 0])
+    probabilities = np.array([0.1, 0.1, 0.9, 0.9])
+    support_confidence = np.array([1.0, 0.0, 1.0, 0.0])
+    curve = selective_risk_curve(
+        labels,
+        probabilities,
+        (0.5,),
+        confidence=support_confidence,
+    )
+    assert curve[0]["selective_risk"] == 0.0
+
+
 def test_learned_report_contains_three_held_out_folds(tmp_path) -> None:
     index = generate_benchmark(
         [7],

@@ -18,12 +18,20 @@ def selective_risk_curve(
     labels: np.ndarray,
     probabilities: np.ndarray,
     coverage_levels: tuple[float, ...] = (1.0, 0.8, 0.5, 0.25),
+    *,
+    confidence: np.ndarray | None = None,
 ) -> list[dict[str, float | int]]:
     if len(labels) != len(probabilities) or not len(labels):
         raise ValueError("paired non-empty labels and probabilities are required")
-    confidence = np.abs(probabilities - 0.5) * 2.0
+    confidence_values = (
+        np.abs(probabilities - 0.5) * 2.0
+        if confidence is None
+        else np.asarray(confidence, dtype=float)
+    )
+    if len(confidence_values) != len(labels):
+        raise ValueError("confidence must align with labels")
     predictions = probabilities >= 0.5
-    order = np.argsort(-confidence, kind="stable")
+    order = np.argsort(-confidence_values, kind="stable")
     curve: list[dict[str, float | int]] = []
     for requested in coverage_levels:
         if not 0.0 < requested <= 1.0:
@@ -37,7 +45,7 @@ def selective_risk_curve(
                 "selected_cases": selected_count,
                 "actual_coverage": selected_count / len(labels),
                 "selective_risk": mistakes / selected_count,
-                "mean_confidence": float(np.mean(confidence[selected])),
+                "mean_confidence": float(np.mean(confidence_values[selected])),
             }
         )
     return curve
@@ -85,18 +93,31 @@ def _leave_one_group_out(
     all_labels: list[bool] = []
     all_predictions: list[bool] = []
     all_probabilities: list[float] = []
+    all_support_confidences: list[float] = []
     for held_out in groups:
         train = [run for run in runs if run[group_field] != held_out]
         test = [run for run in runs if run[group_field] == held_out]
+        train_features = [extract_features(run, mode) for run in train]
+        test_features = [extract_features(run, mode) for run in test]
         vectorizer = DictVectorizer(sparse=True)
-        x_train = vectorizer.fit_transform([extract_features(run, mode) for run in train])
-        x_test = vectorizer.transform([extract_features(run, mode) for run in test])
+        x_train = vectorizer.fit_transform(train_features)
+        x_test = vectorizer.transform(test_features)
         y_train = np.asarray([run["variant"] == "faulty" for run in train], dtype=int)
         y_test = np.asarray([run["variant"] == "faulty" for run in test], dtype=int)
         model = LogisticRegression(max_iter=1000, random_state=0)
         model.fit(x_train, y_train)
         probabilities = model.predict_proba(x_test)[:, 1]
         predictions = probabilities >= 0.5
+        known = set(vectorizer.feature_names_)
+        support = np.asarray(
+            [
+                sum(abs(value) for key, value in features.items() if key in known)
+                / max(sum(abs(value) for value in features.values()), 1e-12)
+                for features in test_features
+            ]
+        )
+        model_confidence = np.abs(probabilities - 0.5) * 2.0
+        support_confidence = model_confidence * support
         metrics = classification_metrics(y_test.astype(bool), predictions)
         folds.append(
             {
@@ -105,13 +126,19 @@ def _leave_one_group_out(
                 "brier_score": float(np.mean((probabilities - y_test) ** 2)),
                 "expected_calibration_error": expected_calibration_error(y_test, probabilities),
                 "selective_risk": selective_risk_curve(y_test, probabilities),
+                "support_adjusted_selective_risk": selective_risk_curve(
+                    y_test, probabilities, confidence=support_confidence
+                ),
+                "mean_feature_support": float(np.mean(support)),
             }
         )
         all_labels.extend(y_test.astype(bool).tolist())
         all_predictions.extend(predictions.tolist())
         all_probabilities.extend(probabilities.tolist())
+        all_support_confidences.extend(support_confidence.tolist())
     labels_array = np.asarray(all_labels, dtype=int)
     probabilities_array = np.asarray(all_probabilities)
+    support_confidence_array = np.asarray(all_support_confidences)
     return {
         "feature_mode": mode,
         "group_field": group_field,
@@ -123,6 +150,11 @@ def _leave_one_group_out(
         ),
         "aggregate_selective_risk": selective_risk_curve(
             labels_array, probabilities_array
+        ),
+        "aggregate_support_adjusted_selective_risk": selective_risk_curve(
+            labels_array,
+            probabilities_array,
+            confidence=support_confidence_array,
         ),
         "folds": folds,
     }

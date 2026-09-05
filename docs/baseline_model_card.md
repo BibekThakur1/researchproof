@@ -39,6 +39,11 @@ confidence. Current fault-family holdout results show that abstention based on o
 logistic-regression confidence can retain the wrong cases, so confidence must not be
 treated as uncertainty under distribution shift.
 
+A second development baseline multiplies model confidence by training-vocabulary
+feature support. This also fails on the present held-out fault-family experiment and
+can rank incorrect cases as safest. It is retained to prevent repeating the same weak
+idea later, not as a recommended uncertainty method.
+
 ## Limitations
 
 The executable evidence fields directly describe contaminated row access, making
