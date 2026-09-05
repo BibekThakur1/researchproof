@@ -14,6 +14,35 @@ from researchproof.audit import classification_metrics
 FeatureMode = Literal["static", "runtime", "hybrid"]
 
 
+def selective_risk_curve(
+    labels: np.ndarray,
+    probabilities: np.ndarray,
+    coverage_levels: tuple[float, ...] = (1.0, 0.8, 0.5, 0.25),
+) -> list[dict[str, float | int]]:
+    if len(labels) != len(probabilities) or not len(labels):
+        raise ValueError("paired non-empty labels and probabilities are required")
+    confidence = np.abs(probabilities - 0.5) * 2.0
+    predictions = probabilities >= 0.5
+    order = np.argsort(-confidence, kind="stable")
+    curve: list[dict[str, float | int]] = []
+    for requested in coverage_levels:
+        if not 0.0 < requested <= 1.0:
+            raise ValueError("coverage levels must be in (0, 1]")
+        selected_count = max(1, int(np.ceil(len(labels) * requested)))
+        selected = order[:selected_count]
+        mistakes = int(np.sum(predictions[selected] != labels[selected]))
+        curve.append(
+            {
+                "requested_coverage": requested,
+                "selected_cases": selected_count,
+                "actual_coverage": selected_count / len(labels),
+                "selective_risk": mistakes / selected_count,
+                "mean_confidence": float(np.mean(confidence[selected])),
+            }
+        )
+    return curve
+
+
 def extract_features(run: dict[str, Any], mode: FeatureMode) -> dict[str, float]:
     features: dict[str, float] = {}
     if mode in {"static", "hybrid"}:
@@ -75,6 +104,7 @@ def _leave_one_group_out(
                 "metrics": asdict(metrics),
                 "brier_score": float(np.mean((probabilities - y_test) ** 2)),
                 "expected_calibration_error": expected_calibration_error(y_test, probabilities),
+                "selective_risk": selective_risk_curve(y_test, probabilities),
             }
         )
         all_labels.extend(y_test.astype(bool).tolist())
@@ -89,6 +119,9 @@ def _leave_one_group_out(
         "aggregate_metrics": asdict(classification_metrics(all_labels, all_predictions)),
         "aggregate_brier_score": float(np.mean((probabilities_array - labels_array) ** 2)),
         "aggregate_expected_calibration_error": expected_calibration_error(
+            labels_array, probabilities_array
+        ),
+        "aggregate_selective_risk": selective_risk_curve(
             labels_array, probabilities_array
         ),
         "folds": folds,

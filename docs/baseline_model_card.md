@@ -34,7 +34,10 @@ for development, not a reason to tune on the test folds.
 
 Reports include confusion counts, accuracy, precision, recall, F1, false-positive
 rate, Brier score, and expected calibration error where probabilities are available.
-Future selective models must also report coverage versus risk.
+Selective-risk curves report coverage versus error after ranking predictions by model
+confidence. Current fault-family holdout results show that abstention based on ordinary
+logistic-regression confidence can retain the wrong cases, so confidence must not be
+treated as uncertainty under distribution shift.
 
 ## Limitations
 

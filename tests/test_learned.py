@@ -7,6 +7,7 @@ from researchproof.learned import (
     evaluate_learned_baselines,
     expected_calibration_error,
     extract_features,
+    selective_risk_curve,
 )
 
 
@@ -27,6 +28,22 @@ def test_calibration_error_is_zero_for_perfect_confidence() -> None:
     labels = np.array([0, 0, 1, 1])
     probabilities = np.array([0.0, 0.0, 1.0, 1.0])
     assert expected_calibration_error(labels, probabilities) == 0.0
+
+
+def test_selective_risk_uses_most_confident_cases_first() -> None:
+    labels = np.array([0, 1, 1, 0])
+    probabilities = np.array([0.01, 0.99, 0.49, 0.51])
+    curve = selective_risk_curve(labels, probabilities, (1.0, 0.5))
+    assert curve[0]["selective_risk"] == 0.5
+    assert curve[1]["selective_risk"] == 0.0
+    assert curve[1]["actual_coverage"] == 0.5
+
+
+def test_invalid_selective_coverage_is_rejected() -> None:
+    labels = np.array([0, 1])
+    probabilities = np.array([0.1, 0.9])
+    with np.testing.assert_raises(ValueError):
+        selective_risk_curve(labels, probabilities, (0.0,))
 
 
 def test_learned_report_contains_three_held_out_folds(tmp_path) -> None:
