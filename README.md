@@ -91,6 +91,9 @@ generalization failures and should guide the next feature and benchmark design.
 - Each main comparison will use repeated seeds and confidence intervals.
 - We will not describe the system as novel or publishable until a closest-work review and experiments support that claim.
 
+The maintained [closest-work map](docs/related_work.md) records what prior systems
+already do and which claims are currently prohibited.
+
 ## Working together
 
 Use an issue for every experiment or design decision. A pull request should state the hypothesis, changed files, exact reproduction command, and what evidence would disprove the claim. See [CONTRIBUTING.md](CONTRIBUTING.md).
