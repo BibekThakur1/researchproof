@@ -42,6 +42,7 @@ class BenchmarkRun:
     base_train_hash: str
     base_test_hash: str
     model_fit_rows: int
+    operation_trace: tuple[str, ...]
     evidence: RuntimeEvidence
     accuracy: float
     balanced_accuracy: float
@@ -130,6 +131,7 @@ def run_benchmark_case(
     preprocessing_test_rows = 0
     training_test_rows = 0
     target_before_split = False
+    operation_trace: tuple[str, ...]
 
     if family is FaultFamily.PREPROCESSING_BEFORE_SPLIT:
         if variant == "faulty":
@@ -138,11 +140,23 @@ def run_benchmark_case(
             x_test_model = scaler.transform(x_test)
             model = LogisticRegression(max_iter=2000, random_state=seed)
             preprocessing_test_rows = len(id_test)
+            operation_trace = (
+                "preprocessing_fit_all_rows",
+                "train_test_split",
+                "model_fit_train_rows",
+                "evaluate_test_rows",
+            )
         else:
             x_train_model, x_test_model = x_train, x_test
             model = make_pipeline(
                 StandardScaler(),
                 LogisticRegression(max_iter=2000, random_state=seed),
+            )
+            operation_trace = (
+                "train_test_split",
+                "preprocessing_fit_train_rows",
+                "model_fit_train_rows",
+                "evaluate_test_rows",
             )
         model.fit(x_train_model, y_train)
         model_fit_rows = len(id_train)
@@ -158,6 +172,18 @@ def run_benchmark_case(
             x_train_model = np.concatenate((x_train, x_test[:overlap_count]), axis=0)
             y_train_model = np.concatenate((y_train, y_test[:overlap_count]), axis=0)
             training_test_rows = overlap_count
+            operation_trace = (
+                "train_test_split",
+                "append_test_rows_to_training",
+                "model_fit_mixed_rows",
+                "evaluate_test_rows",
+            )
+        else:
+            operation_trace = (
+                "train_test_split",
+                "model_fit_train_rows",
+                "evaluate_test_rows",
+            )
         model.fit(x_train_model, y_train_model)
         x_test_model = x_test
         model_fit_rows = len(x_train_model)
@@ -169,11 +195,23 @@ def run_benchmark_case(
             x_test_model = selector.transform(x_test)
             model = LogisticRegression(max_iter=2000, random_state=seed)
             target_before_split = True
+            operation_trace = (
+                "feature_selection_fit_all_labels",
+                "train_test_split",
+                "model_fit_train_rows",
+                "evaluate_test_rows",
+            )
         else:
             x_train_model, x_test_model = x_train, x_test
             model = make_pipeline(
                 SelectKBest(score_func=f_classif, k=10),
                 LogisticRegression(max_iter=2000, random_state=seed),
+            )
+            operation_trace = (
+                "train_test_split",
+                "feature_selection_fit_train_labels",
+                "model_fit_train_rows",
+                "evaluate_test_rows",
             )
         model.fit(x_train_model, y_train)
         model_fit_rows = len(id_train)
@@ -191,6 +229,7 @@ def run_benchmark_case(
         base_train_hash=_index_hash(id_train),
         base_test_hash=_index_hash(id_test),
         model_fit_rows=model_fit_rows,
+        operation_trace=operation_trace,
         evidence=RuntimeEvidence(
             preprocessing_observed_test_rows=preprocessing_test_rows,
             training_observed_test_rows=training_test_rows,
@@ -231,4 +270,3 @@ def generate_benchmark(
         encoding="utf-8",
     )
     return destination
-
