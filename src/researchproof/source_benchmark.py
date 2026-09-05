@@ -22,6 +22,7 @@ _STYLES = {
     "descriptive": ("features", "labels", "x_train", "x_test", "y_train", "y_test"),
     "compact": ("a", "b", "tr_x", "te_x", "tr_y", "te_y"),
     "notebook": ("data", "target", "train_data", "test_data", "train_y", "test_y"),
+    "helper": ("matrix", "outcome", "fit_x", "holdout_x", "fit_y", "holdout_y"),
 }
 
 
@@ -33,7 +34,55 @@ def _split(names: tuple[str, ...]) -> str:
     )
 
 
-def _source(family: FaultFamily, variant: str, names: tuple[str, ...]) -> str:
+def _helper_source(family: FaultFamily, variant: str, names: tuple[str, ...]) -> str:
+    x, y, x_train, x_test, y_train, y_test = names
+    split = _split(names)
+    if family is FaultFamily.PREPROCESSING_BEFORE_SPLIT:
+        definition = "def prepare(values):\n    return StandardScaler().fit_transform(values)"
+        body = (
+            [definition, f"{x} = prepare({x})", split]
+            if variant == "faulty"
+            else [definition, split, f"{x_train} = prepare({x_train})"]
+        )
+    elif family is FaultFamily.TRAIN_TEST_OVERLAP:
+        definition = (
+            "def extend(values, held_out):\n"
+            "    return np.concatenate([values, held_out[:10]])"
+        )
+        body = [definition, split]
+        if variant == "faulty":
+            body.extend(
+                [
+                    f"{x_train} = extend({x_train}, {x_test})",
+                    f"{y_train} = extend({y_train}, {y_test})",
+                ]
+            )
+    else:
+        definition = (
+            "def choose(values, outcomes):\n"
+            "    selector = SelectKBest(f_classif, k=10)\n"
+            "    return selector.fit_transform(values, outcomes)"
+        )
+        body = (
+            [definition, f"{x} = choose({x}, {y})", split]
+            if variant == "faulty"
+            else [definition, split, f"{x_train} = choose({x_train}, {y_train})"]
+        )
+    body.extend(
+        [
+            "model = LogisticRegression(max_iter=2000)",
+            f"model.fit({x_train}, {y_train})",
+            f"score = model.score({x_test}, {y_test})",
+        ]
+    )
+    return "\n".join(body) + "\n"
+
+
+def _source(
+    family: FaultFamily, variant: str, names: tuple[str, ...], style: str
+) -> str:
+    if style == "helper":
+        return _helper_source(family, variant, names)
     x, y, x_train, x_test, y_train, y_test = names
     split = _split(names)
     if family is FaultFamily.PREPROCESSING_BEFORE_SPLIT:
@@ -125,7 +174,7 @@ def build_source_cases() -> list[SourceCase]:
     for style, names in _STYLES.items():
         for family in FaultFamily:
             for variant in ("clean", "faulty"):
-                source = _source(family, variant, names)
+                source = _source(family, variant, names, style)
                 material = f"{style}:{family.value}:{variant}:{source}"
                 case_id = f"source-{hashlib.sha256(material.encode()).hexdigest()[:16]}"
                 cases.append(

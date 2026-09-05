@@ -21,7 +21,7 @@ does not represent the diversity of real notebooks.
   high (100%).
 - Five fixed train/test seeds.
 - 270 executable runs: 135 clean controls and 135 faulty variants.
-- 27 static source snippets: 18 paired examples and nine valid hard negatives.
+- 36 static source snippets: 24 paired examples and twelve valid hard negatives.
 
 The clean run is repeated across related severity contrasts. Analyses must recognize
 that these controls are correlated and must not count them as independent evidence.
@@ -68,7 +68,8 @@ hold out authors and fault families.
 
 ## Known limitations
 
-- The source templates have one author and share substantial structure.
+- The source templates have one author and share substantial structure. Helper-function
+  cases expose the current analyzers' lack of interprocedural reasoning.
 - Operation traces in the executable benchmark expose the injected mechanism.
 - Only scikit-learn tabular classification is represented.
 - Current datasets are small and bundled for convenience rather than chosen through a
@@ -98,4 +99,3 @@ A public benchmark release requires:
 6. a second-machine reproduction report;
 7. a changelog and immutable version identifier;
 8. a completed closest-work update.
-

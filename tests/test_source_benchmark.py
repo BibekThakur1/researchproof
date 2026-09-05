@@ -8,17 +8,22 @@ from researchproof.source_benchmark import build_source_cases, write_source_benc
 
 def test_source_pilot_has_three_blindable_styles() -> None:
     cases = build_source_cases()
-    assert len(cases) == 27
-    assert {case.style_id for case in cases} == {"descriptive", "compact", "notebook"}
-    assert sum(case.variant == "clean" for case in cases) == 18
-    assert sum(case.variant == "faulty" for case in cases) == 9
+    assert len(cases) == 36
+    assert {case.style_id for case in cases} == {
+        "descriptive",
+        "compact",
+        "notebook",
+        "helper",
+    }
+    assert sum(case.variant == "clean" for case in cases) == 24
+    assert sum(case.variant == "faulty" for case in cases) == 12
 
 
 def test_source_pilot_contains_valid_hard_negatives() -> None:
     cases = build_source_cases()
     fault_names = {family.value for family in FaultFamily}
     hard_negatives = [case for case in cases if case.fault_family not in fault_names]
-    assert len(hard_negatives) == 9
+    assert len(hard_negatives) == 12
     assert all(case.variant == "clean" for case in hard_negatives)
 
 
@@ -42,6 +47,7 @@ def test_source_report_holds_out_complete_styles(tmp_path) -> None:
         "descriptive",
         "compact",
         "notebook",
+        "helper",
     }
     structural = report["evaluations"]["held_out_structural_template"]["folds"]
     assert len(structural) == 6

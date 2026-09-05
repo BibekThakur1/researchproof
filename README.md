@@ -83,7 +83,8 @@ pytest
 
 The commands write results beneath `artifacts/`. That directory is intentionally ignored by Git because generated runs should not be committed as source code. Benchmark version 0.3 creates 270 cases: clean and faulty variants for three fault families, three severity settings, three public scikit-learn datasets, and five seeds. The baseline report compares an always-clean baseline with simple operation-sequence and runtime-lineage rules. These are engineering-validation cases, not paper results. If the explicit rules solve them perfectly, that tells us the current benchmark is too transparent and must be made more realistic before training a detector. A paper-ready result will eventually be rebuilt from versioned configurations and a documented dataset manifest.
 
-The separate source pilot contains 27 snippets, including nine valid hard negatives.
+The separate source pilot contains 36 snippets, including twelve valid hard negatives
+and helper-function cases that require interprocedural reasoning.
 It reports both a naming-style holdout and a stricter structural-template holdout. The
 latter is the meaningful development check; current results expose substantial
 generalization failures and should guide the next feature and benchmark design.
