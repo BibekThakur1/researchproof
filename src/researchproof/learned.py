@@ -48,15 +48,17 @@ def expected_calibration_error(
     return error
 
 
-def leave_one_dataset_out(runs: list[dict[str, Any]], mode: FeatureMode) -> dict[str, Any]:
-    datasets = sorted({run["dataset_id"] for run in runs})
+def _leave_one_group_out(
+    runs: list[dict[str, Any]], mode: FeatureMode, group_field: str
+) -> dict[str, Any]:
+    groups = sorted({run[group_field] for run in runs})
     folds: list[dict[str, Any]] = []
     all_labels: list[bool] = []
     all_predictions: list[bool] = []
     all_probabilities: list[float] = []
-    for held_out in datasets:
-        train = [run for run in runs if run["dataset_id"] != held_out]
-        test = [run for run in runs if run["dataset_id"] == held_out]
+    for held_out in groups:
+        train = [run for run in runs if run[group_field] != held_out]
+        test = [run for run in runs if run[group_field] == held_out]
         vectorizer = DictVectorizer(sparse=True)
         x_train = vectorizer.fit_transform([extract_features(run, mode) for run in train])
         x_test = vectorizer.transform([extract_features(run, mode) for run in test])
@@ -69,7 +71,7 @@ def leave_one_dataset_out(runs: list[dict[str, Any]], mode: FeatureMode) -> dict
         metrics = classification_metrics(y_test.astype(bool), predictions)
         folds.append(
             {
-                "held_out_dataset": held_out,
+                "held_out_group": held_out,
                 "metrics": asdict(metrics),
                 "brier_score": float(np.mean((probabilities - y_test) ** 2)),
                 "expected_calibration_error": expected_calibration_error(y_test, probabilities),
@@ -82,7 +84,8 @@ def leave_one_dataset_out(runs: list[dict[str, Any]], mode: FeatureMode) -> dict
     probabilities_array = np.asarray(all_probabilities)
     return {
         "feature_mode": mode,
-        "protocol": "leave_one_complete_dataset_out",
+        "group_field": group_field,
+        "protocol": f"leave_one_complete_{group_field}_out",
         "aggregate_metrics": asdict(classification_metrics(all_labels, all_predictions)),
         "aggregate_brier_score": float(np.mean((probabilities_array - labels_array) ** 2)),
         "aggregate_expected_calibration_error": expected_calibration_error(
@@ -90,6 +93,16 @@ def leave_one_dataset_out(runs: list[dict[str, Any]], mode: FeatureMode) -> dict
         ),
         "folds": folds,
     }
+
+
+def leave_one_dataset_out(runs: list[dict[str, Any]], mode: FeatureMode) -> dict[str, Any]:
+    return _leave_one_group_out(runs, mode, "dataset_id")
+
+
+def leave_one_fault_family_out(
+    runs: list[dict[str, Any]], mode: FeatureMode
+) -> dict[str, Any]:
+    return _leave_one_group_out(runs, mode, "fault_family")
 
 
 def evaluate_learned_baselines(index: Path, destination: Path) -> Path:
@@ -104,8 +117,11 @@ def evaluate_learned_baselines(index: Path, destination: Path) -> Path:
         "evaluations": [
             leave_one_dataset_out(runs, mode) for mode in ("static", "runtime", "hybrid")
         ],
+        "fault_family_holdout_evaluations": [
+            leave_one_fault_family_out(runs, mode)
+            for mode in ("static", "runtime", "hybrid")
+        ],
     }
     destination.parent.mkdir(parents=True, exist_ok=True)
     destination.write_text(json.dumps(payload, indent=2, sort_keys=True) + "\n", encoding="utf-8")
     return destination
-

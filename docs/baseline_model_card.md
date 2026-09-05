@@ -20,10 +20,15 @@ claim; prior abstract-interpretation systems are substantially more rigorous.
 
 ## Training and evaluation
 
-Executable baselines use leave-one-complete-dataset-out evaluation. The source
-baseline uses naming-style and structural-template holdouts. Gold labels, predictive
+Executable baselines use both leave-one-complete-dataset-out and
+leave-one-complete-fault-family-out evaluation. The source baseline uses naming-style
+and structural-template holdouts. Gold labels, predictive
 scores, case IDs, dataset IDs, and fault-family names are excluded from input
 features. The current source corpus is too small for hyperparameter searching.
+
+Current learned baselines fail completely to recognize a held-out fault family. This
+is expected from sparse mechanism-specific features and is a central negative result
+for development, not a reason to tune on the test folds.
 
 ## Metrics
 

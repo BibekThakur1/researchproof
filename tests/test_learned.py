@@ -39,5 +39,9 @@ def test_learned_report_contains_three_held_out_folds(tmp_path) -> None:
     report = json.loads(destination.read_text(encoding="utf-8"))
     assert len(report["evaluations"]) == 3
     assert all(len(evaluation["folds"]) == 3 for evaluation in report["evaluations"])
+    assert len(report["fault_family_holdout_evaluations"]) == 3
+    assert all(
+        len(evaluation["folds"]) == 3
+        for evaluation in report["fault_family_holdout_evaluations"]
+    )
     assert report["status"] == "engineering_baseline_not_a_research_finding"
-
