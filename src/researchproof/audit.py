@@ -80,10 +80,16 @@ def classification_metrics(
     labels: Iterable[bool], predictions: Iterable[bool]
 ) -> ClassificationMetrics:
     pairs = list(zip(labels, predictions, strict=True))
-    true_positive = sum(label and prediction for label, prediction in pairs)
-    true_negative = sum(not label and not prediction for label, prediction in pairs)
-    false_positive = sum(not label and prediction for label, prediction in pairs)
-    false_negative = sum(label and not prediction for label, prediction in pairs)
+    true_positive = int(sum(bool(label) and bool(prediction) for label, prediction in pairs))
+    true_negative = int(
+        sum(not bool(label) and not bool(prediction) for label, prediction in pairs)
+    )
+    false_positive = int(
+        sum(not bool(label) and bool(prediction) for label, prediction in pairs)
+    )
+    false_negative = int(
+        sum(bool(label) and not bool(prediction) for label, prediction in pairs)
+    )
     precision = _safe_divide(true_positive, true_positive + false_positive)
     recall = _safe_divide(true_positive, true_positive + false_negative)
     return ClassificationMetrics(

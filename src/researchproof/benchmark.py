@@ -48,6 +48,7 @@ class RuntimeEvidence:
 class BenchmarkRun:
     case_id: str
     pair_id: str
+    dataset_id: str
     fault_family: str
     variant: str
     seed: int
@@ -246,6 +247,7 @@ def run_benchmark_case(
     run = BenchmarkRun(
         case_id=manifest.case_id,
         pair_id=pair_id,
+        dataset_id=dataset_id,
         fault_family=family.value,
         variant=variant,
         seed=seed,

@@ -45,6 +45,12 @@ python scripts/generate_benchmark.py --config configs/benchmark_pilot.yaml
 python scripts/evaluate_baselines.py \
   --index artifacts/benchmark_v0_2/runs.jsonl \
   --output artifacts/benchmark_v0_2/baselines.json
+python scripts/verify_repairs.py \
+  --config configs/benchmark_pilot.yaml \
+  --output artifacts/benchmark_v0_2/repairs.json
+python scripts/evaluate_learned.py \
+  --index artifacts/benchmark_v0_2/runs.jsonl \
+  --output artifacts/benchmark_v0_2/learned_baselines.json
 pytest
 ```
 
