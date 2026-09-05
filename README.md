@@ -66,6 +66,11 @@ python scripts/compare_reviews.py \
   --output artifacts/blind_review_v0_1/agreement.json
 python scripts/seal_artifacts.py artifacts/benchmark_v0_3
 python scripts/seal_artifacts.py artifacts/benchmark_v0_3 --verify
+# Compare with a benchmark generated from a second checkout or laptop:
+python scripts/compare_benchmarks.py \
+  --reference artifacts/benchmark_v0_3/runs.jsonl \
+  --candidate /path/to/second/checkout/artifacts/benchmark_v0_3/runs.jsonl \
+  --output artifacts/reproduction_comparison.json
 pytest
 ```
 
