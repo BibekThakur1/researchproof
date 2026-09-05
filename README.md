@@ -25,6 +25,7 @@ Both runs record their configuration, data fingerprints, scores, and runtime in 
 configs/                 Experiment configuration
 data/                    Data policy and local-cache guidance
 docs/                    Research and benchmark specifications
+paper/                   Manuscript outline and evidence-to-claim ledger
 scripts/                 Commands used to reproduce experiments
 src/researchproof/       Core Python package
 tests/                   Unit tests for the benchmark machinery
