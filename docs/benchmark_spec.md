@@ -18,6 +18,12 @@ expected repair
 environment lock identifier
 ```
 
+The reference implementation lives in `researchproof.manifest.BenchmarkManifest`.
+Its `case_id` is derived from a canonical serialization of every field, so changing
+the seed, split, dataset checksum, template, fault definition, or environment lock
+produces a different identifier. A stored identifier that no longer matches its
+contents is rejected as a tampered or stale manifest.
+
 ## Leakage prevention in the detector study
 
 Cases derived from one source dataset may not be divided between detector training and testing. Closely related pipeline templates must remain in one partition. Injector-specific strings and filenames must not reveal the label. Evaluation includes a leave-one-fault-family-out protocol.
@@ -29,4 +35,3 @@ Two reviewers independently inspect a sample without seeing the injector label. 
 ## Versioning rule
 
 Once a benchmark release is used for a reported table, its cases and partitions are immutable. Corrections create a new version with a changelog and a mapping from old case identifiers.
-
