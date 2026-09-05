@@ -16,6 +16,7 @@ def main() -> None:
     destination = generate_benchmark(
         seeds=[int(seed) for seed in config["seeds"]],
         output_dir=Path(config["output_dir"]),
+        dataset_ids=[str(dataset_id) for dataset_id in config["datasets"]],
         test_size=float(config["test_size"]),
     )
     print(f"Benchmark index written to {destination}")
@@ -23,4 +24,3 @@ def main() -> None:
 
 if __name__ == "__main__":
     main()
-

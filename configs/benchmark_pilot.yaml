@@ -1,11 +1,13 @@
 project: researchproof
 benchmark_version: "0.1.0"
-dataset: sklearn_breast_cancer
+datasets:
+  - sklearn_breast_cancer
+  - sklearn_wine
+  - sklearn_digits
 test_size: 0.25
 seeds: [7, 19, 43, 71, 101]
 fault_families:
   - preprocessing_before_split
   - train_test_overlap
   - target_informed_feature_selection
-output_dir: artifacts/benchmark_v0_1
-
+output_dir: artifacts/benchmark_v0_2

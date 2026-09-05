@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import json
 import time
+import warnings
 from dataclasses import asdict, dataclass
 from enum import Enum
 from pathlib import Path
@@ -15,7 +16,8 @@ from sklearn.model_selection import train_test_split
 from sklearn.pipeline import make_pipeline
 from sklearn.preprocessing import StandardScaler
 
-from researchproof.experiment import _index_hash, load_pilot_data
+from researchproof.datasets import load_dataset
+from researchproof.experiment import _index_hash
 from researchproof.manifest import BenchmarkManifest, dataset_checksum
 
 
@@ -23,6 +25,16 @@ class FaultFamily(str, Enum):
     PREPROCESSING_BEFORE_SPLIT = "preprocessing_before_split"
     TRAIN_TEST_OVERLAP = "train_test_overlap"
     TARGET_INFORMED_FEATURE_SELECTION = "target_informed_feature_selection"
+
+
+def _stable_f_classif(features: np.ndarray, target: np.ndarray) -> tuple[np.ndarray, np.ndarray]:
+    """Run ANOVA scoring while assigning zero importance to constant features."""
+
+    with warnings.catch_warnings():
+        warnings.filterwarnings("ignore", message="Features .* are constant")
+        warnings.filterwarnings("ignore", message="invalid value encountered in divide")
+        scores, p_values = f_classif(features, target)
+    return np.nan_to_num(scores, nan=0.0), np.nan_to_num(p_values, nan=1.0)
 
 
 @dataclass(frozen=True)
@@ -59,6 +71,7 @@ def _manifest(
     variant: str,
     seed: int,
     checksum: str,
+    dataset_id: str,
 ) -> BenchmarkManifest:
     faulty = variant == "faulty"
     expected_evidence = {
@@ -74,7 +87,7 @@ def _manifest(
         ),
     }
     return BenchmarkManifest(
-        dataset_id="sklearn_breast_cancer",
+        dataset_id=dataset_id,
         dataset_checksum=checksum,
         template_id="logistic_regression_tabular",
         template_version="0.2.0",
@@ -93,11 +106,15 @@ def _manifest(
 
 def _score(model: Any, x_test: np.ndarray, y_test: np.ndarray) -> tuple[float, float, float]:
     predictions = model.predict(x_test)
-    probabilities = model.predict_proba(x_test)[:, 1]
+    probabilities = model.predict_proba(x_test)
+    if probabilities.shape[1] == 2:
+        auc = roc_auc_score(y_test, probabilities[:, 1])
+    else:
+        auc = roc_auc_score(y_test, probabilities, multi_class="ovr", average="macro")
     return (
         float(accuracy_score(y_test, predictions)),
         float(balanced_accuracy_score(y_test, predictions)),
-        float(roc_auc_score(y_test, probabilities)),
+        float(auc),
     )
 
 
@@ -106,6 +123,7 @@ def run_benchmark_case(
     variant: str,
     seed: int,
     *,
+    dataset_id: str = "sklearn_breast_cancer",
     test_size: float = 0.25,
     overlap_fraction: float = 0.10,
 ) -> tuple[BenchmarkManifest, BenchmarkRun]:
@@ -117,7 +135,8 @@ def run_benchmark_case(
     if not 0.0 < overlap_fraction < 1.0:
         raise ValueError("overlap_fraction must be between zero and one")
 
-    features, target, row_ids = load_pilot_data()
+    dataset = load_dataset(dataset_id)
+    features, target, row_ids = dataset.features, dataset.target, dataset.row_ids
     checksum = dataset_checksum(features, target)
     x_train, x_test, y_train, y_test, id_train, id_test = train_test_split(
         features,
@@ -190,10 +209,13 @@ def run_benchmark_case(
 
     else:
         if variant == "faulty":
-            selector = SelectKBest(score_func=f_classif, k=10).fit(features, target)
+            selector = SelectKBest(score_func=_stable_f_classif, k=10).fit(features, target)
             x_train_model = selector.transform(x_train)
             x_test_model = selector.transform(x_test)
-            model = LogisticRegression(max_iter=2000, random_state=seed)
+            model = make_pipeline(
+                StandardScaler(),
+                LogisticRegression(max_iter=2000, random_state=seed),
+            )
             target_before_split = True
             operation_trace = (
                 "feature_selection_fit_all_labels",
@@ -204,7 +226,8 @@ def run_benchmark_case(
         else:
             x_train_model, x_test_model = x_train, x_test
             model = make_pipeline(
-                SelectKBest(score_func=f_classif, k=10),
+                SelectKBest(score_func=_stable_f_classif, k=10),
+                StandardScaler(),
                 LogisticRegression(max_iter=2000, random_state=seed),
             )
             operation_trace = (
@@ -217,7 +240,7 @@ def run_benchmark_case(
         model_fit_rows = len(id_train)
 
     accuracy, balanced_accuracy, roc_auc = _score(model, x_test_model, y_test)
-    manifest = _manifest(family, variant, seed, checksum)
+    manifest = _manifest(family, variant, seed, checksum, dataset_id)
     pair_material = f"{checksum}:{family.value}:{seed}:logistic_regression_tabular"
     pair_id = f"pair-{__import__('hashlib').sha256(pair_material.encode()).hexdigest()[:16]}"
     run = BenchmarkRun(
@@ -247,22 +270,26 @@ def generate_benchmark(
     seeds: list[int],
     output_dir: Path,
     *,
+    dataset_ids: list[str] | None = None,
     test_size: float = 0.25,
 ) -> Path:
     output_dir.mkdir(parents=True, exist_ok=True)
     manifests_dir = output_dir / "manifests"
     runs: list[BenchmarkRun] = []
-    for seed in seeds:
-        for family in FaultFamily:
-            for variant in ("clean", "faulty"):
-                manifest, run = run_benchmark_case(
-                    family,
-                    variant,
-                    seed,
-                    test_size=test_size,
-                )
-                manifest.write(manifests_dir / f"{manifest.case_id}.json")
-                runs.append(run)
+    selected_datasets = dataset_ids or ["sklearn_breast_cancer"]
+    for dataset_id in selected_datasets:
+        for seed in seeds:
+            for family in FaultFamily:
+                for variant in ("clean", "faulty"):
+                    manifest, run = run_benchmark_case(
+                        family,
+                        variant,
+                        seed,
+                        dataset_id=dataset_id,
+                        test_size=test_size,
+                    )
+                    manifest.write(manifests_dir / f"{manifest.case_id}.json")
+                    runs.append(run)
 
     destination = output_dir / "runs.jsonl"
     destination.write_text(

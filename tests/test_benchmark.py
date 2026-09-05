@@ -57,3 +57,18 @@ def test_generator_writes_six_cases_per_seed(tmp_path) -> None:
     assert len(manifests) == 12
     assert all(BenchmarkManifest.read(path).case_id == path.stem for path in manifests)
 
+
+def test_generator_supports_multiple_datasets(tmp_path) -> None:
+    index = generate_benchmark(
+        [7],
+        tmp_path,
+        dataset_ids=["sklearn_breast_cancer", "sklearn_wine"],
+    )
+    lines = index.read_text(encoding="utf-8").splitlines()
+    manifests = [BenchmarkManifest.read(path) for path in (tmp_path / "manifests").glob("*.json")]
+    assert len(lines) == 12
+    assert {manifest.dataset_id for manifest in manifests} == {
+        "sklearn_breast_cancer",
+        "sklearn_wine",
+    }
+

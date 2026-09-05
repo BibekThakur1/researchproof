@@ -43,12 +43,12 @@ python -m pip install -e '.[dev]'
 python scripts/run_pilot.py --config configs/pilot.yaml
 python scripts/generate_benchmark.py --config configs/benchmark_pilot.yaml
 python scripts/evaluate_baselines.py \
-  --index artifacts/benchmark_v0_1/runs.jsonl \
-  --output artifacts/benchmark_v0_1/baselines.json
+  --index artifacts/benchmark_v0_2/runs.jsonl \
+  --output artifacts/benchmark_v0_2/baselines.json
 pytest
 ```
 
-The commands write results beneath `artifacts/`. That directory is intentionally ignored by Git because generated runs should not be committed as source code. The benchmark command currently creates 30 paired cases: clean and faulty variants for three fault families across five seeds. The baseline report compares an always-clean baseline with simple operation-sequence and runtime-lineage rules. These are engineering-validation cases, not paper results. If the explicit rules solve them perfectly, that tells us the current benchmark is too transparent and must be made more realistic before training a detector. A paper-ready result will eventually be rebuilt from versioned configurations and a documented dataset manifest.
+The commands write results beneath `artifacts/`. That directory is intentionally ignored by Git because generated runs should not be committed as source code. The benchmark command currently creates 90 cases: clean and faulty variants for three fault families, three public scikit-learn datasets, and five seeds. The baseline report compares an always-clean baseline with simple operation-sequence and runtime-lineage rules. These are engineering-validation cases, not paper results. If the explicit rules solve them perfectly, that tells us the current benchmark is too transparent and must be made more realistic before training a detector. A paper-ready result will eventually be rebuilt from versioned configurations and a documented dataset manifest.
 
 ## Research questions
 
