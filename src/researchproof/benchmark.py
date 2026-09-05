@@ -18,6 +18,7 @@ from sklearn.preprocessing import StandardScaler
 
 from researchproof.datasets import load_dataset
 from researchproof.experiment import _index_hash
+from researchproof.lineage import LineageMonitor, RuntimeEvidence
 from researchproof.manifest import BenchmarkManifest, dataset_checksum
 
 
@@ -45,14 +46,6 @@ def _stable_f_classif(features: np.ndarray, target: np.ndarray) -> tuple[np.ndar
         warnings.filterwarnings("ignore", message="invalid value encountered in divide")
         scores, p_values = f_classif(features, target)
     return np.nan_to_num(scores, nan=0.0), np.nan_to_num(p_values, nan=1.0)
-
-
-@dataclass(frozen=True)
-class RuntimeEvidence:
-    preprocessing_observed_test_rows: int
-    training_observed_test_rows: int
-    target_observed_test_rows: int
-    target_observed_before_split: bool
 
 
 @dataclass(frozen=True)
@@ -161,10 +154,7 @@ def run_benchmark_case(
         stratify=target,
     )
     started = time.perf_counter()
-    preprocessing_test_rows = 0
-    training_test_rows = 0
-    target_test_rows = 0
-    target_before_split = False
+    monitor = LineageMonitor(id_train, id_test)
     operation_trace: tuple[str, ...]
 
     if family is FaultFamily.PREPROCESSING_BEFORE_SPLIT:
@@ -177,7 +167,12 @@ def run_benchmark_case(
             x_train_model = scaler.transform(x_train)
             x_test_model = scaler.transform(x_test)
             model = LogisticRegression(max_iter=2000, random_state=seed)
-            preprocessing_test_rows = contamination_count
+            monitor.record_fit(
+                "StandardScaler.fit",
+                "preprocessing",
+                np.concatenate((id_train, id_test[:contamination_count])),
+                uses_target=False,
+            )
             operation_trace = (
                 "preprocessing_fit_all_rows",
                 "train_test_split",
@@ -196,7 +191,11 @@ def run_benchmark_case(
                 "model_fit_train_rows",
                 "evaluate_test_rows",
             )
+            monitor.record_fit(
+                "StandardScaler.fit", "preprocessing", id_train, uses_target=False
+            )
         model.fit(x_train_model, y_train)
+        monitor.record_fit("LogisticRegression.fit", "model", id_train, uses_target=True)
         model_fit_rows = len(id_train)
 
     elif family is FaultFamily.TRAIN_TEST_OVERLAP:
@@ -211,7 +210,6 @@ def run_benchmark_case(
             )
             x_train_model = np.concatenate((x_train, x_test[:overlap_count]), axis=0)
             y_train_model = np.concatenate((y_train, y_test[:overlap_count]), axis=0)
-            training_test_rows = overlap_count
             operation_trace = (
                 "train_test_split",
                 "append_test_rows_to_training",
@@ -225,6 +223,12 @@ def run_benchmark_case(
                 "evaluate_test_rows",
             )
         model.fit(x_train_model, y_train_model)
+        fitted_ids = (
+            np.concatenate((id_train, id_test[:overlap_count]))
+            if variant == "faulty"
+            else id_train
+        )
+        monitor.record_fit("LogisticRegression.fit", "model", fitted_ids, uses_target=True)
         x_test_model = x_test
         model_fit_rows = len(x_train_model)
 
@@ -246,8 +250,12 @@ def run_benchmark_case(
                 StandardScaler(),
                 LogisticRegression(max_iter=2000, random_state=seed),
             )
-            target_before_split = True
-            target_test_rows = contamination_count
+            monitor.record_fit(
+                "SelectKBest.fit",
+                "selection",
+                np.concatenate((id_train, id_test[:contamination_count])),
+                uses_target=True,
+            )
             operation_trace = (
                 "feature_selection_fit_all_labels",
                 "train_test_split",
@@ -267,7 +275,9 @@ def run_benchmark_case(
                 "model_fit_train_rows",
                 "evaluate_test_rows",
             )
+            monitor.record_fit("SelectKBest.fit", "selection", id_train, uses_target=True)
         model.fit(x_train_model, y_train)
+        monitor.record_fit("LogisticRegression.fit", "model", id_train, uses_target=True)
         model_fit_rows = len(id_train)
 
     accuracy, balanced_accuracy, roc_auc = _score(model, x_test_model, y_test)
@@ -288,12 +298,7 @@ def run_benchmark_case(
         base_test_hash=_index_hash(id_test),
         model_fit_rows=model_fit_rows,
         operation_trace=operation_trace,
-        evidence=RuntimeEvidence(
-            preprocessing_observed_test_rows=preprocessing_test_rows,
-            training_observed_test_rows=training_test_rows,
-            target_observed_test_rows=target_test_rows,
-            target_observed_before_split=target_before_split,
-        ),
+        evidence=monitor.summarize(),
         accuracy=accuracy,
         balanced_accuracy=balanced_accuracy,
         roc_auc=roc_auc,
