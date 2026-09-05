@@ -51,6 +51,9 @@ python scripts/verify_repairs.py \
 python scripts/evaluate_learned.py \
   --index artifacts/benchmark_v0_2/runs.jsonl \
   --output artifacts/benchmark_v0_2/learned_baselines.json
+python scripts/summarize_effects.py \
+  --index artifacts/benchmark_v0_2/runs.jsonl \
+  --output artifacts/benchmark_v0_2/paired_effects.json
 python scripts/generate_source_pilot.py
 python scripts/export_blind_review.py \
   --output artifacts/blind_review_v0_1 \
