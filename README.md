@@ -39,7 +39,8 @@ Python 3.11 is recommended.
 python -m venv .venv
 source .venv/bin/activate
 python -m pip install --upgrade pip
-python -m pip install -e '.[dev]'
+python -m pip install -r requirements-lock.txt
+python -m pip install --no-deps -e .
 python scripts/run_pilot.py --config configs/pilot.yaml
 python scripts/generate_benchmark.py --config configs/benchmark_pilot.yaml
 python scripts/evaluate_baselines.py \
@@ -63,6 +64,8 @@ python scripts/compare_reviews.py \
   --first artifacts/blind_review_v0_1/review_bibek.csv \
   --second artifacts/blind_review_v0_1/review_friend.csv \
   --output artifacts/blind_review_v0_1/agreement.json
+python scripts/seal_artifacts.py artifacts/benchmark_v0_3
+python scripts/seal_artifacts.py artifacts/benchmark_v0_3 --verify
 pytest
 ```
 
