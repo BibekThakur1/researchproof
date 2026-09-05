@@ -100,9 +100,9 @@ def _function_summaries(tree: ast.Module) -> dict[str, FunctionSummary]:
     return summaries
 
 
-def analyze_source(source: str) -> list[StaticFinding]:
+def analyze_source(source: str, *, follow_helpers: bool = True) -> list[StaticFinding]:
     tree = ast.parse(source)
-    summaries = _function_summaries(tree)
+    summaries = _function_summaries(tree) if follow_helpers else {}
     values: dict[str, set[str]] = {}
     findings: list[StaticFinding] = []
     evaluation_seen = False
@@ -197,10 +197,18 @@ def evaluate_symbolic_analyzer(index: Path, destination: Path) -> Path:
     cases = [json.loads(line) for line in index.read_text(encoding="utf-8").splitlines()]
     labels = [case["variant"] == "faulty" for case in cases]
     predictions = [bool(analyze_source(case["source"])) for case in cases]
+    without_helpers = [
+        bool(analyze_source(case["source"], follow_helpers=False)) for case in cases
+    ]
     payload: dict[str, Any] = {
         "status": "small_source_pilot_not_a_research_finding",
         "analyzer": "symbolic_provenance_v0_1",
         "metrics": asdict(classification_metrics(labels, predictions)),
+        "ablations": {
+            "without_function_summaries": asdict(
+                classification_metrics(labels, without_helpers)
+            )
+        },
         "failures": [
             {
                 "source_case_id": case["source_case_id"],
