@@ -12,14 +12,14 @@ def test_symbolic_analyzer_detects_current_faulty_source_cases() -> None:
     assert all(analyze_source(case.source) for case in faulty)
 
 
-def test_helper_indirection_is_recorded_as_a_current_blind_spot() -> None:
+def test_helper_indirection_is_followed_without_using_function_names() -> None:
     helper_faults = [
         case
         for case in build_source_cases()
         if case.variant == "faulty" and case.style_id == "helper"
     ]
     assert len(helper_faults) == 3
-    assert all(analyze_source(case.source) == [] for case in helper_faults)
+    assert all(analyze_source(case.source) for case in helper_faults)
 
 
 def test_symbolic_analyzer_accepts_current_clean_and_hard_negative_cases() -> None:

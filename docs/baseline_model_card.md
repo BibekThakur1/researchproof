@@ -34,9 +34,10 @@ Future selective models must also report coverage versus risk.
 ## Limitations
 
 The executable evidence fields directly describe contaminated row access, making
-those baselines sanity checks rather than realistic detectors. The source baseline
-does not track data flow or variable aliases and fails on unseen structures. None of
-the models should be deployed or described as a validity certificate.
+those baselines sanity checks rather than realistic detectors. The symbolic source
+baseline tracks direct assignments and simple single-return helper summaries, but not
+nested calls, branches, loops, mutation, closures, or imported functions. None of the
+models should be deployed or described as a validity certificate.
 
 ## Compute
 

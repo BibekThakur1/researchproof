@@ -16,6 +16,13 @@ class StaticFinding:
     explanation: str
 
 
+@dataclass(frozen=True)
+class FunctionSummary:
+    propagated_arguments: tuple[int, ...]
+    preprocesses_first_argument: bool
+    uses_target_argument: bool
+
+
 def _name(node: ast.AST) -> str | None:
     if isinstance(node, ast.Name):
         return node.id
@@ -57,8 +64,45 @@ def _provenance(node: ast.AST, values: dict[str, set[str]]) -> set[str]:
     return set()
 
 
+def _function_summaries(tree: ast.Module) -> dict[str, FunctionSummary]:
+    summaries: dict[str, FunctionSummary] = {}
+    for statement in tree.body:
+        if not isinstance(statement, (ast.FunctionDef, ast.AsyncFunctionDef)):
+            continue
+        parameters = [argument.arg for argument in statement.args.args]
+        returns = [node for node in ast.walk(statement) if isinstance(node, ast.Return)]
+        if len(returns) != 1 or returns[0].value is None:
+            continue
+        returned = returns[0].value
+        propagated: set[int] = set()
+        preprocesses = False
+        uses_target = False
+        if isinstance(returned, ast.Call) and _call_name(returned) == "fit_transform":
+            preprocesses = True
+            uses_target = len(returned.args) >= 2
+            call_arguments = returned.args
+        elif isinstance(returned, ast.Call) and _call_name(returned) == "concatenate":
+            call_arguments = returned.args[0].elts if returned.args and isinstance(
+                returned.args[0], (ast.List, ast.Tuple)
+            ) else []
+        else:
+            call_arguments = [returned]
+        for node in call_arguments:
+            symbol = _name(node)
+            if symbol in parameters:
+                propagated.add(parameters.index(symbol))
+        if propagated:
+            summaries[statement.name] = FunctionSummary(
+                propagated_arguments=tuple(sorted(propagated)),
+                preprocesses_first_argument=preprocesses,
+                uses_target_argument=uses_target,
+            )
+    return summaries
+
+
 def analyze_source(source: str) -> list[StaticFinding]:
     tree = ast.parse(source)
+    summaries = _function_summaries(tree)
     values: dict[str, set[str]] = {}
     findings: list[StaticFinding] = []
     evaluation_seen = False
@@ -69,8 +113,25 @@ def analyze_source(source: str) -> list[StaticFinding]:
             findings.append(finding)
 
     for statement in tree.body:
+        if isinstance(statement, (ast.FunctionDef, ast.AsyncFunctionDef)):
+            continue
         value = statement.value if isinstance(statement, (ast.Assign, ast.Expr)) else None
         call = value if isinstance(value, ast.Call) else None
+
+        if isinstance(statement, ast.Assign) and call and _call_name(call) in summaries:
+            summary = summaries[_call_name(call)]
+            tags: set[str] = set()
+            for index in summary.propagated_arguments:
+                if index < len(call.args):
+                    tags.update(_provenance(call.args[index], values))
+            first_input = _provenance(call.args[0], values) if call.args else set()
+            if summary.preprocesses_first_argument and "train_features" not in first_input:
+                tags.add("preprocessed_before_split")
+                if summary.uses_target_argument:
+                    tags.add("target_selected_before_split")
+            for output in _assigned_names(statement.targets[0]):
+                values[output] = tags
+            continue
 
         if isinstance(statement, ast.Assign) and call and _call_name(call) == "train_test_split":
             outputs = _assigned_names(statement.targets[0])
@@ -153,4 +214,3 @@ def evaluate_symbolic_analyzer(index: Path, destination: Path) -> Path:
     destination.parent.mkdir(parents=True, exist_ok=True)
     destination.write_text(json.dumps(payload, indent=2, sort_keys=True) + "\n", encoding="utf-8")
     return destination
-
