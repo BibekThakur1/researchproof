@@ -1,0 +1,33 @@
+name: Experiment
+description: Propose and track a reproducible experiment
+title: "[Experiment]: "
+labels: ["experiment"]
+body:
+  - type: textarea
+    id: question
+    attributes:
+      label: Research question
+      description: State the narrow question this experiment answers.
+    validations:
+      required: true
+  - type: textarea
+    id: hypothesis
+    attributes:
+      label: Hypothesis and falsification condition
+      description: What do you expect, and what observation would count against it?
+    validations:
+      required: true
+  - type: textarea
+    id: protocol
+    attributes:
+      label: Protocol
+      description: List datasets, partitions, baselines, metrics, seeds, and statistical test.
+    validations:
+      required: true
+  - type: textarea
+    id: command
+    attributes:
+      label: Reproduction command
+    validations:
+      required: true
+

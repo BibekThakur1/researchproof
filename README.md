@@ -1,0 +1,71 @@
+# ResearchProof
+
+ResearchProof is an experimental framework for studying a simple but serious question:
+
+> Can a machine-learning workflow detect when its own reported performance is based on an invalid experimental procedure?
+
+Many ML projects run without errors and still produce misleading results. Examples include fitting a transformer before the train/test split, allowing duplicate records to cross the split, selecting features with access to test labels, or repeatedly tuning against the final test set. ResearchProof will create controlled pairs of *clean* and *faulty* experiments, trace how data moves through each pipeline, and test whether static and runtime evidence can identify the fault and propose a verifiable repair.
+
+This repository begins with a narrow, reproducible scope: tabular classification in Python using pandas and scikit-learn. We are deliberately not claiming a new universal detector. The first phase establishes whether the benchmark can be built reliably and whether the proposed hybrid detector improves on straightforward rules and code-only baselines.
+
+## Current status
+
+The project is at the benchmark-construction stage. There are no research results yet.
+
+The first executable pilot compares two versions of the same classification experiment:
+
+1. **Clean:** split the data first; fit preprocessing only on the training set.
+2. **Faulty:** fit preprocessing on the complete dataset before splitting.
+
+Both runs record their configuration, data fingerprints, scores, and runtime in machine-readable JSON. This gives us the smallest end-to-end unit needed for later auditing.
+
+## Repository map
+
+```text
+configs/                 Experiment configuration
+data/                    Data policy and local-cache guidance
+docs/                    Research and benchmark specifications
+scripts/                 Commands used to reproduce experiments
+src/researchproof/       Core Python package
+tests/                   Unit tests for the benchmark machinery
+.github/                 CI and issue templates
+```
+
+## Run the first pilot
+
+Python 3.11 is recommended.
+
+```bash
+python -m venv .venv
+source .venv/bin/activate
+python -m pip install --upgrade pip
+python -m pip install -e '.[dev]'
+python scripts/run_pilot.py --config configs/pilot.yaml
+pytest
+```
+
+The command writes results beneath `artifacts/`. That directory is intentionally ignored by Git because generated runs should not be committed as source code. A paper-ready result will eventually be rebuilt from versioned configurations and a documented dataset manifest.
+
+## Research questions
+
+- **RQ1:** How accurately can different auditing methods identify methodological faults in executable ML pipelines?
+- **RQ2:** Does combining source-code structure, data-lineage evidence, and counterfactual reruns outperform any single evidence source?
+- **RQ3:** Can the system remain calibrated and useful on datasets, pipeline templates, and fault families that were not seen during detector development?
+- **RQ4:** When ResearchProof recommends a repair, does executing the repaired pipeline remove the fault without silently changing the intended task?
+
+## Research discipline
+
+- Dataset and template families—not individual rows—will be separated across detector development and evaluation.
+- Thresholds and model choices will be fixed using validation data only.
+- Results will include false alarms, confidence calibration, failure cases, compute cost, and uncertainty—not only accuracy.
+- Each main comparison will use repeated seeds and confidence intervals.
+- We will not describe the system as novel or publishable until a closest-work review and experiments support that claim.
+
+## Working together
+
+Use an issue for every experiment or design decision. A pull request should state the hypothesis, changed files, exact reproduction command, and what evidence would disprove the claim. See [CONTRIBUTING.md](CONTRIBUTING.md).
+
+## Private research repository
+
+This repository is private while the benchmark design is changing. Before public release, we will review dataset licenses, remove generated data that cannot be redistributed, write a model card/data card, and choose an appropriate software license.
+

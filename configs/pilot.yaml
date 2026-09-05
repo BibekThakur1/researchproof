@@ -1,0 +1,14 @@
+project: researchproof
+experiment: preprocessing_before_split
+dataset: sklearn_breast_cancer
+test_size: 0.25
+seeds: [7, 19, 43, 71, 101]
+model:
+  name: logistic_regression
+  max_iter: 2000
+metrics:
+  - accuracy
+  - balanced_accuracy
+  - roc_auc
+output_dir: artifacts/pilot_preprocessing
+
