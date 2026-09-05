@@ -41,10 +41,11 @@ source .venv/bin/activate
 python -m pip install --upgrade pip
 python -m pip install -e '.[dev]'
 python scripts/run_pilot.py --config configs/pilot.yaml
+python scripts/generate_benchmark.py --config configs/benchmark_pilot.yaml
 pytest
 ```
 
-The command writes results beneath `artifacts/`. That directory is intentionally ignored by Git because generated runs should not be committed as source code. A paper-ready result will eventually be rebuilt from versioned configurations and a documented dataset manifest.
+The commands write results beneath `artifacts/`. That directory is intentionally ignored by Git because generated runs should not be committed as source code. The benchmark command currently creates 30 paired cases: clean and faulty variants for three fault families across five seeds. These are engineering-validation cases, not paper results. A paper-ready result will eventually be rebuilt from versioned configurations and a documented dataset manifest.
 
 ## Research questions
 
@@ -68,4 +69,3 @@ Use an issue for every experiment or design decision. A pull request should stat
 ## Private research repository
 
 This repository is private while the benchmark design is changing. Before public release, we will review dataset licenses, remove generated data that cannot be redistributed, write a model card/data card, and choose an appropriate software license.
-
