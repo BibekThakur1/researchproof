@@ -1,4 +1,4 @@
-# Benchmark specification, version 0.1
+# Benchmark specification, development version 0.4
 
 ## Unit of analysis
 
@@ -24,10 +24,12 @@ the seed, split, dataset checksum, template, fault definition, or environment lo
 produces a different identifier. A stored identifier that no longer matches its
 contents is rejected as a tampered or stale manifest.
 
-Severity is defined by the approximate fraction of held-out rows observed by the
-invalid operation: 2% for low, 10% for medium, and 100% for high severity. The
-runtime record stores the actual observed row count, so evaluation does not rely on
-the requested setting alone.
+For row-contamination faults, severity is defined by the approximate fraction of
+held-out rows observed by the invalid operation: 2% for low, 10% for medium, and
+100% for high. For repeated-test tuning, severity is the number of candidate
+settings compared on the test set: two, three, or five. Runtime evidence stores the
+actual row counts and test-evaluation count, so evaluation does not rely on the
+requested setting alone.
 
 ## Leakage prevention in the detector study
 

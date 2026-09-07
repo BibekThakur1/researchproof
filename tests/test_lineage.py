@@ -14,6 +14,7 @@ def test_lineage_summary_counts_unique_observed_test_rows() -> None:
     assert evidence.preprocessing_observed_test_rows == 1
     assert evidence.training_observed_test_rows == 1
     assert evidence.target_observed_test_rows == 0
+    assert evidence.test_evaluation_count == 0
 
 
 def test_supervised_selection_records_test_target_access() -> None:
@@ -27,3 +28,11 @@ def test_supervised_selection_records_test_target_access() -> None:
 def test_overlapping_base_split_is_rejected() -> None:
     with pytest.raises(ValueError, match="disjoint"):
         LineageMonitor(np.array([0, 1]), np.array([1, 2]))
+
+
+def test_lineage_counts_test_evaluation_events_not_unique_rows() -> None:
+    monitor = LineageMonitor(np.array([0, 1]), np.array([2, 3]))
+    monitor.record_evaluation("candidate.score", np.array([2, 3]))
+    monitor.record_evaluation("final.score", np.array([2, 3]))
+    evidence = monitor.summarize()
+    assert evidence.test_evaluation_count == 2

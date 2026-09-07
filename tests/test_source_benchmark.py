@@ -10,17 +10,17 @@ from researchproof.source_benchmark import (
 )
 
 
-def test_source_pilot_has_three_blindable_styles() -> None:
+def test_source_pilot_has_four_blindable_styles() -> None:
     cases = build_source_cases()
-    assert len(cases) == 36
+    assert len(cases) == 44
     assert {case.style_id for case in cases} == {
         "descriptive",
         "compact",
         "notebook",
         "helper",
     }
-    assert sum(case.variant == "clean" for case in cases) == 24
-    assert sum(case.variant == "faulty" for case in cases) == 12
+    assert sum(case.variant == "clean" for case in cases) == 28
+    assert sum(case.variant == "faulty" for case in cases) == 16
 
 
 def test_source_pilot_contains_valid_hard_negatives() -> None:
@@ -54,7 +54,7 @@ def test_source_report_holds_out_complete_styles(tmp_path) -> None:
         "helper",
     }
     structural = report["evaluations"]["held_out_structural_template"]["folds"]
-    assert len(structural) == 6
+    assert len(structural) == 7
 
 
 def test_source_index_round_trip(tmp_path) -> None:

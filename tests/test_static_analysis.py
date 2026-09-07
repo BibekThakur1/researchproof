@@ -18,7 +18,7 @@ def test_helper_indirection_is_followed_without_using_function_names() -> None:
         for case in build_source_cases()
         if case.variant == "faulty" and case.style_id == "helper"
     ]
-    assert len(helper_faults) == 3
+    assert len(helper_faults) == 4
     assert all(analyze_source(case.source) for case in helper_faults)
 
 
@@ -26,7 +26,9 @@ def test_function_summary_ablation_misses_helper_faults() -> None:
     helper_faults = [
         case
         for case in build_source_cases()
-        if case.variant == "faulty" and case.style_id == "helper"
+        if case.variant == "faulty"
+        and case.style_id == "helper"
+        and case.fault_family != "repeated_test_tuning"
     ]
     assert all(
         analyze_source(case.source, follow_helpers=False) == [] for case in helper_faults

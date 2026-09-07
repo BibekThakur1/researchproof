@@ -39,13 +39,13 @@ def assess_release_readiness(
     gates = [
         ReleaseGate(
             "minimum_executable_cases",
-            len(benchmark) >= 270,
-            f"found {len(benchmark)}; require at least 270",
+            len(benchmark) >= 360,
+            f"found {len(benchmark)}; require at least 360",
         ),
         ReleaseGate(
             "minimum_source_cases",
-            len(sources) >= 36,
-            f"found {len(sources)}; require at least 36",
+            len(sources) >= 44,
+            f"found {len(sources)}; require at least 44",
         ),
         ReleaseGate(
             "independent_source_authors",
@@ -106,4 +106,3 @@ def write_release_readiness(
     destination.parent.mkdir(parents=True, exist_ok=True)
     destination.write_text(json.dumps(report, indent=2, sort_keys=True) + "\n", encoding="utf-8")
     return destination
-

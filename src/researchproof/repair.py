@@ -89,12 +89,17 @@ def verify_repair_suite(
     destination: Path,
     *,
     severities: list[str] | None = None,
+    fault_families: list[str] | None = None,
 ) -> Path:
     records: list[dict[str, Any]] = []
     severity_levels = [FaultSeverity(value) for value in (severities or ["medium"])]
+    selected_families = [
+        FaultFamily(value)
+        for value in (fault_families or [family.value for family in FaultFamily])
+    ]
     for dataset_id in dataset_ids:
         for seed in seeds:
-            for family in FaultFamily:
+            for family in selected_families:
                 for severity in severity_levels:
                     records.append(
                         asdict(

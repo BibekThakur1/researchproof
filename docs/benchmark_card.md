@@ -2,7 +2,7 @@
 
 ## Version
 
-Development version 0.3. This is not a frozen public release.
+Development version 0.4. This is not a frozen public release.
 
 ## Purpose
 
@@ -15,13 +15,13 @@ does not represent the diversity of real notebooks.
 ## Current composition
 
 - Three datasets bundled with scikit-learn: breast cancer, wine, and digits.
-- Three fault families: preprocessing before splitting, train/test overlap, and
-  target-informed feature selection.
-- Three contamination levels: low (about 2% of test rows), medium (about 10%), and
-  high (100%).
+- Four fault families: preprocessing before splitting, train/test overlap,
+  target-informed feature selection, and repeated tuning against the final test set.
+- Three severity levels. Row-contamination families use about 2%, 10%, and 100% of
+  test rows. Repeated-test tuning uses two, three, and five candidate settings.
 - Five fixed train/test seeds.
-- 270 executable runs: 135 clean controls and 135 faulty variants.
-- 36 static source snippets: 24 paired examples and twelve valid hard negatives.
+- 360 executable runs: 180 clean controls and 180 faulty variants.
+- 44 static source snippets: 32 paired examples and twelve valid hard negatives.
 
 The clean run is repeated across related severity contrasts. Analyses must recognize
 that these controls are correlated and must not count them as independent evidence.
@@ -74,8 +74,8 @@ hold out authors and fault families.
 - Only scikit-learn tabular classification is represented.
 - Current datasets are small and bundled for convenience rather than chosen through a
   preregistered sampling plan.
-- Several validity failures, including group leakage, temporal leakage, repeated test
-  tuning, and seed cherry-picking, are not implemented.
+- Several validity failures, including group leakage, temporal leakage, and seed
+  cherry-picking, are not implemented.
 - No independent human annotation or independent-machine reproduction is complete.
 - The AST baseline uses shallow call features rather than program semantics.
 

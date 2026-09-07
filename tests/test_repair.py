@@ -25,6 +25,5 @@ def test_repair_suite_writes_summary(tmp_path) -> None:
         tmp_path / "repairs.json",
     )
     report = json.loads(destination.read_text(encoding="utf-8"))
-    assert report["summary"] == {"attempted": 6, "verified": 6}
-    assert len(report["repairs"]) == 6
-
+    assert report["summary"] == {"attempted": 8, "verified": 8}
+    assert len(report["repairs"]) == 8

@@ -46,6 +46,8 @@ def static_sequence_rules(run: dict[str, Any]) -> AuditDecision:
                 "append_test_rows_to_training",
                 "model_fit_mixed_rows",
                 "feature_selection_fit_all_labels",
+                "repeated_evaluate_test_rows",
+                "select_model_on_test_score",
             }
         )
     )
@@ -67,6 +69,8 @@ def runtime_lineage_rules(run: dict[str, Any]) -> AuditDecision:
         triggered.append("target_observed_test_rows")
     if bool(evidence.get("target_observed_before_split", False)):
         triggered.append("target_observed_before_split")
+    if int(evidence.get("test_evaluation_count", 0)) > 1:
+        triggered.append("repeated_test_evaluation")
     return AuditDecision(
         predicted_fault=bool(triggered),
         risk_score=1.0 if triggered else 0.0,

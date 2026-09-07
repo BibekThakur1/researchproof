@@ -44,6 +44,13 @@ def test_target_informed_selection_observes_labels_before_split() -> None:
     assert faulty.evidence.target_observed_before_split is True
 
 
+def test_repeated_test_tuning_uses_test_once_only_in_clean_case() -> None:
+    _, clean = run_benchmark_case(FaultFamily.REPEATED_TEST_TUNING, "clean", 7)
+    _, faulty = run_benchmark_case(FaultFamily.REPEATED_TEST_TUNING, "faulty", 7)
+    assert clean.evidence.test_evaluation_count == 1
+    assert faulty.evidence.test_evaluation_count > 1
+
+
 @pytest.mark.parametrize("family", list(FaultFamily))
 @pytest.mark.parametrize("variant", ["clean", "faulty"])
 def test_all_metrics_are_bounded(family: FaultFamily, variant: str) -> None:
@@ -53,13 +60,13 @@ def test_all_metrics_are_bounded(family: FaultFamily, variant: str) -> None:
     assert 0.0 <= run.roc_auc <= 1.0
 
 
-def test_generator_writes_six_cases_per_seed(tmp_path) -> None:
+def test_generator_writes_eight_cases_per_seed(tmp_path) -> None:
     index = generate_benchmark([7, 19], tmp_path)
     lines = index.read_text(encoding="utf-8").splitlines()
     manifests = sorted((tmp_path / "manifests").glob("*.json"))
 
-    assert len(lines) == 12
-    assert len(manifests) == 12
+    assert len(lines) == 16
+    assert len(manifests) == 16
     assert all(BenchmarkManifest.read(path).case_id == path.stem for path in manifests)
 
 
@@ -71,7 +78,7 @@ def test_generator_supports_multiple_datasets(tmp_path) -> None:
     )
     lines = index.read_text(encoding="utf-8").splitlines()
     manifests = [BenchmarkManifest.read(path) for path in (tmp_path / "manifests").glob("*.json")]
-    assert len(lines) == 12
+    assert len(lines) == 16
     assert {manifest.dataset_id for manifest in manifests} == {
         "sklearn_breast_cancer",
         "sklearn_wine",
@@ -88,6 +95,7 @@ def test_fault_severity_increases_observed_contamination(family: FaultFamily) ->
             evidence.preprocessing_observed_test_rows
             or evidence.training_observed_test_rows
             or evidence.target_observed_test_rows
+            or evidence.test_evaluation_count
         )
     assert counts[0] < counts[1] < counts[2]
 
@@ -98,4 +106,14 @@ def test_generator_crosses_cases_with_severity_levels(tmp_path) -> None:
         tmp_path,
         severities=["low", "medium", "high"],
     )
-    assert len(index.read_text(encoding="utf-8").splitlines()) == 18
+    assert len(index.read_text(encoding="utf-8").splitlines()) == 24
+
+
+def test_generator_respects_configured_fault_family_subset(tmp_path) -> None:
+    index = generate_benchmark(
+        [7],
+        tmp_path,
+        fault_families=[FaultFamily.REPEATED_TEST_TUNING.value],
+    )
+    lines = index.read_text(encoding="utf-8").splitlines()
+    assert len(lines) == 2

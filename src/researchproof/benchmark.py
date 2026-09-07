@@ -26,6 +26,7 @@ class FaultFamily(str, Enum):
     PREPROCESSING_BEFORE_SPLIT = "preprocessing_before_split"
     TRAIN_TEST_OVERLAP = "train_test_overlap"
     TARGET_INFORMED_FEATURE_SELECTION = "target_informed_feature_selection"
+    REPEATED_TEST_TUNING = "repeated_test_tuning"
 
 
 class FaultSeverity(str, Enum):
@@ -36,6 +37,14 @@ class FaultSeverity(str, Enum):
     @property
     def contamination_fraction(self) -> float:
         return {self.LOW: 0.02, self.MEDIUM: 0.10, self.HIGH: 1.0}[self]
+
+    @property
+    def tuning_candidates(self) -> tuple[float, ...]:
+        return {
+            self.LOW: (0.1, 1.0),
+            self.MEDIUM: (0.1, 1.0, 10.0),
+            self.HIGH: (0.01, 0.1, 1.0, 10.0, 100.0),
+        }[self]
 
 
 def _stable_f_classif(features: np.ndarray, target: np.ndarray) -> tuple[np.ndarray, np.ndarray]:
@@ -85,6 +94,7 @@ def _manifest(
         FaultFamily.PREPROCESSING_BEFORE_SPLIT: "preprocessing_observed_test_rows",
         FaultFamily.TRAIN_TEST_OVERLAP: "training_observed_test_rows",
         FaultFamily.TARGET_INFORMED_FEATURE_SELECTION: "target_observed_before_split",
+        FaultFamily.REPEATED_TEST_TUNING: "test_evaluation_count",
     }[fault_family]
     repairs = {
         FaultFamily.PREPROCESSING_BEFORE_SPLIT: "fit preprocessing on training rows only",
@@ -92,12 +102,15 @@ def _manifest(
         FaultFamily.TARGET_INFORMED_FEATURE_SELECTION: (
             "fit supervised feature selection on training labels only"
         ),
+        FaultFamily.REPEATED_TEST_TUNING: (
+            "select hyperparameters using training-only validation, then evaluate test once"
+        ),
     }
     return BenchmarkManifest(
         dataset_id=dataset_id,
         dataset_checksum=checksum,
         template_id="logistic_regression_tabular",
-        template_version="0.2.0",
+        template_version="0.3.0",
         fault_family=fault_family.value,
         fault_severity=severity.value,
         injector_version="0.1.0",
@@ -232,7 +245,7 @@ def run_benchmark_case(
         x_test_model = x_test
         model_fit_rows = len(x_train_model)
 
-    else:
+    elif family is FaultFamily.TARGET_INFORMED_FEATURE_SELECTION:
         if variant == "faulty":
             contamination_count = max(
                 1, round(len(id_test) * severity_level.contamination_fraction)
@@ -280,7 +293,101 @@ def run_benchmark_case(
         monitor.record_fit("LogisticRegression.fit", "model", id_train, uses_target=True)
         model_fit_rows = len(id_train)
 
+    else:
+        candidates = severity_level.tuning_candidates
+        if variant == "faulty":
+            scored_models: list[tuple[float, Any]] = []
+            for candidate in candidates:
+                candidate_model = make_pipeline(
+                    StandardScaler(),
+                    LogisticRegression(C=candidate, max_iter=2000, random_state=seed),
+                )
+                candidate_model.fit(x_train, y_train)
+                candidate_score = float(candidate_model.score(x_test, y_test))
+                monitor.record_fit(
+                    f"LogisticRegression.fit(C={candidate})",
+                    "model",
+                    id_train,
+                    uses_target=True,
+                )
+                monitor.record_evaluation(
+                    f"candidate_test_score(C={candidate})",
+                    id_test,
+                )
+                scored_models.append((candidate_score, candidate_model))
+            model = max(scored_models, key=lambda item: item[0])[1]
+            operation_trace = (
+                "train_test_split",
+                "repeated_model_fit_train_rows",
+                "repeated_evaluate_test_rows",
+                "select_model_on_test_score",
+                "evaluate_test_rows",
+            )
+        else:
+            (
+                x_subtrain,
+                x_validation,
+                y_subtrain,
+                y_validation,
+                id_subtrain,
+                id_validation,
+            ) = train_test_split(
+                x_train,
+                y_train,
+                id_train,
+                test_size=0.25,
+                random_state=seed + 10_000,
+                stratify=y_train,
+            )
+            validation_scores: list[tuple[float, float]] = []
+            for candidate in candidates:
+                candidate_model = make_pipeline(
+                    StandardScaler(),
+                    LogisticRegression(C=candidate, max_iter=2000, random_state=seed),
+                )
+                candidate_model.fit(x_subtrain, y_subtrain)
+                candidate_score = float(
+                    candidate_model.score(x_validation, y_validation)
+                )
+                monitor.record_fit(
+                    f"LogisticRegression.fit(C={candidate})",
+                    "model",
+                    id_subtrain,
+                    uses_target=True,
+                )
+                monitor.record_evaluation(
+                    f"candidate_validation_score(C={candidate})",
+                    id_validation,
+                )
+                validation_scores.append((candidate_score, candidate))
+            selected_candidate = max(validation_scores, key=lambda item: item[0])[1]
+            model = make_pipeline(
+                StandardScaler(),
+                LogisticRegression(
+                    C=selected_candidate,
+                    max_iter=2000,
+                    random_state=seed,
+                ),
+            )
+            model.fit(x_train, y_train)
+            monitor.record_fit(
+                f"LogisticRegression.fit(C={selected_candidate})",
+                "model",
+                id_train,
+                uses_target=True,
+            )
+            operation_trace = (
+                "train_test_split",
+                "validation_split_from_training",
+                "select_model_on_validation_score",
+                "model_fit_train_rows",
+                "evaluate_test_rows",
+            )
+        x_test_model = x_test
+        model_fit_rows = len(id_train)
+
     accuracy, balanced_accuracy, roc_auc = _score(model, x_test_model, y_test)
+    monitor.record_evaluation("final_test_score", id_test)
     manifest = _manifest(family, variant, seed, checksum, dataset_id, severity_level)
     pair_material = (
         f"{checksum}:{family.value}:{severity_level.value}:{seed}:logistic_regression_tabular"
@@ -313,6 +420,7 @@ def generate_benchmark(
     *,
     dataset_ids: list[str] | None = None,
     severities: list[str] | None = None,
+    fault_families: list[str] | None = None,
     test_size: float = 0.25,
 ) -> Path:
     output_dir.mkdir(parents=True, exist_ok=True)
@@ -320,9 +428,13 @@ def generate_benchmark(
     runs: list[BenchmarkRun] = []
     selected_datasets = dataset_ids or ["sklearn_breast_cancer"]
     selected_severities = [FaultSeverity(value) for value in (severities or ["medium"])]
+    selected_families = [
+        FaultFamily(value)
+        for value in (fault_families or [family.value for family in FaultFamily])
+    ]
     for dataset_id in selected_datasets:
         for seed in seeds:
-            for family in FaultFamily:
+            for family in selected_families:
                 for severity_level in selected_severities:
                     for variant in ("clean", "faulty"):
                         manifest, run = run_benchmark_case(

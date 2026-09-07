@@ -106,6 +106,7 @@ def analyze_source(source: str, *, follow_helpers: bool = True) -> list[StaticFi
     values: dict[str, set[str]] = {}
     findings: list[StaticFinding] = []
     evaluation_seen = False
+    test_evaluation_count = 0
 
     def record(kind: str, node: ast.AST, explanation: str) -> None:
         finding = StaticFinding(kind=kind, line=getattr(node, "lineno", 0), explanation=explanation)
@@ -167,6 +168,8 @@ def analyze_source(source: str, *, follow_helpers: bool = True) -> list[StaticFi
                 values[output] = _provenance(value, values)
 
         if call and _call_name(call) == "score":
+            if call.args and "test_features" in _provenance(call.args[0], values):
+                test_evaluation_count += 1
             evaluation_seen = True
             continue
 
@@ -190,6 +193,12 @@ def analyze_source(source: str, *, follow_helpers: bool = True) -> list[StaticFi
                     call,
                     "A transformation fitted on unsplit features reaches model fitting.",
                 )
+    if test_evaluation_count > 1:
+        record(
+            "repeated_test_tuning",
+            tree,
+            "The held-out test data is scored repeatedly during model selection.",
+        )
     return findings
 
 

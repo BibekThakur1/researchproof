@@ -21,15 +21,16 @@ This schedule assumes two researchers working roughly 10–15 hours each per wee
 
 **Exit condition:** a benchmark case can be regenerated and independently checked from its manifest.
 
-## Weeks 3–4 — first three fault injectors
+## Weeks 3–4 — initial fault injectors
 
 - Implement exact split overlap.
 - Implement preprocessing-before-split.
 - Implement target-informed feature selection.
+- Implement repeated tuning against the final test set.
 - For every injector, create a paired clean pipeline and tests proving that only the intended methodological decision changed.
 - Manually review at least ten cases per family.
 
-**Exit condition:** three stable fault families pass Gate 1 in the research plan.
+**Exit condition:** four stable fault families pass Gate 1 in the research plan.
 
 ## Week 5 — annotation pilot
 
@@ -61,7 +62,7 @@ This schedule assumes two researchers working roughly 10–15 hours each per wee
 
 ## Week 10 — counterfactual repair
 
-- Define minimal repairs for the first three fault families.
+- Define minimal repairs for the implemented fault families.
 - Execute each repair in a restricted environment.
 - Check that the intended task, split, and model family remain unchanged.
 - Record whether the fault disappears and how reported performance changes.
@@ -107,4 +108,3 @@ Keep the meeting to 45 minutes:
 3. Is the current result trustworthy?
 4. Which single issue is the next priority?
 5. Who owns it, and what is its acceptance criterion?
-

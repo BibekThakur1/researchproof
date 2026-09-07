@@ -19,6 +19,7 @@ def main() -> None:
         seeds=[int(seed) for seed in config["seeds"]],
         destination=args.output,
         severities=[str(severity) for severity in config["severities"]],
+        fault_families=[str(family) for family in config["fault_families"]],
     )
     print(f"Repair verification written to {destination}")
 

@@ -58,7 +58,7 @@ def _helper_source(family: FaultFamily, variant: str, names: tuple[str, ...]) ->
                     f"{y_train} = extend({y_train}, {y_test})",
                 ]
             )
-    else:
+    elif family is FaultFamily.TARGET_INFORMED_FEATURE_SELECTION:
         definition = (
             "def choose(values, outcomes):\n"
             "    selector = SelectKBest(f_classif, k=10)\n"
@@ -69,6 +69,35 @@ def _helper_source(family: FaultFamily, variant: str, names: tuple[str, ...]) ->
             if variant == "faulty"
             else [definition, split, f"{x_train} = choose({x_train}, {y_train})"]
         )
+    else:
+        definition = (
+            "def build_model(strength):\n"
+            "    return LogisticRegression(C=strength, max_iter=2000)"
+        )
+        body = [definition, split]
+        if variant == "faulty":
+            body.extend(
+                [
+                    "model_a = build_model(0.1)",
+                    f"model_a.fit({x_train}, {y_train})",
+                    f"score_a = model_a.score({x_test}, {y_test})",
+                    "model_b = build_model(10.0)",
+                    f"model_b.fit({x_train}, {y_train})",
+                    f"score_b = model_b.score({x_test}, {y_test})",
+                    "model = model_a if score_a >= score_b else model_b",
+                    f"score = model.score({x_test}, {y_test})",
+                ]
+            )
+        else:
+            body.extend(
+                [
+                    "model = build_model(1.0)",
+                    f"validation_scores = cross_val_score(model, {x_train}, {y_train}, cv=3)",
+                    f"model.fit({x_train}, {y_train})",
+                    f"score = model.score({x_test}, {y_test})",
+                ]
+            )
+        return "\n".join(body) + "\n"
     body.extend(
         [
             "model = LogisticRegression(max_iter=2000)",
@@ -110,7 +139,7 @@ def _source(
                     f"{y_train} = np.concatenate([{y_train}, {y_test}[:10]])",
                 ]
             )
-    else:
+    elif family is FaultFamily.TARGET_INFORMED_FEATURE_SELECTION:
         body = (
             [
                 "selector = SelectKBest(f_classif, k=10)",
@@ -125,6 +154,31 @@ def _source(
                 f"{x_test} = selector.transform({x_test})",
             ]
         )
+    else:
+        body = [split]
+        if variant == "faulty":
+            body.extend(
+                [
+                    "model_a = LogisticRegression(C=0.1, max_iter=2000)",
+                    f"model_a.fit({x_train}, {y_train})",
+                    f"score_a = model_a.score({x_test}, {y_test})",
+                    "model_b = LogisticRegression(C=10.0, max_iter=2000)",
+                    f"model_b.fit({x_train}, {y_train})",
+                    f"score_b = model_b.score({x_test}, {y_test})",
+                    "model = model_a if score_a >= score_b else model_b",
+                    f"score = model.score({x_test}, {y_test})",
+                ]
+            )
+        else:
+            body.extend(
+                [
+                    "model = LogisticRegression(max_iter=2000)",
+                    f"validation_scores = cross_val_score(model, {x_train}, {y_train}, cv=3)",
+                    f"model.fit({x_train}, {y_train})",
+                    f"score = model.score({x_test}, {y_test})",
+                ]
+            )
+        return "\n".join(body) + "\n"
     body.extend(
         [
             "model = LogisticRegression(max_iter=2000)",

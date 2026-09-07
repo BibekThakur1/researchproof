@@ -18,6 +18,7 @@ def main() -> None:
         output_dir=Path(config["output_dir"]),
         dataset_ids=[str(dataset_id) for dataset_id in config["datasets"]],
         severities=[str(severity) for severity in config["severities"]],
+        fault_families=[str(family) for family in config["fault_families"]],
         test_size=float(config["test_size"]),
     )
     print(f"Benchmark index written to {destination}")

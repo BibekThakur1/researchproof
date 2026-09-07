@@ -2,7 +2,7 @@
 
 ## Problem statement
 
-Machine-learning experiments can be methodologically invalid while remaining syntactically correct and fully executable. Existing linters, static analyses, notebook studies, and learned code detectors provide useful evidence, but a deployable research assistant must connect three questions: what the code appears to do, what the data actually did at runtime, and whether a corrected rerun changes the conclusion.
+Machine-learning experiments can be methodologically invalid while remaining syntactically correct and fully executable. Existing linters, static analyses, notebook studies, and learned code detectors provide useful evidence, but a deployable research assistant must connect three questions: what the code appears to do, what the data actually did at runtime, and whether a corrected rerun changes the conclusion. The current pilot includes both row-contamination failures and the process-level failure of repeatedly tuning against the final test set.
 
 ## Proposed contribution
 
@@ -37,11 +37,10 @@ Primary detector metrics are macro F1, per-fault recall, false-positive rate on 
 
 ## Go/no-go gates
 
-- **Gate 1:** At least three injectors create stable paired cases with deterministic manifests.
+- **Gate 1:** At least four injectors create stable paired cases with deterministic manifests.
 - **Gate 2:** Two independent reviewers agree on the fault label and repair for at least 90% of a pilot sample.
 - **Gate 3:** A simple rule baseline leaves meaningful false positives or missed cases; otherwise a heavier detector is not justified.
 - **Gate 4:** Runtime or counterfactual evidence adds measurable value on held-out templates.
 - **Gate 5:** A second machine can reproduce the reduced primary result from a clean checkout.
 
 Failure at a gate means revising or narrowing the question, not hiding the result.
-

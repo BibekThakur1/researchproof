@@ -1,5 +1,5 @@
 project: researchproof
-benchmark_version: "0.1.0"
+benchmark_version: "0.4.0"
 datasets:
   - sklearn_breast_cancer
   - sklearn_wine
@@ -10,8 +10,9 @@ fault_families:
   - preprocessing_before_split
   - train_test_overlap
   - target_informed_feature_selection
+  - repeated_test_tuning
 severities:
   - low
   - medium
   - high
-output_dir: artifacts/benchmark_v0_3
+output_dir: artifacts/benchmark_v0_4

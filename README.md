@@ -10,9 +10,10 @@ This repository begins with a narrow, reproducible scope: tabular classification
 
 ## Current status
 
-The project is at the benchmark-construction stage. There are no research results yet.
+The project is at the benchmark-construction and external-validation stage. There are
+development observations, but no frozen research results yet.
 
-The first executable pilot compares two versions of the same classification experiment:
+The smallest executable pilot compares two versions of the same classification experiment:
 
 1. **Clean:** split the data first; fit preprocessing only on the training set.
 2. **Faulty:** fit preprocessing on the complete dataset before splitting.
@@ -45,17 +46,17 @@ python -m pip install --no-deps -e .
 python scripts/run_pilot.py --config configs/pilot.yaml
 python scripts/generate_benchmark.py --config configs/benchmark_pilot.yaml
 python scripts/evaluate_baselines.py \
-  --index artifacts/benchmark_v0_3/runs.jsonl \
-  --output artifacts/benchmark_v0_3/baselines.json
+  --index artifacts/benchmark_v0_4/runs.jsonl \
+  --output artifacts/benchmark_v0_4/baselines.json
 python scripts/verify_repairs.py \
   --config configs/benchmark_pilot.yaml \
-  --output artifacts/benchmark_v0_3/repairs.json
+  --output artifacts/benchmark_v0_4/repairs.json
 python scripts/evaluate_learned.py \
-  --index artifacts/benchmark_v0_3/runs.jsonl \
-  --output artifacts/benchmark_v0_3/learned_baselines.json
+  --index artifacts/benchmark_v0_4/runs.jsonl \
+  --output artifacts/benchmark_v0_4/learned_baselines.json
 python scripts/summarize_effects.py \
-  --index artifacts/benchmark_v0_3/runs.jsonl \
-  --output artifacts/benchmark_v0_3/paired_effects.json
+  --index artifacts/benchmark_v0_4/runs.jsonl \
+  --output artifacts/benchmark_v0_4/paired_effects.json
 python scripts/generate_source_pilot.py
 python scripts/build_source_index.py \
   --contributions artifacts/contributions \
@@ -72,19 +73,19 @@ python scripts/compare_reviews.py \
   --first artifacts/blind_review_v0_1/review_bibek.csv \
   --second artifacts/blind_review_v0_1/review_friend.csv \
   --output artifacts/blind_review_v0_1/agreement.json
-python scripts/seal_artifacts.py artifacts/benchmark_v0_3
-python scripts/seal_artifacts.py artifacts/benchmark_v0_3 --verify
+python scripts/seal_artifacts.py artifacts/benchmark_v0_4
+python scripts/seal_artifacts.py artifacts/benchmark_v0_4 --verify
 # Normalize a Jupyter notebook using its recorded execution order:
 python scripts/normalize_notebook.py notebook.ipynb \
   --ordering execution \
   --output artifacts/normalized_notebook.py
 # Compare with a benchmark generated from a second checkout or laptop:
 python scripts/compare_benchmarks.py \
-  --reference artifacts/benchmark_v0_3/runs.jsonl \
-  --candidate /path/to/second/checkout/artifacts/benchmark_v0_3/runs.jsonl \
+  --reference artifacts/benchmark_v0_4/runs.jsonl \
+  --candidate /path/to/second/checkout/artifacts/benchmark_v0_4/runs.jsonl \
   --output artifacts/reproduction_comparison.json
 python scripts/check_release_readiness.py \
-  --benchmark artifacts/benchmark_v0_3/runs.jsonl \
+  --benchmark artifacts/benchmark_v0_4/runs.jsonl \
   --sources artifacts/source_pilot_v0_1/cases.jsonl \
   --agreement artifacts/blind_review_v0_1/agreement.json \
   --reproduction artifacts/independent_reproduction.json \
@@ -92,9 +93,9 @@ python scripts/check_release_readiness.py \
 pytest
 ```
 
-The commands write results beneath `artifacts/`. That directory is intentionally ignored by Git because generated runs should not be committed as source code. Benchmark version 0.3 creates 270 cases: clean and faulty variants for three fault families, three severity settings, three public scikit-learn datasets, and five seeds. The baseline report compares an always-clean baseline with simple operation-sequence and runtime-lineage rules. These are engineering-validation cases, not paper results. If the explicit rules solve them perfectly, that tells us the current benchmark is too transparent and must be made more realistic before training a detector. A paper-ready result will eventually be rebuilt from versioned configurations and a documented dataset manifest.
+The commands write results beneath `artifacts/`. That directory is intentionally ignored by Git because generated runs should not be committed as source code. Benchmark version 0.4 creates 360 cases: clean and faulty variants for four fault families, three severity settings, three public scikit-learn datasets, and five seeds. The baseline report compares an always-clean baseline with simple operation-sequence and runtime-lineage rules. These are engineering-validation cases, not paper results. If the explicit rules solve them perfectly, that tells us the current benchmark is too transparent and must be made more realistic before training a detector. A paper-ready result will eventually be rebuilt from versioned configurations and a documented dataset manifest.
 
-The separate source pilot contains 36 snippets, including twelve valid hard negatives
+The separate source pilot contains 44 snippets, including twelve valid hard negatives
 and helper-function cases that require interprocedural reasoning.
 It reports both a naming-style holdout and a stricter structural-template holdout. The
 latter is the meaningful development check; current results expose substantial
