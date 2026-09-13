@@ -24,6 +24,15 @@ def test_feature_extraction_never_uses_variant_or_score() -> None:
     assert features["evidence=training_observed_test_rows"] == 1.0
 
 
+def test_log_count_preserves_information_lost_by_presence():
+    one = {"evidence": {"test_evaluation_count": 1}}
+    five = {"evidence": {"test_evaluation_count": 5}}
+    assert extract_features(one, "runtime") == extract_features(five, "runtime")
+    assert extract_features(one, "runtime", runtime_encoding="log_count") != (
+        extract_features(five, "runtime", runtime_encoding="log_count")
+    )
+
+
 def test_calibration_error_is_zero_for_perfect_confidence() -> None:
     labels = np.array([0, 0, 1, 1])
     probabilities = np.array([0.0, 0.0, 1.0, 1.0])
@@ -71,7 +80,6 @@ def test_learned_report_contains_held_out_folds(tmp_path) -> None:
     assert all(len(evaluation["folds"]) == 3 for evaluation in report["evaluations"])
     assert len(report["fault_family_holdout_evaluations"]) == 3
     assert all(
-        len(evaluation["folds"]) == 4
-        for evaluation in report["fault_family_holdout_evaluations"]
+        len(evaluation["folds"]) == 4 for evaluation in report["fault_family_holdout_evaluations"]
     )
     assert report["status"] == "engineering_baseline_not_a_research_finding"

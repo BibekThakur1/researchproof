@@ -1,5 +1,11 @@
 # Next actions for a credible ResearchProof study
 
+Update, 13 September 2026: read [the research report](research_report_2026-09-13.md)
+first. The external ASE 2022 audit and score-provenance experiment are complete as
+exploratory studies. The next method-development priority is capturing decision
+provenance across a real callback or persisted-score boundary. The human review and
+second-laptop tasks below remain necessary for newly authored workflows.
+
 Do these in order. Do not begin paper-result writing until steps 1–4 are complete.
 
 ## 1. Independent source contribution

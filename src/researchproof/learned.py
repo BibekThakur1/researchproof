@@ -51,7 +51,11 @@ def selective_risk_curve(
     return curve
 
 
-def extract_features(run: dict[str, Any], mode: FeatureMode) -> dict[str, float]:
+def extract_features(
+    run: dict[str, Any], mode: FeatureMode, *, runtime_encoding: str = "presence"
+) -> dict[str, float]:
+    if runtime_encoding not in {"presence", "log_count"}:
+        raise ValueError("unknown runtime encoding")
     features: dict[str, float] = {}
     if mode in {"static", "hybrid"}:
         for index, operation in enumerate(run.get("operation_trace", [])):
@@ -62,7 +66,11 @@ def extract_features(run: dict[str, Any], mode: FeatureMode) -> dict[str, float]
     if mode in {"runtime", "hybrid"}:
         evidence = run.get("evidence", {})
         for name, value in evidence.items():
-            features[f"evidence={name}"] = float(bool(value))
+            features[f"evidence={name}"] = (
+                float(bool(value))
+                if runtime_encoding == "presence"
+                else float(np.log1p(float(value)))
+            )
     return features
 
 
@@ -86,7 +94,11 @@ def expected_calibration_error(
 
 
 def _leave_one_group_out(
-    runs: list[dict[str, Any]], mode: FeatureMode, group_field: str
+    runs: list[dict[str, Any]],
+    mode: FeatureMode,
+    group_field: str,
+    *,
+    runtime_encoding: str = "presence",
 ) -> dict[str, Any]:
     groups = sorted({run[group_field] for run in runs})
     folds: list[dict[str, Any]] = []
@@ -97,8 +109,12 @@ def _leave_one_group_out(
     for held_out in groups:
         train = [run for run in runs if run[group_field] != held_out]
         test = [run for run in runs if run[group_field] == held_out]
-        train_features = [extract_features(run, mode) for run in train]
-        test_features = [extract_features(run, mode) for run in test]
+        train_features = [
+            extract_features(run, mode, runtime_encoding=runtime_encoding) for run in train
+        ]
+        test_features = [
+            extract_features(run, mode, runtime_encoding=runtime_encoding) for run in test
+        ]
         vectorizer = DictVectorizer(sparse=True)
         x_train = vectorizer.fit_transform(train_features)
         x_test = vectorizer.transform(test_features)
@@ -141,6 +157,7 @@ def _leave_one_group_out(
     support_confidence_array = np.asarray(all_support_confidences)
     return {
         "feature_mode": mode,
+        "runtime_encoding": runtime_encoding,
         "group_field": group_field,
         "protocol": f"leave_one_complete_{group_field}_out",
         "aggregate_metrics": asdict(classification_metrics(all_labels, all_predictions)),
@@ -148,9 +165,7 @@ def _leave_one_group_out(
         "aggregate_expected_calibration_error": expected_calibration_error(
             labels_array, probabilities_array
         ),
-        "aggregate_selective_risk": selective_risk_curve(
-            labels_array, probabilities_array
-        ),
+        "aggregate_selective_risk": selective_risk_curve(labels_array, probabilities_array),
         "aggregate_support_adjusted_selective_risk": selective_risk_curve(
             labels_array,
             probabilities_array,
@@ -164,9 +179,7 @@ def leave_one_dataset_out(runs: list[dict[str, Any]], mode: FeatureMode) -> dict
     return _leave_one_group_out(runs, mode, "dataset_id")
 
 
-def leave_one_fault_family_out(
-    runs: list[dict[str, Any]], mode: FeatureMode
-) -> dict[str, Any]:
+def leave_one_fault_family_out(runs: list[dict[str, Any]], mode: FeatureMode) -> dict[str, Any]:
     return _leave_one_group_out(runs, mode, "fault_family")
 
 
@@ -179,12 +192,16 @@ def evaluate_learned_baselines(index: Path, destination: Path) -> Path:
             "evaluation pipeline but must not be reported as evidence of real-world detection."
         ),
         "source": str(index),
+        "count_encoding_ablations": [
+            _leave_one_group_out(runs, mode, group, runtime_encoding="log_count")
+            for mode in ("runtime", "hybrid")
+            for group in ("dataset_id", "fault_family")
+        ],
         "evaluations": [
             leave_one_dataset_out(runs, mode) for mode in ("static", "runtime", "hybrid")
         ],
         "fault_family_holdout_evaluations": [
-            leave_one_fault_family_out(runs, mode)
-            for mode in ("static", "runtime", "hybrid")
+            leave_one_fault_family_out(runs, mode) for mode in ("static", "runtime", "hybrid")
         ],
     }
     destination.parent.mkdir(parents=True, exist_ok=True)

@@ -10,6 +10,15 @@ This repository begins with a narrow, reproducible scope: tabular classification
 
 ## Current status
 
+The latest [research report](docs/research_report_2026-09-13.md) documents three
+exploratory studies: a runtime-feature information-loss diagnostic, 810 constructed
+score-provenance cases, and an external audit of published ASE 2022 notebooks.
+[Generated evidence and tables](results/2026-09-13/tables.md) include substantial
+failures: the synthetic-trained AST model falsely flags 18 of 19 eligible clean
+external notebooks. These results narrow the next research question to evaluation-
+score provenance and instrumentation completeness. They do not establish a general
+detector or publication readiness.
+
 The project is at the benchmark-construction and external-validation stage. There are
 development observations, but no frozen research results yet.
 
@@ -102,6 +111,11 @@ latter is the meaningful development check; current results expose substantial
 generalization failures and should guide the next feature and benchmark design.
 
 ## Research questions
+
+The current focused questions and reproduction commands are in the
+[September research report](docs/research_report_2026-09-13.md), with the
+[experiment protocol](docs/selection_study_protocol.md) and
+[working brief](docs/research_operating_brief.md). The original broader questions follow.
 
 - **RQ1:** How accurately can different auditing methods identify methodological faults in executable ML pipelines?
 - **RQ2:** Does combining source-code structure, data-lineage evidence, and counterfactual reruns outperform any single evidence source?

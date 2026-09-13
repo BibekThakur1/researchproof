@@ -1,9 +1,21 @@
 # Closest work and novelty boundary
 
-This document is a living literature map, last checked on 5 September 2026. It
+This document is a living literature map, updated on 13 September 2026. It
 separates established work from the contribution ResearchProof is currently testing.
 It is not evidence that the project is novel, and it must be updated before any
 submission.
+
+The expanded [research report](research_report_2026-09-13.md) adds directly relevant
+2026 work: scicode-lint (arXiv:2603.17893) and Which Leakage Types Matter?
+(arXiv:2604.04199v2). These substantially constrain novelty claims about LLM-based
+methodology checking and counterfactual leakage-severity experiments. It also covers
+Vamsa, DyLin, MLScent, learned leakage detectors, and reusable-leaderboard work.
+
+The ASE 2022 public evaluation materials have now been tested locally. That is an
+exploratory evaluation of our existing analyzer against published labels; the original
+published detector has not been rerun. The new explicit score-provenance API has not
+been evaluated on those raw notebooks. Do not compare their scores as equal-input
+methods.
 
 ## Closest systems and datasets
 
@@ -71,4 +83,3 @@ Until the closest-work and experiments are stronger, project materials must not 
 5. Anastasia Drozdova, Polina Guseva, Ekaterina Trofimova, Anna Scherbakova, and
    Andrey Ustyuzhanin. “Code4ML: a Large-Scale Dataset of Annotated Machine Learning
    Code.” 2022/2023. <https://arxiv.org/abs/2210.16018>
-
