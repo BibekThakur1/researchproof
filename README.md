@@ -10,6 +10,10 @@ This repository begins with a narrow, reproducible scope: tabular classification
 
 ## Current status
 
+The [September 16 implementation checkpoint](docs/progress_2026-09-16.md) adds
+versioned score-provenance persistence and separate-process regression checks.
+All 108 tests pass; this is implementation validation, not new external accuracy evidence.
+
 The latest [research report](docs/research_report_2026-09-13.md) documents three
 exploratory studies: a runtime-feature information-loss diagnostic, 810 constructed
 score-provenance cases, and an external audit of published ASE 2022 notebooks.

@@ -22,9 +22,10 @@ Do not claim automatic arbitrary-code repair: the current repair suite substitut
 predefined clean counterpart. Do not claim human review or second-machine reproduction
 without those records. Do not claim a new algorithm from ordinary set propagation.
 
-The immediate next technical task is score-provenance capture across a real workflow
-boundary: persisted scores or a library's search callback. Define the supported
-boundary and measure provenance loss. Use newly selected, independently authored
+Versioned JSON persistence and separate-process checks are implemented; see
+`docs/progress_2026-09-16.md`. The immediate next technical task is integrating this
+boundary into an actual search workflow and measuring capture loss and overhead.
+Use newly selected, independently authored
 workflows for confirmation; the ASE 2022 sample is now an exploratory development set.
 
 Before pushing, run relevant tests and lint, generate small evidence files, check the
