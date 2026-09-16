@@ -1,5 +1,9 @@
 # ResearchProof manuscript outline
 
+**Historical broad outline:** the current submission direction is narrower. Use
+`docs/publication_plan.md` for the active title, evidence gates, and paper structure.
+Do not carry forward unsupported hybrid-detector or automatic-repair claims below.
+
 This is a writing scaffold, not a completed paper. Bracketed fields remain empty until
 the corresponding frozen experiment has been run.
 
@@ -138,4 +142,3 @@ Generate, do not hand-edit:
 
 State only findings supported by frozen artifacts. Emphasize remaining failure modes
 and the next research question rather than claiming the general problem is solved.
-

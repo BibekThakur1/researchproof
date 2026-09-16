@@ -10,6 +10,11 @@ This repository begins with a narrow, reproducible scope: tabular classification
 
 ## Current status
 
+See the [publication plan](docs/publication_plan.md) for the active paper scope,
+required external evaluation, coauthor tasks, and submission criteria. The new
+`scripts/run_persistence_pilot.py` tests saved evidence with actual model fits;
+it remains a development experiment, not an external benchmark.
+
 The [September 16 implementation checkpoint](docs/progress_2026-09-16.md) adds
 versioned score-provenance persistence and separate-process regression checks.
 All 108 tests pass; this is implementation validation, not new external accuracy evidence.
