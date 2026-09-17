@@ -10,6 +10,11 @@ This repository begins with a narrow, reproducible scope: tabular classification
 
 ## Current status
 
+The [September 18 checkpoint](docs/progress_2026-09-18.md) adds a restricted
+GridSearchCV capture adapter. Across 18 searches and 54 constructed report-origin
+probes, it matches the library's choices but shows **no advantage over a simple
+split-role baseline**. All 118 tests pass; external usefulness remains unproven.
+
 See the [publication plan](docs/publication_plan.md) for the active paper scope,
 required external evaluation, coauthor tasks, and submission criteria. The new
 `scripts/run_persistence_pilot.py` tests saved evidence with actual model fits;

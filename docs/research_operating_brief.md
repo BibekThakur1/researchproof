@@ -22,9 +22,11 @@ Do not claim automatic arbitrary-code repair: the current repair suite substitut
 predefined clean counterpart. Do not claim human review or second-machine reproduction
 without those records. Do not claim a new algorithm from ordinary set propagation.
 
-Versioned JSON persistence and separate-process checks are implemented; see
-`docs/progress_2026-09-16.md`. The immediate next technical task is integrating this
-boundary into an actual search workflow and measuring capture loss and overhead.
+Versioned JSON persistence, separate-process checks, and restricted GridSearchCV
+capture are implemented; see `docs/progress_2026-09-18.md`. The single-search pilot
+shows no advantage over a split-role baseline. The next task is evaluating whether
+external multi-stage workflows actually need more report-specific dependencies,
+then measuring capture loss and overhead. Do not assume a richer graph is necessary.
 Use newly selected, independently authored
 workflows for confirmation; the ASE 2022 sample is now an exploratory development set.
 

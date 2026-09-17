@@ -1,0 +1,732 @@
+{
+  "status": "constructed_origin_probes_not_external_accuracy",
+  "python": "3.13.0",
+  "sklearn": "1.9.0",
+  "searches": 18,
+  "candidate_fold_fits": 162,
+  "records": [
+    {
+      "dataset": "sklearn_breast_cancer",
+      "sha256": "60f5c856c8daf34c06c5f613290a235d4cd32fa35dad743c0777e84af7059992",
+      "seed": 0,
+      "known_prior": true,
+      "report_ids": [
+        0
+      ],
+      "provenance": "selection_reuse",
+      "split_role_baseline": "selection_reuse",
+      "library_winner": 1,
+      "captured_winner": 1
+    },
+    {
+      "dataset": "sklearn_breast_cancer",
+      "sha256": "60f5c856c8daf34c06c5f613290a235d4cd32fa35dad743c0777e84af7059992",
+      "seed": 0,
+      "known_prior": true,
+      "report_ids": [
+        569
+      ],
+      "provenance": "no_observed_selection_reuse",
+      "split_role_baseline": "no_observed_selection_reuse",
+      "library_winner": 1,
+      "captured_winner": 1
+    },
+    {
+      "dataset": "sklearn_breast_cancer",
+      "sha256": "60f5c856c8daf34c06c5f613290a235d4cd32fa35dad743c0777e84af7059992",
+      "seed": 0,
+      "known_prior": true,
+      "report_ids": [
+        0,
+        569
+      ],
+      "provenance": "selection_reuse",
+      "split_role_baseline": "selection_reuse",
+      "library_winner": 1,
+      "captured_winner": 1
+    },
+    {
+      "dataset": "sklearn_breast_cancer",
+      "sha256": "60f5c856c8daf34c06c5f613290a235d4cd32fa35dad743c0777e84af7059992",
+      "seed": 0,
+      "known_prior": false,
+      "report_ids": [
+        0
+      ],
+      "provenance": "selection_reuse",
+      "split_role_baseline": "selection_reuse",
+      "library_winner": 1,
+      "captured_winner": 1
+    },
+    {
+      "dataset": "sklearn_breast_cancer",
+      "sha256": "60f5c856c8daf34c06c5f613290a235d4cd32fa35dad743c0777e84af7059992",
+      "seed": 0,
+      "known_prior": false,
+      "report_ids": [
+        569
+      ],
+      "provenance": "insufficient_evidence",
+      "split_role_baseline": "insufficient_evidence",
+      "library_winner": 1,
+      "captured_winner": 1
+    },
+    {
+      "dataset": "sklearn_breast_cancer",
+      "sha256": "60f5c856c8daf34c06c5f613290a235d4cd32fa35dad743c0777e84af7059992",
+      "seed": 0,
+      "known_prior": false,
+      "report_ids": [
+        0,
+        569
+      ],
+      "provenance": "selection_reuse",
+      "split_role_baseline": "selection_reuse",
+      "library_winner": 1,
+      "captured_winner": 1
+    },
+    {
+      "dataset": "sklearn_breast_cancer",
+      "sha256": "60f5c856c8daf34c06c5f613290a235d4cd32fa35dad743c0777e84af7059992",
+      "seed": 1,
+      "known_prior": true,
+      "report_ids": [
+        0
+      ],
+      "provenance": "selection_reuse",
+      "split_role_baseline": "selection_reuse",
+      "library_winner": 1,
+      "captured_winner": 1
+    },
+    {
+      "dataset": "sklearn_breast_cancer",
+      "sha256": "60f5c856c8daf34c06c5f613290a235d4cd32fa35dad743c0777e84af7059992",
+      "seed": 1,
+      "known_prior": true,
+      "report_ids": [
+        569
+      ],
+      "provenance": "no_observed_selection_reuse",
+      "split_role_baseline": "no_observed_selection_reuse",
+      "library_winner": 1,
+      "captured_winner": 1
+    },
+    {
+      "dataset": "sklearn_breast_cancer",
+      "sha256": "60f5c856c8daf34c06c5f613290a235d4cd32fa35dad743c0777e84af7059992",
+      "seed": 1,
+      "known_prior": true,
+      "report_ids": [
+        0,
+        569
+      ],
+      "provenance": "selection_reuse",
+      "split_role_baseline": "selection_reuse",
+      "library_winner": 1,
+      "captured_winner": 1
+    },
+    {
+      "dataset": "sklearn_breast_cancer",
+      "sha256": "60f5c856c8daf34c06c5f613290a235d4cd32fa35dad743c0777e84af7059992",
+      "seed": 1,
+      "known_prior": false,
+      "report_ids": [
+        0
+      ],
+      "provenance": "selection_reuse",
+      "split_role_baseline": "selection_reuse",
+      "library_winner": 1,
+      "captured_winner": 1
+    },
+    {
+      "dataset": "sklearn_breast_cancer",
+      "sha256": "60f5c856c8daf34c06c5f613290a235d4cd32fa35dad743c0777e84af7059992",
+      "seed": 1,
+      "known_prior": false,
+      "report_ids": [
+        569
+      ],
+      "provenance": "insufficient_evidence",
+      "split_role_baseline": "insufficient_evidence",
+      "library_winner": 1,
+      "captured_winner": 1
+    },
+    {
+      "dataset": "sklearn_breast_cancer",
+      "sha256": "60f5c856c8daf34c06c5f613290a235d4cd32fa35dad743c0777e84af7059992",
+      "seed": 1,
+      "known_prior": false,
+      "report_ids": [
+        0,
+        569
+      ],
+      "provenance": "selection_reuse",
+      "split_role_baseline": "selection_reuse",
+      "library_winner": 1,
+      "captured_winner": 1
+    },
+    {
+      "dataset": "sklearn_breast_cancer",
+      "sha256": "60f5c856c8daf34c06c5f613290a235d4cd32fa35dad743c0777e84af7059992",
+      "seed": 2,
+      "known_prior": true,
+      "report_ids": [
+        0
+      ],
+      "provenance": "selection_reuse",
+      "split_role_baseline": "selection_reuse",
+      "library_winner": 2,
+      "captured_winner": 2
+    },
+    {
+      "dataset": "sklearn_breast_cancer",
+      "sha256": "60f5c856c8daf34c06c5f613290a235d4cd32fa35dad743c0777e84af7059992",
+      "seed": 2,
+      "known_prior": true,
+      "report_ids": [
+        569
+      ],
+      "provenance": "no_observed_selection_reuse",
+      "split_role_baseline": "no_observed_selection_reuse",
+      "library_winner": 2,
+      "captured_winner": 2
+    },
+    {
+      "dataset": "sklearn_breast_cancer",
+      "sha256": "60f5c856c8daf34c06c5f613290a235d4cd32fa35dad743c0777e84af7059992",
+      "seed": 2,
+      "known_prior": true,
+      "report_ids": [
+        0,
+        569
+      ],
+      "provenance": "selection_reuse",
+      "split_role_baseline": "selection_reuse",
+      "library_winner": 2,
+      "captured_winner": 2
+    },
+    {
+      "dataset": "sklearn_breast_cancer",
+      "sha256": "60f5c856c8daf34c06c5f613290a235d4cd32fa35dad743c0777e84af7059992",
+      "seed": 2,
+      "known_prior": false,
+      "report_ids": [
+        0
+      ],
+      "provenance": "selection_reuse",
+      "split_role_baseline": "selection_reuse",
+      "library_winner": 2,
+      "captured_winner": 2
+    },
+    {
+      "dataset": "sklearn_breast_cancer",
+      "sha256": "60f5c856c8daf34c06c5f613290a235d4cd32fa35dad743c0777e84af7059992",
+      "seed": 2,
+      "known_prior": false,
+      "report_ids": [
+        569
+      ],
+      "provenance": "insufficient_evidence",
+      "split_role_baseline": "insufficient_evidence",
+      "library_winner": 2,
+      "captured_winner": 2
+    },
+    {
+      "dataset": "sklearn_breast_cancer",
+      "sha256": "60f5c856c8daf34c06c5f613290a235d4cd32fa35dad743c0777e84af7059992",
+      "seed": 2,
+      "known_prior": false,
+      "report_ids": [
+        0,
+        569
+      ],
+      "provenance": "selection_reuse",
+      "split_role_baseline": "selection_reuse",
+      "library_winner": 2,
+      "captured_winner": 2
+    },
+    {
+      "dataset": "sklearn_digits",
+      "sha256": "7a9389ed46dc6ea02f1eadfdf11f71582140fe66c5a2ab38af49760dd2a7a3f7",
+      "seed": 0,
+      "known_prior": true,
+      "report_ids": [
+        0
+      ],
+      "provenance": "selection_reuse",
+      "split_role_baseline": "selection_reuse",
+      "library_winner": 2,
+      "captured_winner": 2
+    },
+    {
+      "dataset": "sklearn_digits",
+      "sha256": "7a9389ed46dc6ea02f1eadfdf11f71582140fe66c5a2ab38af49760dd2a7a3f7",
+      "seed": 0,
+      "known_prior": true,
+      "report_ids": [
+        1797
+      ],
+      "provenance": "no_observed_selection_reuse",
+      "split_role_baseline": "no_observed_selection_reuse",
+      "library_winner": 2,
+      "captured_winner": 2
+    },
+    {
+      "dataset": "sklearn_digits",
+      "sha256": "7a9389ed46dc6ea02f1eadfdf11f71582140fe66c5a2ab38af49760dd2a7a3f7",
+      "seed": 0,
+      "known_prior": true,
+      "report_ids": [
+        0,
+        1797
+      ],
+      "provenance": "selection_reuse",
+      "split_role_baseline": "selection_reuse",
+      "library_winner": 2,
+      "captured_winner": 2
+    },
+    {
+      "dataset": "sklearn_digits",
+      "sha256": "7a9389ed46dc6ea02f1eadfdf11f71582140fe66c5a2ab38af49760dd2a7a3f7",
+      "seed": 0,
+      "known_prior": false,
+      "report_ids": [
+        0
+      ],
+      "provenance": "selection_reuse",
+      "split_role_baseline": "selection_reuse",
+      "library_winner": 2,
+      "captured_winner": 2
+    },
+    {
+      "dataset": "sklearn_digits",
+      "sha256": "7a9389ed46dc6ea02f1eadfdf11f71582140fe66c5a2ab38af49760dd2a7a3f7",
+      "seed": 0,
+      "known_prior": false,
+      "report_ids": [
+        1797
+      ],
+      "provenance": "insufficient_evidence",
+      "split_role_baseline": "insufficient_evidence",
+      "library_winner": 2,
+      "captured_winner": 2
+    },
+    {
+      "dataset": "sklearn_digits",
+      "sha256": "7a9389ed46dc6ea02f1eadfdf11f71582140fe66c5a2ab38af49760dd2a7a3f7",
+      "seed": 0,
+      "known_prior": false,
+      "report_ids": [
+        0,
+        1797
+      ],
+      "provenance": "selection_reuse",
+      "split_role_baseline": "selection_reuse",
+      "library_winner": 2,
+      "captured_winner": 2
+    },
+    {
+      "dataset": "sklearn_digits",
+      "sha256": "7a9389ed46dc6ea02f1eadfdf11f71582140fe66c5a2ab38af49760dd2a7a3f7",
+      "seed": 1,
+      "known_prior": true,
+      "report_ids": [
+        0
+      ],
+      "provenance": "selection_reuse",
+      "split_role_baseline": "selection_reuse",
+      "library_winner": 2,
+      "captured_winner": 2
+    },
+    {
+      "dataset": "sklearn_digits",
+      "sha256": "7a9389ed46dc6ea02f1eadfdf11f71582140fe66c5a2ab38af49760dd2a7a3f7",
+      "seed": 1,
+      "known_prior": true,
+      "report_ids": [
+        1797
+      ],
+      "provenance": "no_observed_selection_reuse",
+      "split_role_baseline": "no_observed_selection_reuse",
+      "library_winner": 2,
+      "captured_winner": 2
+    },
+    {
+      "dataset": "sklearn_digits",
+      "sha256": "7a9389ed46dc6ea02f1eadfdf11f71582140fe66c5a2ab38af49760dd2a7a3f7",
+      "seed": 1,
+      "known_prior": true,
+      "report_ids": [
+        0,
+        1797
+      ],
+      "provenance": "selection_reuse",
+      "split_role_baseline": "selection_reuse",
+      "library_winner": 2,
+      "captured_winner": 2
+    },
+    {
+      "dataset": "sklearn_digits",
+      "sha256": "7a9389ed46dc6ea02f1eadfdf11f71582140fe66c5a2ab38af49760dd2a7a3f7",
+      "seed": 1,
+      "known_prior": false,
+      "report_ids": [
+        0
+      ],
+      "provenance": "selection_reuse",
+      "split_role_baseline": "selection_reuse",
+      "library_winner": 2,
+      "captured_winner": 2
+    },
+    {
+      "dataset": "sklearn_digits",
+      "sha256": "7a9389ed46dc6ea02f1eadfdf11f71582140fe66c5a2ab38af49760dd2a7a3f7",
+      "seed": 1,
+      "known_prior": false,
+      "report_ids": [
+        1797
+      ],
+      "provenance": "insufficient_evidence",
+      "split_role_baseline": "insufficient_evidence",
+      "library_winner": 2,
+      "captured_winner": 2
+    },
+    {
+      "dataset": "sklearn_digits",
+      "sha256": "7a9389ed46dc6ea02f1eadfdf11f71582140fe66c5a2ab38af49760dd2a7a3f7",
+      "seed": 1,
+      "known_prior": false,
+      "report_ids": [
+        0,
+        1797
+      ],
+      "provenance": "selection_reuse",
+      "split_role_baseline": "selection_reuse",
+      "library_winner": 2,
+      "captured_winner": 2
+    },
+    {
+      "dataset": "sklearn_digits",
+      "sha256": "7a9389ed46dc6ea02f1eadfdf11f71582140fe66c5a2ab38af49760dd2a7a3f7",
+      "seed": 2,
+      "known_prior": true,
+      "report_ids": [
+        0
+      ],
+      "provenance": "selection_reuse",
+      "split_role_baseline": "selection_reuse",
+      "library_winner": 2,
+      "captured_winner": 2
+    },
+    {
+      "dataset": "sklearn_digits",
+      "sha256": "7a9389ed46dc6ea02f1eadfdf11f71582140fe66c5a2ab38af49760dd2a7a3f7",
+      "seed": 2,
+      "known_prior": true,
+      "report_ids": [
+        1797
+      ],
+      "provenance": "no_observed_selection_reuse",
+      "split_role_baseline": "no_observed_selection_reuse",
+      "library_winner": 2,
+      "captured_winner": 2
+    },
+    {
+      "dataset": "sklearn_digits",
+      "sha256": "7a9389ed46dc6ea02f1eadfdf11f71582140fe66c5a2ab38af49760dd2a7a3f7",
+      "seed": 2,
+      "known_prior": true,
+      "report_ids": [
+        0,
+        1797
+      ],
+      "provenance": "selection_reuse",
+      "split_role_baseline": "selection_reuse",
+      "library_winner": 2,
+      "captured_winner": 2
+    },
+    {
+      "dataset": "sklearn_digits",
+      "sha256": "7a9389ed46dc6ea02f1eadfdf11f71582140fe66c5a2ab38af49760dd2a7a3f7",
+      "seed": 2,
+      "known_prior": false,
+      "report_ids": [
+        0
+      ],
+      "provenance": "selection_reuse",
+      "split_role_baseline": "selection_reuse",
+      "library_winner": 2,
+      "captured_winner": 2
+    },
+    {
+      "dataset": "sklearn_digits",
+      "sha256": "7a9389ed46dc6ea02f1eadfdf11f71582140fe66c5a2ab38af49760dd2a7a3f7",
+      "seed": 2,
+      "known_prior": false,
+      "report_ids": [
+        1797
+      ],
+      "provenance": "insufficient_evidence",
+      "split_role_baseline": "insufficient_evidence",
+      "library_winner": 2,
+      "captured_winner": 2
+    },
+    {
+      "dataset": "sklearn_digits",
+      "sha256": "7a9389ed46dc6ea02f1eadfdf11f71582140fe66c5a2ab38af49760dd2a7a3f7",
+      "seed": 2,
+      "known_prior": false,
+      "report_ids": [
+        0,
+        1797
+      ],
+      "provenance": "selection_reuse",
+      "split_role_baseline": "selection_reuse",
+      "library_winner": 2,
+      "captured_winner": 2
+    },
+    {
+      "dataset": "sklearn_wine",
+      "sha256": "9d3ffeb7f1482dd35ffdac91c26eb5b1696e9d6f5531c3a5bb3b15e7b4a06a26",
+      "seed": 0,
+      "known_prior": true,
+      "report_ids": [
+        0
+      ],
+      "provenance": "selection_reuse",
+      "split_role_baseline": "selection_reuse",
+      "library_winner": 2,
+      "captured_winner": 2
+    },
+    {
+      "dataset": "sklearn_wine",
+      "sha256": "9d3ffeb7f1482dd35ffdac91c26eb5b1696e9d6f5531c3a5bb3b15e7b4a06a26",
+      "seed": 0,
+      "known_prior": true,
+      "report_ids": [
+        178
+      ],
+      "provenance": "no_observed_selection_reuse",
+      "split_role_baseline": "no_observed_selection_reuse",
+      "library_winner": 2,
+      "captured_winner": 2
+    },
+    {
+      "dataset": "sklearn_wine",
+      "sha256": "9d3ffeb7f1482dd35ffdac91c26eb5b1696e9d6f5531c3a5bb3b15e7b4a06a26",
+      "seed": 0,
+      "known_prior": true,
+      "report_ids": [
+        0,
+        178
+      ],
+      "provenance": "selection_reuse",
+      "split_role_baseline": "selection_reuse",
+      "library_winner": 2,
+      "captured_winner": 2
+    },
+    {
+      "dataset": "sklearn_wine",
+      "sha256": "9d3ffeb7f1482dd35ffdac91c26eb5b1696e9d6f5531c3a5bb3b15e7b4a06a26",
+      "seed": 0,
+      "known_prior": false,
+      "report_ids": [
+        0
+      ],
+      "provenance": "selection_reuse",
+      "split_role_baseline": "selection_reuse",
+      "library_winner": 2,
+      "captured_winner": 2
+    },
+    {
+      "dataset": "sklearn_wine",
+      "sha256": "9d3ffeb7f1482dd35ffdac91c26eb5b1696e9d6f5531c3a5bb3b15e7b4a06a26",
+      "seed": 0,
+      "known_prior": false,
+      "report_ids": [
+        178
+      ],
+      "provenance": "insufficient_evidence",
+      "split_role_baseline": "insufficient_evidence",
+      "library_winner": 2,
+      "captured_winner": 2
+    },
+    {
+      "dataset": "sklearn_wine",
+      "sha256": "9d3ffeb7f1482dd35ffdac91c26eb5b1696e9d6f5531c3a5bb3b15e7b4a06a26",
+      "seed": 0,
+      "known_prior": false,
+      "report_ids": [
+        0,
+        178
+      ],
+      "provenance": "selection_reuse",
+      "split_role_baseline": "selection_reuse",
+      "library_winner": 2,
+      "captured_winner": 2
+    },
+    {
+      "dataset": "sklearn_wine",
+      "sha256": "9d3ffeb7f1482dd35ffdac91c26eb5b1696e9d6f5531c3a5bb3b15e7b4a06a26",
+      "seed": 1,
+      "known_prior": true,
+      "report_ids": [
+        0
+      ],
+      "provenance": "selection_reuse",
+      "split_role_baseline": "selection_reuse",
+      "library_winner": 1,
+      "captured_winner": 1
+    },
+    {
+      "dataset": "sklearn_wine",
+      "sha256": "9d3ffeb7f1482dd35ffdac91c26eb5b1696e9d6f5531c3a5bb3b15e7b4a06a26",
+      "seed": 1,
+      "known_prior": true,
+      "report_ids": [
+        178
+      ],
+      "provenance": "no_observed_selection_reuse",
+      "split_role_baseline": "no_observed_selection_reuse",
+      "library_winner": 1,
+      "captured_winner": 1
+    },
+    {
+      "dataset": "sklearn_wine",
+      "sha256": "9d3ffeb7f1482dd35ffdac91c26eb5b1696e9d6f5531c3a5bb3b15e7b4a06a26",
+      "seed": 1,
+      "known_prior": true,
+      "report_ids": [
+        0,
+        178
+      ],
+      "provenance": "selection_reuse",
+      "split_role_baseline": "selection_reuse",
+      "library_winner": 1,
+      "captured_winner": 1
+    },
+    {
+      "dataset": "sklearn_wine",
+      "sha256": "9d3ffeb7f1482dd35ffdac91c26eb5b1696e9d6f5531c3a5bb3b15e7b4a06a26",
+      "seed": 1,
+      "known_prior": false,
+      "report_ids": [
+        0
+      ],
+      "provenance": "selection_reuse",
+      "split_role_baseline": "selection_reuse",
+      "library_winner": 1,
+      "captured_winner": 1
+    },
+    {
+      "dataset": "sklearn_wine",
+      "sha256": "9d3ffeb7f1482dd35ffdac91c26eb5b1696e9d6f5531c3a5bb3b15e7b4a06a26",
+      "seed": 1,
+      "known_prior": false,
+      "report_ids": [
+        178
+      ],
+      "provenance": "insufficient_evidence",
+      "split_role_baseline": "insufficient_evidence",
+      "library_winner": 1,
+      "captured_winner": 1
+    },
+    {
+      "dataset": "sklearn_wine",
+      "sha256": "9d3ffeb7f1482dd35ffdac91c26eb5b1696e9d6f5531c3a5bb3b15e7b4a06a26",
+      "seed": 1,
+      "known_prior": false,
+      "report_ids": [
+        0,
+        178
+      ],
+      "provenance": "selection_reuse",
+      "split_role_baseline": "selection_reuse",
+      "library_winner": 1,
+      "captured_winner": 1
+    },
+    {
+      "dataset": "sklearn_wine",
+      "sha256": "9d3ffeb7f1482dd35ffdac91c26eb5b1696e9d6f5531c3a5bb3b15e7b4a06a26",
+      "seed": 2,
+      "known_prior": true,
+      "report_ids": [
+        0
+      ],
+      "provenance": "selection_reuse",
+      "split_role_baseline": "selection_reuse",
+      "library_winner": 1,
+      "captured_winner": 1
+    },
+    {
+      "dataset": "sklearn_wine",
+      "sha256": "9d3ffeb7f1482dd35ffdac91c26eb5b1696e9d6f5531c3a5bb3b15e7b4a06a26",
+      "seed": 2,
+      "known_prior": true,
+      "report_ids": [
+        178
+      ],
+      "provenance": "no_observed_selection_reuse",
+      "split_role_baseline": "no_observed_selection_reuse",
+      "library_winner": 1,
+      "captured_winner": 1
+    },
+    {
+      "dataset": "sklearn_wine",
+      "sha256": "9d3ffeb7f1482dd35ffdac91c26eb5b1696e9d6f5531c3a5bb3b15e7b4a06a26",
+      "seed": 2,
+      "known_prior": true,
+      "report_ids": [
+        0,
+        178
+      ],
+      "provenance": "selection_reuse",
+      "split_role_baseline": "selection_reuse",
+      "library_winner": 1,
+      "captured_winner": 1
+    },
+    {
+      "dataset": "sklearn_wine",
+      "sha256": "9d3ffeb7f1482dd35ffdac91c26eb5b1696e9d6f5531c3a5bb3b15e7b4a06a26",
+      "seed": 2,
+      "known_prior": false,
+      "report_ids": [
+        0
+      ],
+      "provenance": "selection_reuse",
+      "split_role_baseline": "selection_reuse",
+      "library_winner": 1,
+      "captured_winner": 1
+    },
+    {
+      "dataset": "sklearn_wine",
+      "sha256": "9d3ffeb7f1482dd35ffdac91c26eb5b1696e9d6f5531c3a5bb3b15e7b4a06a26",
+      "seed": 2,
+      "known_prior": false,
+      "report_ids": [
+        178
+      ],
+      "provenance": "insufficient_evidence",
+      "split_role_baseline": "insufficient_evidence",
+      "library_winner": 1,
+      "captured_winner": 1
+    },
+    {
+      "dataset": "sklearn_wine",
+      "sha256": "9d3ffeb7f1482dd35ffdac91c26eb5b1696e9d6f5531c3a5bb3b15e7b4a06a26",
+      "seed": 2,
+      "known_prior": false,
+      "report_ids": [
+        0,
+        178
+      ],
+      "provenance": "selection_reuse",
+      "split_role_baseline": "selection_reuse",
+      "library_winner": 1,
+      "captured_winner": 1
+    }
+  ],
+  "baseline_disagreements": 0,
+  "winner_disagreements": 0,
+  "limitations": "One workflow family; artificial report-origin probes; no external labels."
+}
