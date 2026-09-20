@@ -1,5 +1,8 @@
 # ResearchProof manuscript outline
 
+Latest active draft: `paper/robustness_pilot_draft.md`. The provenance publication
+plan and broad outline below are historical; do not mix their claims into that draft.
+
 **Historical broad outline:** the current submission direction is narrower. Use
 `docs/publication_plan.md` for the active title, evidence gates, and paper structure.
 Do not carry forward unsupported hybrid-detector or automatic-repair claims below.

@@ -10,6 +10,12 @@ This repository begins with a narrow, reproducible scope: tabular classification
 
 ## Current status
 
+The active direction is now a **detector-robustness pilot**, with an
+[evidence-backed manuscript draft](paper/robustness_pilot_draft.md) and a
+[researcher handoff](docs/research_handoff_2026-09-21.md). Two local lexical models
+were trained and evaluated on published data. They are not reproductions of the
+published CodeBERT model, and the draft is not submission-ready.
+
 The [September 18 checkpoint](docs/progress_2026-09-18.md) adds a restricted
 GridSearchCV capture adapter. Across 18 searches and 54 constructed report-origin
 probes, it matches the library's choices but shows **no advantage over a simple

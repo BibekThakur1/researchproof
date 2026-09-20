@@ -1,5 +1,8 @@
 # ResearchProof: path to a defensible submission
 
+Historical provenance plan. For the current robustness pilot and outstanding
+submission requirements, use `docs/research_handoff_2026-09-21.md` instead.
+
 Status: development plan, not a promise of publication. Written 2026-09-16 before
 running the new persistence pilot. Historical experiments remain exploratory.
 

@@ -1,5 +1,9 @@
 # ResearchProof working brief
 
+Current direction (2026-09-21): detector robustness pilot. Read
+`docs/research_handoff_2026-09-21.md` and `paper/robustness_pilot_draft.md` first.
+The provenance objective below is historical supporting work, not the active paper claim.
+
 Objective: determine whether evaluation-score provenance supports useful selection-
 leakage auditing beyond existing notebook analyses, with evidence suitable for a
 research report and a later submission decision.
