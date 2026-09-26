@@ -3,7 +3,8 @@
 **Exploratory technical-report draft — not submission-ready.** Prepared September
 21, 2026. Results come from `results/2026-09-20/robustness_pilot.json`. Authorship,
 independent review, and a confirmation study remain outstanding. This draft does not
-establish novelty or reproduce a published neural detector.
+establish novelty or reproduce a published neural detector. A September 26 supplement
+below adds an actual pinned current MLScent run, not historical-paper replication.
 
 ## Abstract
 
@@ -183,8 +184,10 @@ author groups. Source snippets may lack context needed to verify labels. AST
 preservation is narrower than complete semantic equivalence. Transformation-eligible
 rows differ from nonparseable rows. The test set is now development evidence.
 
-No modern LLM, CodeBERT, or published static detector has been evaluated in this
-pilot. No human agreement study or second-machine replication has been completed.
+No modern LLM or CodeBERT has been evaluated in this pilot. The supplement evaluates
+a current revision of the paper-linked static tool MLScent, with incomplete task
+alignment; it does not reproduce the historical paper's numbers. No human agreement
+study or second-machine replication has been completed.
 New confirmation data, grouping information, label adjudication, and baseline
 reproduction are prerequisites for broader conclusions. These limitations currently
 prevent a submission claiming robust comparative findings across detector classes.
@@ -204,6 +207,32 @@ fault-pair transfer for two lexical leakage classifiers. It does not establish a
 novel algorithm or the failure of published neural detectors. Its immediate value is
 a tested evaluation scaffold and specific questions for a larger independent study.
 
+## Supplement: current MLScent implementation (September 26)
+
+We additionally executed upstream MLScent [7] at revision
+`c22cb3ad5fd2927434dcb77c1f9ce475e44d7cb4`, without modifying its implementation.
+Its own suite passed 212 tests with one skipped. We mapped its two leakage-checking
+components to positive/negative/unknown decisions, retaining skips and caught errors
+as unknown rather than negative. Full methods, commands and evidence are in
+`docs/mlscent_replication_2026-09-26.md` and `results/2026-09-26/mlscent.json`.
+
+On the PeerJ originals, only 31/381 snippets received definite combined answers:
+309 lacked required import context and 41 produced component errors. The answered
+subset had TP=2, FP=3, TN=25 and FN=1 against broad published leakage labels. All
+four surface-edit conditions produced zero flips among 31 answered pairs; this is
+not a stability claim over all 340 transformed inputs. On the previously explored
+ASE corpus, 58/66 explicitly preprocessing-labeled notebooks received answers, with
+TP=4, FP=3, TN=36 and FN=15. These category/coverage differences prevent an overall
+ranking against the lexical models from these aggregates.
+
+A complete authored executable example provides a narrower finding. MLScent warns
+after full-data scaling followed by a split, but the warning disappears when a
+subsequent model fit is appended. Execution confirms the scaler has still seen all
+178 rows, versus 124 training rows. The upstream rule's last-fit line tracking
+explains this result. This witness demonstrates a specific rule failure, not its
+real-world prevalence or score-inflation magnitude. Independently reviewed full
+workflows and neural-baseline reproduction remain outstanding.
+
 ## References
 
 1. Yang et al. (2022). *Data Leakage in Notebooks: Static Detection and Better Processes*.
@@ -219,3 +248,5 @@ a tested evaluation scaffold and specific questions for a larger independent stu
    Machine Learning Pipelines*. https://arxiv.org/abs/2509.15971
 6. Samsonau (2026). *scicode-lint: Detecting Methodology Bugs in Scientific Python
    Code with LLM-Generated Patterns*. Preprint, v2. https://arxiv.org/abs/2603.17893v2
+7. Shivashankar and Martini (2025). *MLScent A tool for Anti-pattern detection in ML
+   projects*. CAIN 2025. https://arxiv.org/abs/2502.18466

@@ -1,5 +1,9 @@
 # ResearchProof working brief
 
+Latest checkpoint: `docs/mlscent_replication_2026-09-26.md`. Actual upstream static
+analysis is now integrated, with skips/errors retained and a complete failure
+witness. Do not confuse this with reproducing historical neural or static-paper scores.
+
 Current direction (2026-09-21): detector robustness pilot. Read
 `docs/research_handoff_2026-09-21.md` and `paper/robustness_pilot_draft.md` first.
 The provenance objective below is historical supporting work, not the active paper claim.

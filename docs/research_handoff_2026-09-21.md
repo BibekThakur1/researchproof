@@ -1,5 +1,10 @@
 # What is finished, what you should do, and what blocks submission
 
+September 26 update: actual upstream MLScent now runs in an isolated environment.
+See `docs/mlscent_replication_2026-09-26.md` for results and an executable failure
+witness. The static-baseline work below is partially fulfilled; CodeBERT training,
+task-matched comparisons, independent human review and confirmation remain open.
+
 ## Read first
 
 The manuscript is `paper/robustness_pilot_draft.md`. It is an honest technical-report

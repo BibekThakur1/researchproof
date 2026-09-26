@@ -10,6 +10,11 @@ This repository begins with a narrow, reproducible scope: tabular classification
 
 ## Current status
 
+The [September 26 static-baseline evaluation](docs/mlscent_replication_2026-09-26.md)
+runs actual pinned MLScent code, accounts for skipped inputs, and confirms an
+executable preprocessing-warning failure. This is a current-tool evaluation, not
+historical-paper replication. Neural-baseline training and human review remain open.
+
 The active direction is now a **detector-robustness pilot**, with an
 [evidence-backed manuscript draft](paper/robustness_pilot_draft.md) and a
 [researcher handoff](docs/research_handoff_2026-09-21.md). Two local lexical models
