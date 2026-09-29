@@ -1,0 +1,4 @@
+# Isolated optional environment. CPU/MPS on macOS; CUDA-enabled wheels on supported Linux.
+torch==2.8.0
+transformers==4.57.1
+pytest==8.4.2

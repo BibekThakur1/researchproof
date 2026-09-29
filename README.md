@@ -10,6 +10,11 @@ This repository begins with a narrow, reproducible scope: tabular classification
 
 ## Current status
 
+The [September 29 CodeBERT runbook](docs/codebert_runbook.md) provides a pinned
+neural training pipeline and strict completed-run validation. Local smoke and
+real-checkpoint CPU preflight tests passed. These are engineering checks, not
+neural research results; full training and independent review are still required.
+
 The [September 26 static-baseline evaluation](docs/mlscent_replication_2026-09-26.md)
 runs actual pinned MLScent code, accounts for skipped inputs, and confirms an
 executable preprocessing-warning failure. This is a current-tool evaluation, not

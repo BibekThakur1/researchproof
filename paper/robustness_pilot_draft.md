@@ -233,6 +233,15 @@ explains this result. This witness demonstrates a specific rule failure, not its
 real-world prevalence or score-inflation magnitude. Independently reviewed full
 workflows and neural-baseline reproduction remain outstanding.
 
+## Implementation update (September 29; not experimental results)
+
+A pinned modern CodeBERT training and evaluation runner is now implemented, with
+fixed-budget training before test-set access and checks rejecting smoke/preflight
+outputs as scientific evidence. Tiny-model serialization and a real-checkpoint
+two-example CPU training preflight passed. Full neural training, held-out scores
+and repeated-seed robustness estimates remain outstanding. No neural performance
+claim follows from these implementation checks. See `docs/codebert_runbook.md`.
+
 ## References
 
 1. Yang et al. (2022). *Data Leakage in Notebooks: Static Detection and Better Processes*.
