@@ -1,5 +1,10 @@
 # Closest work and novelty boundary
 
+For the active robustness direction, first read the
+[October 3 focused update](literature_update_2026-10-03.md). It identifies established
+metamorphic code-testing work and a directly relevant FSE 2026 leakage-detection lead.
+The historical scope below is retained, not a renewed novelty claim.
+
 This document is a living literature map, updated on 13 September 2026. It
 separates established work from the contribution ResearchProof is currently testing.
 It is not evidence that the project is novel, and it must be updated before any

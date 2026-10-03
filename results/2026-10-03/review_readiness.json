@@ -1,0 +1,14 @@
+{
+  "status": "incomplete",
+  "cases_per_reviewer": 20,
+  "completed_first": 0,
+  "completed_second": 0,
+  "agreement": null,
+  "independent_human_authorship_verified": false,
+  "scope": "label-feasibility pilot, not confirmed ground truth",
+  "inputs_sha256": {
+    "first": "9848864a18f6410b46e67e98a46ac5b2272715bf8f97857304426f07c9da4e0a",
+    "second": "9848864a18f6410b46e67e98a46ac5b2272715bf8f97857304426f07c9da4e0a",
+    "dataset": "edd9f8c43687ad19828ff8b8c6f20ca08f85fbd7c317261adf93414f1101ecb3"
+  }
+}

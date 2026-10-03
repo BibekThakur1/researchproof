@@ -1,5 +1,20 @@
 # What is finished, what you should do, and what blocks submission
 
+October 3 update: use `docs/RESEARCH_COMPLETION_PROMPT.md` for the active execution
+brief and `docs/compute_bundle.md` for private GPU transfer. The JSON review adapter
+is now implemented; after independent review, run:
+
+```bash
+.venv/bin/python scripts/compare_pilot_reviews.py \
+  --first artifacts/pilot_review_v1/reviewer_a.json \
+  --second artifacts/pilot_review_v1/reviewer_b.json \
+  --output artifacts/pilot_review_v1/comparison_completed.json
+```
+
+It checks against the canonical published source and preserves insufficient-context
+judgments. It does not fill answers, adjudicate disagreements, or certify independence.
+An incomplete packet yields coverage counts and no agreement estimate.
+
 September 26 update: actual upstream MLScent now runs in an isolated environment.
 See `docs/mlscent_replication_2026-09-26.md` for results and an executable failure
 witness. The static-baseline work below is partially fulfilled; CodeBERT training,

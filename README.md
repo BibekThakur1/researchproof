@@ -10,6 +10,12 @@ This repository begins with a narrow, reproducible scope: tabular classification
 
 ## Current status
 
+The [research-completion brief](docs/RESEARCH_COMPLETION_PROMPT.md) now governs the
+remaining task scope. The [October 3 literature update](docs/literature_update_2026-10-03.md)
+narrows novelty claims. A private [GPU transfer workflow](docs/compute_bundle.md)
+and three-way review validator are available; actual full training and human review
+remain incomplete. The brief is an execution plan, not evidence of completion.
+
 The [September 29 CodeBERT runbook](docs/codebert_runbook.md) provides a pinned
 neural training pipeline and strict completed-run validation. Local smoke and
 real-checkpoint CPU preflight tests passed. These are engineering checks, not

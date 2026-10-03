@@ -56,6 +56,14 @@ or active-learning procedure from [2]. Its classifiers must not be labeled as th
 authors' models. Prior code-robustness and metamorphic-testing literature must also
 be systematically reviewed before claiming originality for an expanded benchmark.
 
+An October 3 update identifies a systematic review specifically covering metamorphic
+testing of deep code models [8]. Therefore, stability testing through source edits
+cannot itself be our novelty claim. The official FSE 2026 program also lists work
+on leakage detection through static slicing and structured LLM prompts [9]. Its full
+method and evaluation still need inspection before any gap relative to that work
+is asserted. These sources constrain positioning; they are not new experimental
+evidence for this report.
+
 ## 3. Research questions
 
 - RQ1: How often do local detector predictions change under source transformations
@@ -259,3 +267,9 @@ claim follows from these implementation checks. See `docs/codebert_runbook.md`.
    Code with LLM-Generated Patterns*. Preprint, v2. https://arxiv.org/abs/2603.17893v2
 7. Shivashankar and Martini (2025). *MLScent A tool for Anti-pattern detection in ML
    projects*. CAIN 2025. https://arxiv.org/abs/2502.18466
+8. Asgari, de Koning, Derakhshanfar and Panichella (2025). *Metamorphic Testing of
+   Deep Code Models: A Systematic Literature Review*. https://arxiv.org/abs/2507.22610
+9. Draoui, Mkaouer and Newman (2026). *Improving Data Leakage Detection in Machine
+   Learning Notebooks through Static Slicing and Structured LLM Prompts*.
+   FSE 2026 research-program entry (full paper not inspected in this update).
+   https://conf.researchr.org/track/fse-2026/fse-2026-research-papers

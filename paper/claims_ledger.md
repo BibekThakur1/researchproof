@@ -3,6 +3,18 @@
 Every empirical statement in the manuscript must have an evidence owner and a release
 gate. “Current status” refers to development evidence and may change.
 
+## October 3: active robustness study
+
+| Claim | Evidence or missing artifact | Current permitted interpretation |
+| --- | --- | --- |
+| Lexical models show surface sensitivity | `results/2026-09-20/robustness_pilot.json` | Exploratory finding about two local models; count corrective as well as harmful flips. |
+| Current MLScent has coverage limits and a specific warning failure | `results/2026-09-26/mlscent.json`, executable control and replication report | Pinned current implementation only; not historical replication or population prevalence. |
+| CodeBERT training code executes | `results/2026-09-29/neural_validation.json` | Engineering checks on tiny samples, not held-out detector performance. |
+| Full neural results exist | Three completed validated seed runs missing | Not permitted. |
+| Human labels agree | `results/2026-10-03/review_readiness.json`: 0/20 verdicts per reviewer | Not permitted; agreement remains undefined until review completes. |
+| The study provides a new evaluation contribution | `docs/literature_update_2026-10-03.md`, full-paper comparison and confirmation still needed | Candidate hypothesis only; broad metamorphic testing is established. |
+| Generalization or submission readiness | Frozen separate corpus, reviewed labels, independent reproduction and final author review missing | Not permitted. |
+
 ## September 13 evidence update
 
 The [current report](../docs/research_report_2026-09-13.md) supersedes broad
