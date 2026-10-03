@@ -10,6 +10,11 @@ This repository begins with a narrow, reproducible scope: tabular classification
 
 ## Current status
 
+The [three-seed analysis guide](docs/neural_analysis.md) describes the validated
+aggregation step for returned full CodeBERT runs. It reports optimization variation
+without treating repeated seeds as independent test corpora. Actual full outputs
+are still required; test fixtures are not research evidence.
+
 The [research-completion brief](docs/RESEARCH_COMPLETION_PROMPT.md) now governs the
 remaining task scope. The [October 3 literature update](docs/literature_update_2026-10-03.md)
 narrows novelty claims. A private [GPU transfer workflow](docs/compute_bundle.md)
