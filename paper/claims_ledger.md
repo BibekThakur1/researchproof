@@ -5,6 +5,13 @@ gate. “Current status” refers to development evidence and may change.
 
 ## October 3: active robustness study
 
+October 16 addition: `results/2026-10-16/token_visibility.json` establishes that
+9/340 appended-comment pairs have identical tokenized model inputs at a 512-token
+limit. This permits a preprocessing-exposure statement only; it does not establish
+detector performance, prevalence outside this corpus, novel algorithms or invention.
+See `docs/research_direction_2026-10-16.md` for the new measured diagnostic and
+falsifiable contribution hypothesis.
+
 | Claim | Evidence or missing artifact | Current permitted interpretation |
 | --- | --- | --- |
 | Lexical models show surface sensitivity | `results/2026-09-20/robustness_pilot.json` | Exploratory finding about two local models; count corrective as well as harmful flips. |

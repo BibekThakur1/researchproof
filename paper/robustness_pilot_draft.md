@@ -250,6 +250,23 @@ two-example CPU training preflight passed. Full neural training, held-out scores
 and repeated-seed robustness estimates remain outstanding. No neural performance
 claim follows from these implementation checks. See `docs/codebert_runbook.md`.
 
+## Supplement: tokenizer exposure (October 16)
+
+We additionally measured edit visibility using the pinned CodeBERT tokenizer and
+the documented lowercasing protocol, without training a detector. Among 340
+parseable original snippets, each appended-comment condition changes full token
+sequences in all 340 cases. At the intended 512-token limit, only 331 changes remain
+visible: nine (2.65%) produce identical model inputs after truncation. Diagnostic
+limits of 256 and 128 erase 28 (8.24%) and 88 (25.88%) changes, respectively.
+These shorter limits are not new training conditions. For AST-unparsing, six pairs
+already have identical full token sequences; no additional change is erased at 512.
+
+Every comparison was checked against actual padded/truncated tokenizer inputs.
+The saved record is `results/2026-10-16/token_visibility.json`; two runs were
+byte-identical. These are exposure measurements, not prediction or accuracy results.
+They justify separate source-eligible and token-visible denominators, but do not
+establish a novel method or meaningful detector-performance difference.
+
 ## References
 
 1. Yang et al. (2022). *Data Leakage in Notebooks: Static Detection and Better Processes*.

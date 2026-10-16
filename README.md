@@ -10,6 +10,11 @@ This repository begins with a narrow, reproducible scope: tabular classification
 
 ## Current status
 
+The [October 16 diagnostic and research decision](docs/research_direction_2026-10-16.md)
+measures tokenizer exposure: at the planned 512-token limit, appended comments are
+invisible for 9/340 eligible snippets. This is preprocessing evidence, not a trained
+detector result or a demonstrated new invention.
+
 The [three-seed analysis guide](docs/neural_analysis.md) describes the validated
 aggregation step for returned full CodeBERT runs. It reports optimization variation
 without treating repeated seeds as independent test corpora. Actual full outputs
