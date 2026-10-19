@@ -39,6 +39,19 @@ successful ones. There is no mid-epoch resume; inspect failures before restartin
   relying on the runtime's broken `ensurepip`. Source package:
   `artifacts/kaggle_job_2026-10-20_v3`.
 
+**Latest observed status: version 3 ERROR, before training.** Its notebook
+runtime exposed no NVIDIA device nodes, so the hardware guard stopped it.
+Saved diagnostic: `artifacts/kaggle_v3_startup_log.json`. No completed seed or
+neural research result was produced by these attempts. Do not report the job as
+currently training. No further automatic retries were launched.
+
+Required next check: open the private notebook in Kaggle, choose Edit, inspect
+Session options / Accelerator, and confirm GPU T4 availability. Complete any
+account verification requested by Kaggle personally. The CLI accepted the GPU
+configuration, but that is not proof of hardware allocation; the cause of the
+missing device remains unconfirmed. After resolving allocation, launch a new
+version and verify CUDA before assuming training is underway.
+
 Upload acceptance is not evidence of completed training. Check the live status
 and logs before making any scientific claims.
 
