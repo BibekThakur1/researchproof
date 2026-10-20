@@ -23,13 +23,17 @@ def main():
     parser.add_argument("--device", choices=["cuda", "mps", "cpu"], default="cuda")
     parser.add_argument("--micro-batch", type=int, choices=range(1, 17), default=2)
     parser.add_argument("--output", type=Path, required=True)
+    parser.add_argument(
+        "--cache", type=Path, help="Optional shared model cache outside saved outputs"
+    )
     args = parser.parse_args()
     root = Path(__file__).resolve().parents[1]
     destination = args.output.resolve()
     destination.mkdir(parents=True, exist_ok=True)
     environment = dict(os.environ)
     environment["PYTHONPATH"] = str(root / "src") + os.pathsep + environment.get("PYTHONPATH", "")
-    environment["HF_XET_CACHE"] = str(root / "artifacts/hf_cache/xet")
+    cache = args.cache.resolve() if args.cache else root / "artifacts/hf_cache"
+    environment["HF_XET_CACHE"] = str(cache / "xet")
     for seed in (0, 1, 2):
         directory = destination / f"seed{seed}"
         if directory.exists():
@@ -48,6 +52,8 @@ def main():
             str(args.micro_batch),
             "--output",
             str(directory),
+            "--cache",
+            str(cache),
         ]
         log_path = destination / f"seed{seed}.log"
         with log_path.open("x") as log:

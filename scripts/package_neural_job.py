@@ -13,10 +13,13 @@ FILES = (
     "scripts/train_codebert.py",
     "scripts/run_codebert_seeds.py",
     "scripts/summarize_codebert.py",
+    "scripts/export_codebert_results.py",
     "scripts/fetch_peerj_materials.py",
     "src/researchproof/__init__.py",
     "src/researchproof/robustness.py",
     "src/researchproof/neural_evidence.py",
+    "src/researchproof/neural_study.py",
+    "src/researchproof/neural_archive.py",
     "src/researchproof/audit.py",
     "neural_tests/test_training.py",
 )

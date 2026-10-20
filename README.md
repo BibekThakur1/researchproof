@@ -10,6 +10,12 @@ This repository begins with a narrow, reproducible scope: tabular classification
 
 ## Current status
 
+The [Kaggle readiness guide](docs/KAGGLE_READY.md) describes the staged private
+notebook, startup diagnostics, compact result export and local verification.
+The prepared build is local; GPU execution remains blocked by remote allocation.
+The [independent review guide](docs/HUMAN_REVIEW_NEXT.md) explains the work that
+the two researchers can complete while Kaggle is unavailable.
+
 The [October 16 diagnostic and research decision](docs/research_direction_2026-10-16.md)
 measures tokenizer exposure: at the planned 512-token limit, appended comments are
 invisible for 9/340 eligible snippets. This is preprocessing evidence, not a trained
