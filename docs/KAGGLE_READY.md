@@ -6,10 +6,10 @@ those edits after tokenization and truncation. A detector that always says “cl
 can look stable, so we also measure classification quality and distinguish harmful
 prediction changes from corrections.
 
-Full GPU training is still pending. The latest remote attempt, version 4, failed
-before training because its runtime exposed no NVIDIA device nodes. The reason for
-that allocation failure has not been established. This preparation does not resolve
-account verification, GPU availability or Internet permissions.
+The earlier four attempts failed before training because Kaggle did not expose a
+GPU. After the account was verified, private version 5 passed GPU, Internet,
+data, unit-test and capacity checks on October 27, then started the prespecified
+three-seed training. Completed results and archive validation are still pending.
 
 ## What is prepared locally
 
@@ -35,11 +35,10 @@ No artificial test predictions have been saved as project research results.
 
 ## Once Kaggle access works
 
-The prepared folder is `artifacts/kaggle_ready_2026-10-20`. It is a local build,
-not the older notebook already visible on Kaggle. Upload this new version before
-starting the next experiment. Never silently rerun an old package and call it the
-new one. Do not modify test thresholds or select successful seeds after looking
-at results.
+The frozen folder is `artifacts/kaggle_ready_2026-10-20`. This package was
+uploaded as private Kaggle notebook version 5. Preserve that version while it
+runs. Upload a new build only if a diagnosed failure requires a change; do not
+modify test thresholds or select successful seeds after looking at results.
 
 Generated artifacts are intentionally ignored by Git. On a fresh checkout, create
 the package locally with:

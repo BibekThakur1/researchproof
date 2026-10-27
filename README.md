@@ -12,7 +12,8 @@ This repository begins with a narrow, reproducible scope: tabular classification
 
 The [Kaggle readiness guide](docs/KAGGLE_READY.md) describes the staged private
 notebook, startup diagnostics, compact result export and local verification.
-The prepared build is local; GPU execution remains blocked by remote allocation.
+The frozen build was uploaded to a private Kaggle notebook on October 27. It
+passed GPU setup and started three-seed training; full results remain pending.
 The [independent review guide](docs/HUMAN_REVIEW_NEXT.md) explains the work that
 the two researchers can complete while Kaggle is unavailable.
 

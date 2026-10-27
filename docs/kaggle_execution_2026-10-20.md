@@ -49,9 +49,19 @@ currently training.
   before training with `GPU device nodes: []`. Quota still showed 30 GPU hours.
   No completed seed was produced.
 
-**Latest remote status observed: version 4 ERROR.** The newer staged launcher
-prepared locally afterward has not been uploaded. See [the readiness guide](KAGGLE_READY.md)
-for its build, launch and compact-result workflow.
+**October 27 update:** After account phone verification, version 5 of the frozen
+staged launcher was uploaded privately. Kaggle exposed two Tesla T4 GPUs. The
+host CUDA check, Figshare/Hugging Face access checks, isolated pinned PyTorch
+CUDA check, checksum-verified public data fetch, four neural unit tests, tiny
+GPU smoke, and two-row 512-token capacity check passed. The notebook then
+reported `training: running` for prespecified seeds 0, 1, and 2 at
+04:44:28 UTC. These checks do not constitute a completed model evaluation.
+The previous four versions failed before training; retain their history.
+
+Check version 5 until it finishes. On completion, download its compact evidence
+archive and independently inspect it using [the readiness guide](KAGGLE_READY.md).
+If it fails, preserve the saved logs and partial seed outputs; do not silently
+discard failed or unfavorable runs.
 
 Required next check: open the private notebook in Kaggle, choose Edit, inspect
 Session options / Accelerator, and confirm GPU T4 availability. Complete any
