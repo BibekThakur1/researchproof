@@ -290,3 +290,11 @@ establish a novel method or meaningful detector-performance difference.
    Learning Notebooks through Static Slicing and Structured LLM Prompts*.
    FSE 2026 research-program entry (full paper not inspected in this update).
    https://conf.researchr.org/track/fse-2026/fse-2026-research-papers
+
+# October 27 evidence addendum
+
+The completed three-seed CodeBERT Kaggle experiment and its limitations are
+documented in `results/2026-10-27/report.md`. This draft's earlier statements
+that no full CodeBERT run exists describe the original pilot stage and are
+superseded by that report. Do not submit this draft without integrating the
+validated results, human review, confirmation experiments and a novelty audit.

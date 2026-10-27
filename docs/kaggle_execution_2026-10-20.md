@@ -1,5 +1,11 @@
 # Private Kaggle execution — 20 October 2026
 
+**Completion update, 27 October:** Private notebook version 5 completed all
+three fixed seeds. The 19-member compact archive passed local independent
+inspection and table recomputation. See `results/2026-10-27/report.md`.
+The pending instructions below document the original execution sequence and
+are superseded for version 5. Earlier failed versions remain part of the record.
+
 Account: `bibekthakur1` (official CLI browser login completed).
 
 Kernel: https://www.kaggle.com/code/bibekthakur1/researchproof-codebert-20261020

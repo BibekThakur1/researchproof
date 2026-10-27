@@ -1,5 +1,10 @@
 # ResearchProof: ready for the next Kaggle session
 
+**Completed 27 October:** Private version 5 finished all three seeds. The
+returned archive passed independent validation. This guide is retained as the
+execution/recovery record; current results are in
+`results/2026-10-27/report.md`. No repeat training is needed for these seeds.
+
 The experiment asks whether a trained code model changes its leakage prediction
 when harmless comments or formatting change, and whether the model actually sees
 those edits after tokenization and truncation. A detector that always says “clean”

@@ -3,6 +3,15 @@
 Every empirical statement in the manuscript must have an evidence owner and a release
 gate. “Current status” refers to development evidence and may change.
 
+## October 27: completed neural run
+
+Kaggle version 5 completed seeds 0, 1 and 2; the compact archive passed the
+independent inspector. See `results/2026-10-27/report.md` and its linked archive.
+The claim “three-seed CodeBERT F1 was 0.698–0.756 on the explored 381-case
+published split” is supported. Earlier statements below that full neural results
+are missing are superseded. Independent generalization, human agreement, novelty,
+invention and publication readiness remain unsupported.
+
 ## October 3: active robustness study
 
 October 16 addition: `results/2026-10-16/token_visibility.json` establishes that

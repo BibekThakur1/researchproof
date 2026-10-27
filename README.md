@@ -10,6 +10,12 @@ This repository begins with a narrow, reproducible scope: tabular classification
 
 ## Current status
 
+**27 October update:** The private Kaggle CodeBERT run completed all three
+prespecified seeds. The [validated results and limitations](results/2026-10-27/report.md)
+and [compact evidence archive](results/2026-10-27/codebert_evidence.zip) are available.
+Human review and independent confirmation are still missing; this is not yet a
+submission-ready paper. Older pending-status descriptions below are historical.
+
 The [Kaggle readiness guide](docs/KAGGLE_READY.md) describes the staged private
 notebook, startup diagnostics, compact result export and local verification.
 The frozen build was uploaded to a private Kaggle notebook on October 27. It
