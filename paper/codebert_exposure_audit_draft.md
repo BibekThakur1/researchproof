@@ -107,6 +107,15 @@ counted unrelated comment-only snippets as AST matches; the
 [corrected analysis](../results/2026-10-27/codebert_overlap_nonempty_ast_v2.json)
 supersedes it and provides exact confusion counts and checksums.
 
+On exactly matched original cases, CodeBERT is correct where word TF–IDF is
+wrong on 17–18 cases per seed, while word TF–IDF alone is correct on 3–4.
+Against character TF–IDF, CodeBERT alone is correct on 21–24 cases while the
+lexical model alone is correct on 3–4. However, on the positive subset,
+character TF–IDF identifies 2–4 cases per seed missed by CodeBERT, with no
+positive-only wins for CodeBERT. The [matched-case analysis](../results/2026-10-27/matched_baseline_analysis.json)
+checks source hashes and labels. It is descriptive because training protocols
+differ and the split has already been explored.
+
 ## 5. Discussion and threats to validity
 
 The strongest present lead is persistent false-negative behavior on a small

@@ -1,0 +1,148 @@
+{
+  "scope": "exploratory matched-case descriptive comparison on explored split",
+  "archive_sha256": "1315ac01c9e27021f590b8d47dac5e69d970f6caef0918bed21978bc068eafbe",
+  "pilot_sha256": "14af036f2d5a6e4e5e5ea3162803c29a0cf048817a1561c638008f131ab2ab65",
+  "cases": 381,
+  "seeds": [
+    {
+      "seed": 0,
+      "baselines": {
+        "word_tfidf_logistic": {
+          "all": {
+            "both_correct": 352,
+            "codebert_only_correct": 18,
+            "lexical_only_correct": 3,
+            "both_wrong": 8
+          },
+          "positive": {
+            "both_correct": 12,
+            "codebert_only_correct": 5,
+            "lexical_only_correct": 1,
+            "both_wrong": 7
+          },
+          "negative": {
+            "both_correct": 340,
+            "codebert_only_correct": 13,
+            "lexical_only_correct": 2,
+            "both_wrong": 1
+          }
+        },
+        "character_tfidf_logistic": {
+          "all": {
+            "both_correct": 346,
+            "codebert_only_correct": 24,
+            "lexical_only_correct": 4,
+            "both_wrong": 7
+          },
+          "positive": {
+            "both_correct": 17,
+            "codebert_only_correct": 0,
+            "lexical_only_correct": 2,
+            "both_wrong": 6
+          },
+          "negative": {
+            "both_correct": 329,
+            "codebert_only_correct": 24,
+            "lexical_only_correct": 2,
+            "both_wrong": 1
+          }
+        }
+      }
+    },
+    {
+      "seed": 1,
+      "baselines": {
+        "word_tfidf_logistic": {
+          "all": {
+            "both_correct": 351,
+            "codebert_only_correct": 17,
+            "lexical_only_correct": 4,
+            "both_wrong": 9
+          },
+          "positive": {
+            "both_correct": 10,
+            "codebert_only_correct": 5,
+            "lexical_only_correct": 3,
+            "both_wrong": 7
+          },
+          "negative": {
+            "both_correct": 341,
+            "codebert_only_correct": 12,
+            "lexical_only_correct": 1,
+            "both_wrong": 2
+          }
+        },
+        "character_tfidf_logistic": {
+          "all": {
+            "both_correct": 346,
+            "codebert_only_correct": 22,
+            "lexical_only_correct": 4,
+            "both_wrong": 9
+          },
+          "positive": {
+            "both_correct": 15,
+            "codebert_only_correct": 0,
+            "lexical_only_correct": 4,
+            "both_wrong": 6
+          },
+          "negative": {
+            "both_correct": 331,
+            "codebert_only_correct": 22,
+            "lexical_only_correct": 0,
+            "both_wrong": 3
+          }
+        }
+      }
+    },
+    {
+      "seed": 2,
+      "baselines": {
+        "word_tfidf_logistic": {
+          "all": {
+            "both_correct": 351,
+            "codebert_only_correct": 17,
+            "lexical_only_correct": 4,
+            "both_wrong": 9
+          },
+          "positive": {
+            "both_correct": 12,
+            "codebert_only_correct": 5,
+            "lexical_only_correct": 1,
+            "both_wrong": 7
+          },
+          "negative": {
+            "both_correct": 339,
+            "codebert_only_correct": 12,
+            "lexical_only_correct": 3,
+            "both_wrong": 2
+          }
+        },
+        "character_tfidf_logistic": {
+          "all": {
+            "both_correct": 347,
+            "codebert_only_correct": 21,
+            "lexical_only_correct": 3,
+            "both_wrong": 10
+          },
+          "positive": {
+            "both_correct": 17,
+            "codebert_only_correct": 0,
+            "lexical_only_correct": 2,
+            "both_wrong": 6
+          },
+          "negative": {
+            "both_correct": 330,
+            "codebert_only_correct": 21,
+            "lexical_only_correct": 1,
+            "both_wrong": 4
+          }
+        }
+      }
+    }
+  ],
+  "limitations": [
+    "All models share one explored published test split.",
+    "Lexical and CodeBERT training protocols differ; this is not a controlled ablation.",
+    "Case-wise agreement does not establish statistical superiority or generalization."
+  ]
+}

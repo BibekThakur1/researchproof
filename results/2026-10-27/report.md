@@ -20,6 +20,18 @@ The four edits produced few prediction changes. Across seeds, mean all-pair flip
 
 The previously trained word and character TF-IDF pilots reported F1 0.500 and 0.551 on this published split. Their protocols differ from the CodeBERT run, so this is context, not a controlled superiority result. The present CodeBERT run does not establish a novel detector, invention, patent claim, or publication readiness.
 
+A [matched-case comparison](matched_baseline_analysis.json) verifies that the
+lexical and CodeBERT prediction files refer to the same 381 source hashes and
+labels. Across seeds, CodeBERT alone is correct on 17–18 cases versus the word
+TF–IDF model, while the lexical model alone is correct on 3–4. Against character
+TF–IDF, CodeBERT alone is correct on 21–24 cases and the lexical model alone
+on 3–4. Among positive cases specifically, character TF–IDF is correct on
+2–4 examples that CodeBERT misses; CodeBERT has no positive-only wins against
+it in these three seeds. CodeBERT's overall advantage in correct cases here is
+driven by fewer negative-case errors. These are post-hoc descriptions of one
+explored split under different model-training protocols, not a controlled
+statistical superiority or ensemble-selection result.
+
 ## Additional case-level audit (27 October)
 
 I re-read the three archived prediction files by original case ID. Of the 25
