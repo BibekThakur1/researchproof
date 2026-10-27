@@ -14,8 +14,9 @@ dataset. Three prespecified seeds are evaluated on 381 original test snippets
 and four AST-preserving edits of 340 parseable snippets. Original F1 ranges from
 0.698 to 0.756. Prediction flips are uncommon, but eight of 25 positive cases
 are missed by all seeds. Nine appended-comment pairs are invisible at the
-512-token model limit. Six test cases exactly match training text and 16 match
-training ASTs; excluding those 16 gives F1 of 0.667–0.732. We distinguish harmful from corrective flips and retain
+512-token model limit. Six test cases exactly match training text and 12 match
+nonempty training ASTs; excluding those 12 does not consistently lower F1.
+We distinguish harmful from corrective flips and retain
 case-level evidence. These are within-corpus descriptive findings on an
 explored split; independent labels and external confirmation are pending.
 
@@ -96,13 +97,15 @@ At 512 tokens, 9/340 appended-comment edits are invisible; 6/340 formatting
 edits produce equivalent token inputs. An unchanged prediction when the edit
 was invisible is not evidence of learned robustness.
 
-The published split also contains six exact training-text duplicates and 16
-AST-equivalent training matches. Excluding the union of those 16 test cases
-leaves 365 examples, including 23 positives. Nonoverlap F1 is 0.732, 0.667,
-and 0.714 for seeds 0, 1, and 2 respectively. All eight persistent false
-negatives remain in this subset. This post-hoc deduplication is a sensitivity
-check, not independent validation; the [saved analysis](../results/2026-10-27/codebert_overlap_analysis.json)
-provides the exact confusion counts and checksums.
+The published split also contains six exact training-text duplicates and 12
+nonempty-AST training matches. Excluding the union of those 12 test cases
+leaves 369 examples, including all 25 positives. Nonoverlap F1 is 0.756,
+0.698, and 0.739 for seeds 0, 1, and 2 respectively. All eight persistent
+false negatives remain in this subset. This post-hoc deduplication is a
+sensitivity check, not independent validation. An earlier analysis incorrectly
+counted unrelated comment-only snippets as AST matches; the
+[corrected analysis](../results/2026-10-27/codebert_overlap_nonempty_ast_v2.json)
+supersedes it and provides exact confusion counts and checksums.
 
 ## 5. Discussion and threats to validity
 

@@ -1,6 +1,7 @@
 """Audit CodeBERT outcomes by train/test source overlap without retraining."""
 
 import argparse
+import ast
 import csv
 import hashlib
 import json
@@ -30,6 +31,10 @@ def syntax_key(text):
     try:
         with warnings.catch_warnings():
             warnings.simplefilter("ignore", SyntaxWarning)
+            # A comment-only snippet has the same empty AST as every other
+            # comment-only snippet. That is not evidence of code overlap.
+            if not ast.parse(text).body:
+                return None
             return fingerprint(text)
     except (SyntaxError, ValueError):
         return None

@@ -1,0 +1,143 @@
+{
+  "scope": "post-hoc sensitivity analysis of explored published split",
+  "archive_sha256": "1315ac01c9e27021f590b8d47dac5e69d970f6caef0918bed21978bc068eafbe",
+  "data_sha256": {
+    "train_annotated.csv": "661f366824fef28e9fed3972573983d739217d63cc2fd570d3c104682022e349",
+    "test_annotated.csv": "edd9f8c43687ad19828ff8b8c6f20ca08f85fbd7c317261adf93414f1101ecb3"
+  },
+  "overlap_counts": {
+    "exact": 6,
+    "ast": 12,
+    "union": 12
+  },
+  "seeds": [
+    {
+      "seed": 0,
+      "subsets": {
+        "all": {
+          "cases": 381,
+          "true_positive": 17,
+          "true_negative": 353,
+          "false_positive": 3,
+          "false_negative": 8,
+          "accuracy": 0.9711286089238845,
+          "precision": 0.85,
+          "recall": 0.68,
+          "f1": 0.7555555555555556,
+          "false_positive_rate": 0.008426966292134831
+        },
+        "nonoverlap": {
+          "cases": 369,
+          "true_positive": 17,
+          "true_negative": 341,
+          "false_positive": 3,
+          "false_negative": 8,
+          "accuracy": 0.9701897018970189,
+          "precision": 0.85,
+          "recall": 0.68,
+          "f1": 0.7555555555555556,
+          "false_positive_rate": 0.00872093023255814
+        },
+        "overlap": {
+          "cases": 12,
+          "true_positive": 0,
+          "true_negative": 12,
+          "false_positive": 0,
+          "false_negative": 0,
+          "accuracy": 1.0,
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "false_positive_rate": 0.0
+        }
+      }
+    },
+    {
+      "seed": 1,
+      "subsets": {
+        "all": {
+          "cases": 381,
+          "true_positive": 15,
+          "true_negative": 353,
+          "false_positive": 3,
+          "false_negative": 10,
+          "accuracy": 0.9658792650918635,
+          "precision": 0.8333333333333334,
+          "recall": 0.6,
+          "f1": 0.6976744186046512,
+          "false_positive_rate": 0.008426966292134831
+        },
+        "nonoverlap": {
+          "cases": 369,
+          "true_positive": 15,
+          "true_negative": 341,
+          "false_positive": 3,
+          "false_negative": 10,
+          "accuracy": 0.964769647696477,
+          "precision": 0.8333333333333334,
+          "recall": 0.6,
+          "f1": 0.6976744186046512,
+          "false_positive_rate": 0.00872093023255814
+        },
+        "overlap": {
+          "cases": 12,
+          "true_positive": 0,
+          "true_negative": 12,
+          "false_positive": 0,
+          "false_negative": 0,
+          "accuracy": 1.0,
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "false_positive_rate": 0.0
+        }
+      }
+    },
+    {
+      "seed": 2,
+      "subsets": {
+        "all": {
+          "cases": 381,
+          "true_positive": 17,
+          "true_negative": 351,
+          "false_positive": 5,
+          "false_negative": 8,
+          "accuracy": 0.9658792650918635,
+          "precision": 0.7727272727272727,
+          "recall": 0.68,
+          "f1": 0.7234042553191491,
+          "false_positive_rate": 0.014044943820224719
+        },
+        "nonoverlap": {
+          "cases": 369,
+          "true_positive": 17,
+          "true_negative": 340,
+          "false_positive": 4,
+          "false_negative": 8,
+          "accuracy": 0.967479674796748,
+          "precision": 0.8095238095238095,
+          "recall": 0.68,
+          "f1": 0.7391304347826089,
+          "false_positive_rate": 0.011627906976744186
+        },
+        "overlap": {
+          "cases": 12,
+          "true_positive": 0,
+          "true_negative": 11,
+          "false_positive": 1,
+          "false_negative": 0,
+          "accuracy": 0.9166666666666666,
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "false_positive_rate": 0.08333333333333333
+        }
+      }
+    }
+  ],
+  "limitations": [
+    "Post-hoc exact/AST deduplication does not detect semantic near-duplicates or shared repositories.",
+    "The remaining split is explored and not an independent confirmation corpus.",
+    "Small positive counts prohibit strong subgroup performance claims."
+  ]
+}
