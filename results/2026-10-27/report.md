@@ -20,6 +20,43 @@ The four edits produced few prediction changes. Across seeds, mean all-pair flip
 
 The previously trained word and character TF-IDF pilots reported F1 0.500 and 0.551 on this published split. Their protocols differ from the CodeBERT run, so this is context, not a controlled superiority result. The present CodeBERT run does not establish a novel detector, invention, patent claim, or publication readiness.
 
+## Additional case-level audit (27 October)
+
+I re-read the three archived prediction files by original case ID. Of the 25
+positive cases, **eight were false negatives in every seed** (`published-test-row-34`,
+`49`, `60`, `207`, `272`, `273`, `370`, `371`); all other 17 positives were
+identified by at least two seeds. Ten of 381 originals had seed disagreement,
+including two positives. A two-of-three majority would yield TP 17, TN 353,
+FP 3, FN 8. These are repeated decisions on the same cases, not independent
+replications of the test population. Stable failure across random seeds is a
+reason to examine those eight examples, **not** evidence of a shared causal
+mechanism or invalid labels.
+
+Across all four edits and three seeds, only 16 distinct original cases had any
+prediction flip; eight were positive and eight negative. Seven of those 16 cases
+flipped in more than one seed. The four-edit, any-seed grouping was examined
+after seeing results and should not be presented as a preregistered statistical
+test. The next manual review should examine the eight persistent misses and the
+16 flip cases without showing reviewers model predictions first. The review
+must check whether each edit truly preserves the leakage label and whether the
+original dataset label is defensible.
+
+## Closest-work check (27 October)
+
+The [2025 PeerJ study](https://peerj.com/articles/cs-2730/) already trains
+CodeBERT for leakage detection on this dataset; our trained classifier is a
+baseline, not a novel model. A [2025 systematic review](https://arxiv.org/abs/2507.22610)
+examines 45 primary studies of metamorphic testing for deep code models, so
+testing model stability under code edits is established. The
+[FSE 2026 paper](https://doi.org/10.1145/3808199) addresses leakage detection
+with static slicing and LLM reasoning; its full text still needs comparison.
+An [Information and Software Technology study](https://www.sciencedirect.com/science/article/abs/pii/S0950584926003253)
+reports fine-grained manual annotation of 614 notebook pipelines and evaluates
+three detection paradigms; availability, licensing, unit of analysis, and split
+compatibility must be checked before treating its corpus as independent
+confirmation data. This search does **not** establish that our narrow
+exposure-aware, directional-flip audit is novel enough for publication.
+
 ## Limitations and next research gates
 
 The test split was explored before this run. There is no frozen independent confirmation corpus or repository/author-level holdout. Human review packets currently have 0/20 judgments from each of two reviewers, so edit-label validity and inter-rater agreement are unestablished. The source data is narrow and imbalanced; 25 positives make recall sensitive to a few decisions. The observed flip rates are small and may not justify a stand-alone robustness claim. A different research contribution may be needed after a thorough closest-work review.
