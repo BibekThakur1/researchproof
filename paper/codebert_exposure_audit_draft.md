@@ -1,0 +1,129 @@
+# Exposure-Aware Robustness Auditing of a CodeBERT Data-Leakage Classifier
+
+**Working empirical-study draft — not ready for submission.** Authorship,
+human review, independent confirmation, and final novelty assessment are open.
+No findings below should be described as a new algorithm or invention.
+
+## Abstract (provisional)
+
+Code-level data-leakage detectors are commonly evaluated on labeled snippets,
+but aggregate classification scores do not show whether predictions are stable
+under innocuous source edits or whether those edits survive model preprocessing.
+We audit a fixed-budget CodeBERT classifier trained on a published leakage
+dataset. Three prespecified seeds are evaluated on 381 original test snippets
+and four AST-preserving edits of 340 parseable snippets. Original F1 ranges from
+0.698 to 0.756. Prediction flips are uncommon, but eight of 25 positive cases
+are missed by all seeds. Nine appended-comment pairs are invisible at the
+512-token model limit. We distinguish harmful from corrective flips and retain
+case-level evidence. These are within-corpus descriptive findings on an
+explored split; independent labels and external confirmation are pending.
+
+## 1. Introduction
+
+When a detector says a pipeline is free of leakage, a false negative may let
+an invalid experiment proceed. Yet a single benchmark F1 does not identify
+which failures persist across training randomness or whether a textual edit
+can change a prediction without changing the relevant program structure.
+This paper asks: (RQ1) How accurately does a fixed-budget CodeBERT classifier
+identify leakage on the published split? (RQ2) Under AST-preserving edits,
+how often are model inputs actually changed, and how often do predictions
+change? (RQ3) Are errors concentrated in particular cases across seeds?
+
+The contribution *candidate* is an auditable evaluation protocol combining
+source transformation checks, tokenizer exposure checks, directional outcomes,
+and cross-seed case-level analysis. Each ingredient has precedent; whether the
+combination merits publication is still unresolved.
+
+## 2. Related work and positioning
+
+[Alturayeif and Hassine (2025)](https://peerj.com/articles/cs-2730/) already
+study CodeBERT-based leakage detection using the underlying data. Our model
+training is a baseline implementation, not a novel detector or exact reproduction
+of their optimization procedure. [Asgari et al. (2025)](https://arxiv.org/abs/2507.22610)
+review metamorphic testing for deep code models; semantic-preserving edits and
+robustness measurements are not new in themselves. [Draoui et al. (2026)](https://doi.org/10.1145/3808199)
+study leakage detection with static slicing and structured LLM prompts. A
+[recent real-world notebook study](https://www.sciencedirect.com/science/article/abs/pii/S0950584926003253)
+reports fine-grained annotations of 614 model pairs. We have not established
+whether its artifact is available, licensed, or compatible with this task.
+The latter two full papers need deeper comparison before novelty claims.
+
+## 3. Methods
+
+The published data comprises 1,523 training and 381 test code snippets, with
+25 positive test labels. We fine-tuned `microsoft/codebert-base` at pinned
+revision `3b0952feddeffad0063f274080e3c23d75e7eb39`. The frozen protocol
+uses four epochs, maximum length 512, effective batch 16, microbatch 2,
+learning rate 5e-5, and seeds 0, 1, and 2. All three runs completed in a
+private Kaggle GPU notebook. The test data was not used for model selection.
+This test set has nevertheless been explored by the research project and is
+not a fresh confirmation set.
+
+For each of 340 Python-parseable test snippets, we append a neutral comment,
+append a comment claiming the code is safe, append a comment claiming a fault,
+or reformat via `ast.unparse`. The generator requires equality of Python AST
+fingerprints excluding location attributes. This is a bounded structural
+check, not proof of semantic equivalence for self-inspecting programs or
+tooling-sensitive comments. For each pair we record whether token IDs presented
+to CodeBERT differ, whether the prediction flips, and whether that flip changes
+an originally correct answer to wrong or vice versa. We do not pool seeds as
+independent datasets.
+
+The [archived evidence](../results/2026-10-27/codebert_evidence.zip) contains
+fixed configurations, loss logs, per-case predictions and hashes, environment
+metadata, and independently recomputed tables. The archive deliberately omits
+raw third-party code and checkpoint weights. See the
+[validated report](../results/2026-10-27/report.md) for its SHA-256 and exact
+reproduction command.
+
+## 4. Results on the explored split
+
+| Seed | TP | TN | FP | FN | Precision | Recall | F1 |
+| --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: |
+| 0 | 17 | 353 | 3 | 8 | .850 | .680 | .756 |
+| 1 | 15 | 353 | 3 | 10 | .833 | .600 | .698 |
+| 2 | 17 | 351 | 5 | 8 | .773 | .680 | .723 |
+
+Eight positive test cases are false negatives in every seed, while ten of
+381 original cases have differing predictions across seeds. Across all edits
+and seeds, 16 distinct cases exhibit at least one prediction flip; eight are
+positive and eight negative. The mean per-seed all-pair flip rates are 0.39%
+(neutral comment), 1.67% (safe claim), 1.08% (fault claim), and 0.98%
+(formatting). The full per-seed counts, including harmful and corrective
+flips, are in the [generated table](../results/2026-10-27/codebert_tables.md).
+At 512 tokens, 9/340 appended-comment edits are invisible; 6/340 formatting
+edits produce equivalent token inputs. An unchanged prediction when the edit
+was invisible is not evidence of learned robustness.
+
+## 5. Discussion and threats to validity
+
+The strongest present lead is persistent false-negative behavior on a small
+set of positives, not an across-the-board lack of robustness. We do not know
+whether those misses reflect missing notebook context, particular leakage
+mechanisms, noisy labels, truncation, or model limitations. The post-hoc
+targeted-review sample can generate explanations but cannot estimate population
+prevalence. The 25 positive cases are too few for fine-grained subgroup claims
+without large uncertainty. Three seeds show optimizer variation, not three
+independent test samples. Strong accuracy is partly a class-imbalance effect.
+The transformation study uses only four edit families; broader robustness is
+unmeasured. Cross-paper performance numbers are not directly comparable
+because protocols differ.
+
+## 6. Release gates before submission
+
+1. Two people must complete the frozen 20-case label-feasibility pilot and the
+   24-case targeted error packet independently; report agreement and adjudicate
+   disagreements without rewriting original judgments.
+2. Obtain or construct a separately sampled, licensed confirmation corpus
+   with repository grouping. Freeze the sampling/exclusion rule before scoring.
+3. Evaluate CodeBERT and credible matched-task baselines on that corpus,
+   including coverage, precision, recall, false-positive rate, and paired
+   uncertainty at the original repository or workflow level.
+4. Conduct a full-text closest-work comparison, particularly against the
+   2025 review's closest primary studies and the 2026 leakage papers.
+5. Reproduce the saved analysis on another machine, audit data/weight release
+   rights, agree authorship and AI-assistance disclosure, then obtain independent
+   technical feedback before choosing a venue.
+
+If these gates fail, report an exploratory replication/negative result rather
+than presenting this as a novel method paper.
