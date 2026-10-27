@@ -14,7 +14,8 @@ dataset. Three prespecified seeds are evaluated on 381 original test snippets
 and four AST-preserving edits of 340 parseable snippets. Original F1 ranges from
 0.698 to 0.756. Prediction flips are uncommon, but eight of 25 positive cases
 are missed by all seeds. Nine appended-comment pairs are invisible at the
-512-token model limit. We distinguish harmful from corrective flips and retain
+512-token model limit. Six test cases exactly match training text and 16 match
+training ASTs; excluding those 16 gives F1 of 0.667–0.732. We distinguish harmful from corrective flips and retain
 case-level evidence. These are within-corpus descriptive findings on an
 explored split; independent labels and external confirmation are pending.
 
@@ -95,6 +96,14 @@ At 512 tokens, 9/340 appended-comment edits are invisible; 6/340 formatting
 edits produce equivalent token inputs. An unchanged prediction when the edit
 was invisible is not evidence of learned robustness.
 
+The published split also contains six exact training-text duplicates and 16
+AST-equivalent training matches. Excluding the union of those 16 test cases
+leaves 365 examples, including 23 positives. Nonoverlap F1 is 0.732, 0.667,
+and 0.714 for seeds 0, 1, and 2 respectively. All eight persistent false
+negatives remain in this subset. This post-hoc deduplication is a sensitivity
+check, not independent validation; the [saved analysis](../results/2026-10-27/codebert_overlap_analysis.json)
+provides the exact confusion counts and checksums.
+
 ## 5. Discussion and threats to validity
 
 The strongest present lead is persistent false-negative behavior on a small
@@ -116,6 +125,8 @@ because protocols differ.
    disagreements without rewriting original judgments.
 2. Obtain or construct a separately sampled, licensed confirmation corpus
    with repository grouping. Freeze the sampling/exclusion rule before scoring.
+   The [data-source audit](../docs/CONFIRMATION_DATA_AUDIT_2026-10-27.md)
+   explains why currently cached sources do not yet meet this requirement.
 3. Evaluate CodeBERT and credible matched-task baselines on that corpus,
    including coverage, precision, recall, false-positive rate, and paired
    uncertainty at the original repository or workflow level.

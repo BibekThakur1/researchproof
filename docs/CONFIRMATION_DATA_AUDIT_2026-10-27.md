@@ -1,0 +1,34 @@
+# External confirmation data: feasibility audit
+
+This note separates *available source files* from a genuinely independent,
+task-compatible confirmation benchmark. No listed corpus has yet passed the
+full confirmation gate. The existing PeerJ split and ASE materials have been
+explored during development and cannot be relabeled as untouched.
+
+| Candidate | What is verified | Why it cannot yet validate the current claim |
+| --- | --- | --- |
+| [PeerJ/Figshare leakage snippets](https://figshare.com/articles/dataset/Dataset_for_Data_Leakage_Detection_in_Machine_Learning_Code/24893799) | Canonical 1,523/381 split cached and checksum-verified; 16 test snippets have training AST matches. | This is the development dataset already used to shape the study. |
+| [ASE 2022 notebook materials](https://arxiv.org/abs/2209.03345) | Pinned public artifacts are locally cached; the local audit has 100 notebooks, 66 with explicit preprocessing labels. | Labels are at notebook/workflow level and do not map automatically to a single CodeBERT snippet. The corpus was already explored locally. A task-matched adaptation requires new human annotation and a frozen extraction rule. |
+| [2026 manifestation-level notebook study](https://www.sciencedirect.com/science/article/abs/pii/S0950584926003253) | Publisher abstract describes 614 manually annotated model-pair pipelines and three evaluated detection paradigms. | I did not verify a downloadable artifact, license, notebook identifiers, or a compatible snippet extraction. Treat this as a data lead, not an available confirmation set. |
+
+## Confirmation protocol to freeze before any new scores
+
+The unit should be one independently authored workflow/model pair with a
+human-reviewed leakage label and sufficient surrounding code for the claimed
+fault type. Record source URL/revision/license, notebook and repository IDs,
+collection date, exclusions, and any adaptation from a notebook to a model
+input. Exclude overlap with PeerJ training and test material by exact text,
+AST fingerprint when parseable, and repository identity where known. Freeze
+the sample and labels before running model predictions. Keep all variants of
+one workflow together in analysis and bootstrap by workflow/repository, not
+by seeds or edits. Report abstentions or unsupported inputs separately from
+negative predictions. A paper should not claim external generalization if
+the external corpus cannot be constructed and independently checked.
+
+## Current decision
+
+No new corpus is ready to score. The independent contribution must remain
+provisional. The next autonomous work is to obtain a *verifiable* released
+artifact or build a new source inventory; the next human work is annotation
+and adjudication. Neither a synthetic dataset nor a copied subset of the
+current split would satisfy this gate.
