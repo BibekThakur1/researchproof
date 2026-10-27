@@ -9,7 +9,14 @@ explored during development and cannot be relabeled as untouched.
 | --- | --- | --- |
 | [PeerJ/Figshare leakage snippets](https://figshare.com/articles/dataset/Dataset_for_Data_Leakage_Detection_in_Machine_Learning_Code/24893799) | Canonical 1,523/381 split cached and checksum-verified; 12 test snippets have nonempty training AST matches. | This is the development dataset already used to shape the study. |
 | [ASE 2022 notebook materials](https://arxiv.org/abs/2209.03345) | Pinned public artifacts are locally cached; the local audit has 100 notebooks, 66 with explicit preprocessing labels. | Labels are at notebook/workflow level and do not map automatically to a single CodeBERT snippet. The corpus was already explored locally. A task-matched adaptation requires new human annotation and a frozen extraction rule. |
-| [2026 manifestation-level notebook study](https://www.sciencedirect.com/science/article/abs/pii/S0950584926003253) | Publisher abstract describes 614 manually annotated model-pair pipelines and three evaluated detection paradigms. | I did not verify a downloadable artifact, license, notebook identifiers, or a compatible snippet extraction. Treat this as a data lead, not an available confirmation set. |
+| [2026 manifestation-level notebook study](https://www.sciencedirect.com/science/article/abs/pii/S0950584926003253) | Publisher-indexed text describes 614 manually annotated model-pair pipelines, three evaluated detection paradigms, and says the authors release a curated dataset. | I did not verify the release URL, downloadable files, license, notebook identifiers, or a compatible snippet extraction. Treat this as a data lead, not an available confirmation set. |
+
+The 2026 article's stated release is worth pursuing, but an indexed claim of
+release is not an artifact audit. Direct publisher access returned 403 during
+the 27 October check, and title/author searches did not yield a verifiable
+archive. The available [Code4ML 2.0 archive](https://zenodo.org/records/12700065)
+helps recover *context for existing PeerJ examples*, not an independent
+confirmation set. See the [five source-verified persistent misses](PERSISTENT_MISS_PROVENANCE_2026-10-27.md).
 
 ## Confirmation protocol to freeze before any new scores
 

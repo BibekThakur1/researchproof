@@ -41,14 +41,20 @@ combination merits publication is still unresolved.
 [Alturayeif and Hassine (2025)](https://peerj.com/articles/cs-2730/) already
 study CodeBERT-based leakage detection using the underlying data. Our model
 training is a baseline implementation, not a novel detector or exact reproduction
-of their optimization procedure. [Asgari et al. (2025)](https://arxiv.org/abs/2507.22610)
+of their optimization procedure. They also explicitly acknowledge the lack of
+cross-cell context in their snippet labels. [Asgari et al. (2025)](https://arxiv.org/abs/2507.22610)
 review metamorphic testing for deep code models; semantic-preserving edits and
-robustness measurements are not new in themselves. [Draoui et al. (2026)](https://doi.org/10.1145/3808199)
+robustness measurements are not new in themselves. [Applis et al. (2021)](https://doi.org/10.1109/ASE51524.2021.9678706)
+already transform CodeBERT inputs in another task, and a [2026 CodeBERT
+preprint](https://arxiv.org/pdf/2609.21203) already reports directional flips
+and grouped uncertainty for vulnerability classification. [Draoui et al. (2026)](https://doi.org/10.1145/3808199)
 study leakage detection with static slicing and structured LLM prompts. A
 [recent real-world notebook study](https://www.sciencedirect.com/science/article/abs/pii/S0950584926003253)
 reports fine-grained annotations of 614 model pairs. We have not established
 whether its artifact is available, licensed, or compatible with this task.
-The latter two full papers need deeper comparison before novelty claims.
+The latter two full papers need deeper comparison before novelty claims; the
+[bounded closest-work audit](../docs/CLOSEST_WORK_AUDIT_2026-10-27.md)
+records what was verified and what remains unknown.
 
 ## 3. Methods
 
@@ -119,9 +125,14 @@ differ and the split has already been explored.
 ## 5. Discussion and threats to validity
 
 The strongest present lead is persistent false-negative behavior on a small
-set of positives, not an across-the-board lack of robustness. We do not know
-whether those misses reflect missing notebook context, particular leakage
-mechanisms, noisy labels, truncation, or model limitations. The post-hoc
+set of positives, not an across-the-board lack of robustness. A preliminary
+[source-provenance audit](../docs/PERSISTENT_MISS_PROVENANCE_2026-10-27.md)
+matched five of eight misses to exact cells in public notebook snapshots.
+Their surrounding code includes both a clear holdout-reuse pattern and local
+operations that appear to use training-derived statistics correctly. This
+does **not** establish that any published label is wrong: historical notebook
+revisions, full execution context, the annotation unit, and independent human
+judgments are still missing. The post-hoc
 targeted-review sample can generate explanations but cannot estimate population
 prevalence. The 25 positive cases are too few for fine-grained subgroup claims
 without large uncertainty. Three seeds show optimizer variation, not three

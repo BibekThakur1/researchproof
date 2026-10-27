@@ -12,6 +12,17 @@ published split” is supported. Earlier statements below that full neural resul
 are missing are superseded. Independent generalization, human agreement, novelty,
 invention and publication readiness remain unsupported.
 
+The 27 October provenance follow-up found exact source text for seven of the
+eight persistent misses in a third-party Code4ML derivative, and exact cells
+for five in current public Kaggle notebook snapshots. The reproducible
+[`case table`](../results/2026-10-27/persistent_false_negative_audit.csv) and
+[`trace note`](../docs/PERSISTENT_MISS_PROVENANCE_2026-10-27.md) support only
+source-provenance and *preliminary* code-flow observations. They do not support
+five confirmed historical origins, any correction to the published labels,
+human agreement, or a revised detector F1. The
+[`closest-work audit`](../docs/CLOSEST_WORK_AUDIT_2026-10-27.md) found a
+particularly close 2026 CodeBERT robustness preprint; novelty remains open.
+
 ## October 3: active robustness study
 
 October 16 addition: `results/2026-10-16/token_visibility.json` establishes that
