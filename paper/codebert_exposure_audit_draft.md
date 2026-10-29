@@ -132,7 +132,12 @@ Their surrounding code includes both a clear holdout-reuse pattern and local
 operations that appear to use training-derived statistics correctly. This
 does **not** establish that any published label is wrong: historical notebook
 revisions, full execution context, the annotation unit, and independent human
-judgments are still missing. The post-hoc
+judgments are still missing. An expanded [positive-label provenance
+check](../docs/POSITIVE_CONTEXT_GATE_2026-10-29.md) found exact current
+notebook cells for 15 of 25 published positives. Their cases suggest that a
+cell's own behavior and a notebook-level workflow label may be different
+constructs, but the analysis is post hoc and source recoverability is
+selective. No revised performance estimate follows from it. The post-hoc
 targeted-review sample can generate explanations but cannot estimate population
 prevalence. The 25 positive cases are too few for fine-grained subgroup claims
 without large uncertainty. Three seeds show optimizer variation, not three

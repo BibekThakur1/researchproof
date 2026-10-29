@@ -1,0 +1,502 @@
+{
+  "status": "exploratory_positive_source_provenance_not_label_validation",
+  "canonical_test_sha256": "edd9f8c43687ad19828ff8b8c6f20ca08f85fbd7c317261adf93414f1101ecb3",
+  "derivative_sha256": "f96185e6b0a592626a4308d62cebe3cb9dc9e6dc2947bd064a0cae5e790b7a32",
+  "code4ml_metadata_md5": "738958a342398cdbb82eb5473405c4c6",
+  "archive_sha256": "1315ac01c9e27021f590b8d47dac5e69d970f6caef0918bed21978bc068eafbe",
+  "summary": {
+    "published_positive_cases": 25,
+    "exact_derivative_matches": 23,
+    "candidate_kernel_ids": 15,
+    "exact_current_notebook_cells": 15
+  },
+  "cases": [
+    {
+      "case_id": "published-test-row-34",
+      "published_label": 1,
+      "predictions_seed_0_1_2": [
+        0,
+        0,
+        0
+      ],
+      "source_sha256": "5046e5598f5e08fab9d174f566b128d06e072f0e749593ceea28092aee522f2b",
+      "exact_derivative_match": true,
+      "derived_code4ml_row_id": "6151",
+      "candidate_kernel_id": "180496",
+      "notebook_url": "https://www.kaggle.com/code/oysteijo/rental-neural-network",
+      "current_notebook_sha256": "67150a19b747636bf678b105009ad3dea90f52bc8bda4314e9c1e16bda62a148",
+      "exact_cell_indices_zero_based": [
+        11
+      ],
+      "source_verified_in_current_notebook": true,
+      "context_judgment": "pending_independent_human_review"
+    },
+    {
+      "case_id": "published-test-row-49",
+      "published_label": 1,
+      "predictions_seed_0_1_2": [
+        0,
+        0,
+        0
+      ],
+      "source_sha256": "dbee9e078f165294f0565a92953b57f1254691ff707666a0152a0ba2796bb560",
+      "exact_derivative_match": true,
+      "derived_code4ml_row_id": "5545",
+      "candidate_kernel_id": null,
+      "notebook_url": null,
+      "current_notebook_sha256": null,
+      "exact_cell_indices_zero_based": [],
+      "source_verified_in_current_notebook": false,
+      "context_judgment": "pending_independent_human_review"
+    },
+    {
+      "case_id": "published-test-row-60",
+      "published_label": 1,
+      "predictions_seed_0_1_2": [
+        0,
+        0,
+        0
+      ],
+      "source_sha256": "05f34692a9043d8a9adcb1b4839c5c3f4adca00a5a320ffa780189f85b5c59d7",
+      "exact_derivative_match": true,
+      "derived_code4ml_row_id": "604",
+      "candidate_kernel_id": "11097956",
+      "notebook_url": "https://www.kaggle.com/code/israakhalil/restaurant-revenue-prediction-small",
+      "current_notebook_sha256": "a310f5fd4960e05b9dbf2e54ab2697fb092e5a1171e17c234c74ef6db91424a0",
+      "exact_cell_indices_zero_based": [
+        17
+      ],
+      "source_verified_in_current_notebook": true,
+      "context_judgment": "pending_independent_human_review"
+    },
+    {
+      "case_id": "published-test-row-72",
+      "published_label": 1,
+      "predictions_seed_0_1_2": [
+        1,
+        1,
+        1
+      ],
+      "source_sha256": "45fd535940d18b810374a18f191c45488f383e6fb2fa776b7ae8b8d7b836604a",
+      "exact_derivative_match": true,
+      "derived_code4ml_row_id": "6704",
+      "candidate_kernel_id": "1270236",
+      "notebook_url": "https://www.kaggle.com/code/sasadeghi/final",
+      "current_notebook_sha256": "3b0d68874ecca709cc8c5f9533779eab071a1caeca40d641f66c35ca49632f61",
+      "exact_cell_indices_zero_based": [
+        8
+      ],
+      "source_verified_in_current_notebook": true,
+      "context_judgment": "pending_independent_human_review"
+    },
+    {
+      "case_id": "published-test-row-111",
+      "published_label": 1,
+      "predictions_seed_0_1_2": [
+        1,
+        1,
+        1
+      ],
+      "source_sha256": "5b6c085161492184688e4b7265355fc1b32e63de5d60a0602513615459f12320",
+      "exact_derivative_match": true,
+      "derived_code4ml_row_id": "6331",
+      "candidate_kernel_id": "242073",
+      "notebook_url": "https://www.kaggle.com/code/zaitcevav/home-work3",
+      "current_notebook_sha256": "17cc2c93e049eae75d1a607e7f1493437e1ef35036b32e79d9240176c560211e",
+      "exact_cell_indices_zero_based": [
+        16
+      ],
+      "source_verified_in_current_notebook": true,
+      "context_judgment": "pending_independent_human_review"
+    },
+    {
+      "case_id": "published-test-row-132",
+      "published_label": 1,
+      "predictions_seed_0_1_2": [
+        1,
+        1,
+        1
+      ],
+      "source_sha256": "df0a4d6fc5a5dac935d35ce86848fbba48d6bc62dece11c9e9f2405f05664109",
+      "exact_derivative_match": true,
+      "derived_code4ml_row_id": "6742",
+      "candidate_kernel_id": null,
+      "notebook_url": null,
+      "current_notebook_sha256": null,
+      "exact_cell_indices_zero_based": [],
+      "source_verified_in_current_notebook": false,
+      "context_judgment": "pending_independent_human_review"
+    },
+    {
+      "case_id": "published-test-row-177",
+      "published_label": 1,
+      "predictions_seed_0_1_2": [
+        1,
+        1,
+        1
+      ],
+      "source_sha256": "5d14500968ff30f3a5b6e58b12fa5d49573c53eb89b8869baedbdcb9d852ab59",
+      "exact_derivative_match": true,
+      "derived_code4ml_row_id": "6747",
+      "candidate_kernel_id": "1278958",
+      "notebook_url": "https://www.kaggle.com/code/armanelmos/classifier-ensemble-with-majority-voting",
+      "current_notebook_sha256": "16461a259e9179c369c1cded356a1723b7a47ea3334f93eafc4c2bfd0690d009",
+      "exact_cell_indices_zero_based": [
+        3
+      ],
+      "source_verified_in_current_notebook": true,
+      "context_judgment": "pending_independent_human_review"
+    },
+    {
+      "case_id": "published-test-row-187",
+      "published_label": 1,
+      "predictions_seed_0_1_2": [
+        1,
+        1,
+        1
+      ],
+      "source_sha256": "1fbb64ec278f70d9eaee2f34b93c968aa4621318c2622ae9e53b16f7786f2dee",
+      "exact_derivative_match": true,
+      "derived_code4ml_row_id": "6012",
+      "candidate_kernel_id": null,
+      "notebook_url": null,
+      "current_notebook_sha256": null,
+      "exact_cell_indices_zero_based": [],
+      "source_verified_in_current_notebook": false,
+      "context_judgment": "pending_independent_human_review"
+    },
+    {
+      "case_id": "published-test-row-207",
+      "published_label": 1,
+      "predictions_seed_0_1_2": [
+        0,
+        0,
+        0
+      ],
+      "source_sha256": "04dfc5aeb9d74517f822cc8c8324a5b0fd3925a8bdb80f4f9845ea4006bf3dc5",
+      "exact_derivative_match": true,
+      "derived_code4ml_row_id": "2258",
+      "candidate_kernel_id": "3237641",
+      "notebook_url": "https://www.kaggle.com/code/omarsayed7/xgboost-rossman-sales",
+      "current_notebook_sha256": "77930512a72e882491d4111150ef73417ef1c4750e1b7d09a62b71c8687bfbd1",
+      "exact_cell_indices_zero_based": [
+        48
+      ],
+      "source_verified_in_current_notebook": true,
+      "context_judgment": "pending_independent_human_review"
+    },
+    {
+      "case_id": "published-test-row-214",
+      "published_label": 1,
+      "predictions_seed_0_1_2": [
+        1,
+        1,
+        1
+      ],
+      "source_sha256": "1a01a4bbb18448e9c1a276e72e15f2227ea26a3e43cde45e3a3dd1d4856961b2",
+      "exact_derivative_match": true,
+      "derived_code4ml_row_id": "4402",
+      "candidate_kernel_id": "6901265",
+      "notebook_url": "https://www.kaggle.com/code/pedrokb/projetoam",
+      "current_notebook_sha256": "bea53937272a93b5e9192ecb1e0d509edffd8d069f2a3116f9dd291654ea35fa",
+      "exact_cell_indices_zero_based": [
+        17
+      ],
+      "source_verified_in_current_notebook": true,
+      "context_judgment": "pending_independent_human_review"
+    },
+    {
+      "case_id": "published-test-row-227",
+      "published_label": 1,
+      "predictions_seed_0_1_2": [
+        1,
+        1,
+        1
+      ],
+      "source_sha256": "e364b1a5351fa9cb348ae114f3c1a5cc457f8bed2ed94d44cd685192faf631ef",
+      "exact_derivative_match": true,
+      "derived_code4ml_row_id": "3059",
+      "candidate_kernel_id": "13885246",
+      "notebook_url": "https://www.kaggle.com/code/kittiyaneerungon/loan-default-prediction",
+      "current_notebook_sha256": "731c03b1f2899d2bf7e69b84d913466ac33ca1896a9829be8b1c77329fb4f7ab",
+      "exact_cell_indices_zero_based": [
+        11
+      ],
+      "source_verified_in_current_notebook": true,
+      "context_judgment": "pending_independent_human_review"
+    },
+    {
+      "case_id": "published-test-row-251",
+      "published_label": 1,
+      "predictions_seed_0_1_2": [
+        1,
+        1,
+        1
+      ],
+      "source_sha256": "8a086c35d832ada388ec0b197525f59e0e1ac452d8e879b9a5aeaf2ce3308e07",
+      "exact_derivative_match": true,
+      "derived_code4ml_row_id": "2170",
+      "candidate_kernel_id": null,
+      "notebook_url": null,
+      "current_notebook_sha256": null,
+      "exact_cell_indices_zero_based": [],
+      "source_verified_in_current_notebook": false,
+      "context_judgment": "pending_independent_human_review"
+    },
+    {
+      "case_id": "published-test-row-261",
+      "published_label": 1,
+      "predictions_seed_0_1_2": [
+        1,
+        1,
+        1
+      ],
+      "source_sha256": "f165f49b04f63daea0a44696c4c62c4053efbba7cf3ea0396a4bcc07bc748532",
+      "exact_derivative_match": true,
+      "derived_code4ml_row_id": "4844",
+      "candidate_kernel_id": null,
+      "notebook_url": null,
+      "current_notebook_sha256": null,
+      "exact_cell_indices_zero_based": [],
+      "source_verified_in_current_notebook": false,
+      "context_judgment": "pending_independent_human_review"
+    },
+    {
+      "case_id": "published-test-row-269",
+      "published_label": 1,
+      "predictions_seed_0_1_2": [
+        1,
+        1,
+        1
+      ],
+      "source_sha256": "3a8aafbc6b32358bb7b9deede84831541190a96be9f88d40d6ab8a0316cf54c9",
+      "exact_derivative_match": true,
+      "derived_code4ml_row_id": "7260",
+      "candidate_kernel_id": null,
+      "notebook_url": null,
+      "current_notebook_sha256": null,
+      "exact_cell_indices_zero_based": [],
+      "source_verified_in_current_notebook": false,
+      "context_judgment": "pending_independent_human_review"
+    },
+    {
+      "case_id": "published-test-row-272",
+      "published_label": 1,
+      "predictions_seed_0_1_2": [
+        0,
+        0,
+        0
+      ],
+      "source_sha256": "52ee40d2bb8d3e322455befa42f2bc0430adae70ec7a10f4303cff3b7c511628",
+      "exact_derivative_match": true,
+      "derived_code4ml_row_id": "1857",
+      "candidate_kernel_id": "243149",
+      "notebook_url": "https://www.kaggle.com/code/petertrr/notebook4ffbcedf04",
+      "current_notebook_sha256": "983db765647c75b36a39b4e9af575b528b0678b66afcc6cb9400c7eb78e7b1ae",
+      "exact_cell_indices_zero_based": [
+        6
+      ],
+      "source_verified_in_current_notebook": true,
+      "context_judgment": "pending_independent_human_review"
+    },
+    {
+      "case_id": "published-test-row-273",
+      "published_label": 1,
+      "predictions_seed_0_1_2": [
+        0,
+        0,
+        0
+      ],
+      "source_sha256": "9ba1925a22695266472c5a925f893a70ffac3f89374528f5221cbcdebdf1e4ca",
+      "exact_derivative_match": true,
+      "derived_code4ml_row_id": "6226",
+      "candidate_kernel_id": null,
+      "notebook_url": null,
+      "current_notebook_sha256": null,
+      "exact_cell_indices_zero_based": [],
+      "source_verified_in_current_notebook": false,
+      "context_judgment": "pending_independent_human_review"
+    },
+    {
+      "case_id": "published-test-row-321",
+      "published_label": 1,
+      "predictions_seed_0_1_2": [
+        1,
+        1,
+        1
+      ],
+      "source_sha256": "98a1c498f1ba2373647c59cf9181393d6cb7d44c6de0156068f331f532c11bda",
+      "exact_derivative_match": true,
+      "derived_code4ml_row_id": "6978",
+      "candidate_kernel_id": "1497226",
+      "notebook_url": "https://www.kaggle.com/code/chetlurkrishna/baseline-random-forest-8321e7",
+      "current_notebook_sha256": "01fbee7fdbbd480aef56bcd0ed51f5a9e5e946e32a1a38792625bac81891f1a5",
+      "exact_cell_indices_zero_based": [
+        13
+      ],
+      "source_verified_in_current_notebook": true,
+      "context_judgment": "pending_independent_human_review"
+    },
+    {
+      "case_id": "published-test-row-327",
+      "published_label": 1,
+      "predictions_seed_0_1_2": [
+        1,
+        1,
+        1
+      ],
+      "source_sha256": "43612836ae232d5d27869d221d32a183e808195f3ed09c7f95bdb75aff2253fb",
+      "exact_derivative_match": true,
+      "derived_code4ml_row_id": "4032",
+      "candidate_kernel_id": "3930917",
+      "notebook_url": "https://www.kaggle.com/code/rotemshalev/bike-sharing-challenge",
+      "current_notebook_sha256": "83afdb4e936bffba4962ca4a3b7d0c78baeaf33c459dba7555db0035813ef6d8",
+      "exact_cell_indices_zero_based": [
+        40
+      ],
+      "source_verified_in_current_notebook": true,
+      "context_judgment": "pending_independent_human_review"
+    },
+    {
+      "case_id": "published-test-row-331",
+      "published_label": 1,
+      "predictions_seed_0_1_2": [
+        1,
+        1,
+        1
+      ],
+      "source_sha256": "231b282c689fb58011f6c332e340e3d61b3b07b177b65a70f57d21add2b764c0",
+      "exact_derivative_match": true,
+      "derived_code4ml_row_id": "4870",
+      "candidate_kernel_id": "13074892",
+      "notebook_url": "https://www.kaggle.com/code/viveknimsarkar/eda-on-shared-bike-demand-case",
+      "current_notebook_sha256": "145ec9beabac6b72c511246007082e6f79f788ad439128562c73b80d8d715d8d",
+      "exact_cell_indices_zero_based": [
+        36
+      ],
+      "source_verified_in_current_notebook": true,
+      "context_judgment": "pending_independent_human_review"
+    },
+    {
+      "case_id": "published-test-row-356",
+      "published_label": 1,
+      "predictions_seed_0_1_2": [
+        1,
+        0,
+        1
+      ],
+      "source_sha256": "1cc2ce72b8ebc01b22d04ec28094c9e79b933878ec48b8d2d4aba095af28f5e8",
+      "exact_derivative_match": true,
+      "derived_code4ml_row_id": "2471",
+      "candidate_kernel_id": "6511403",
+      "notebook_url": "https://www.kaggle.com/code/sm12120552/rossmann-store-sales",
+      "current_notebook_sha256": "63fb33b25dbf712492f6281cc21ee787e76b931fb34d02d0455959b25b2b8758",
+      "exact_cell_indices_zero_based": [
+        12
+      ],
+      "source_verified_in_current_notebook": true,
+      "context_judgment": "pending_independent_human_review"
+    },
+    {
+      "case_id": "published-test-row-358",
+      "published_label": 1,
+      "predictions_seed_0_1_2": [
+        1,
+        0,
+        1
+      ],
+      "source_sha256": "40cfe7dc5d7bdd97ed41f80a930dc9035b12fe32baf2c31fefe35c454454c8ae",
+      "exact_derivative_match": false,
+      "derived_code4ml_row_id": null,
+      "candidate_kernel_id": null,
+      "notebook_url": null,
+      "current_notebook_sha256": null,
+      "exact_cell_indices_zero_based": [],
+      "source_verified_in_current_notebook": false,
+      "context_judgment": "pending_independent_human_review"
+    },
+    {
+      "case_id": "published-test-row-370",
+      "published_label": 1,
+      "predictions_seed_0_1_2": [
+        0,
+        0,
+        0
+      ],
+      "source_sha256": "2f626591bad7fc32b54f67e361b170dc561135213e90893c917637cfc645845c",
+      "exact_derivative_match": true,
+      "derived_code4ml_row_id": "7622",
+      "candidate_kernel_id": "2083980",
+      "notebook_url": "https://www.kaggle.com/code/barelydedicated/average-perceptron-movie-review-classification",
+      "current_notebook_sha256": "668656fe1069e5d5b7c97fbea4d97e024ac563be857d760e80846b32903db645",
+      "exact_cell_indices_zero_based": [
+        6
+      ],
+      "source_verified_in_current_notebook": true,
+      "context_judgment": "pending_independent_human_review"
+    },
+    {
+      "case_id": "published-test-row-371",
+      "published_label": 1,
+      "predictions_seed_0_1_2": [
+        0,
+        0,
+        0
+      ],
+      "source_sha256": "515b9e9c44e1eb9a79fd2fb7a1fb679d4454f5c290abe1e194836d63f55f80be",
+      "exact_derivative_match": false,
+      "derived_code4ml_row_id": null,
+      "candidate_kernel_id": null,
+      "notebook_url": null,
+      "current_notebook_sha256": null,
+      "exact_cell_indices_zero_based": [],
+      "source_verified_in_current_notebook": false,
+      "context_judgment": "pending_independent_human_review"
+    },
+    {
+      "case_id": "published-test-row-373",
+      "published_label": 1,
+      "predictions_seed_0_1_2": [
+        1,
+        1,
+        1
+      ],
+      "source_sha256": "8b56b5bda4b0506f13f3f180ac0cabe8ce0071bd5eb9d79e8ae7a55e67819b69",
+      "exact_derivative_match": true,
+      "derived_code4ml_row_id": "6174",
+      "candidate_kernel_id": "183411",
+      "notebook_url": "https://www.kaggle.com/code/hakabuk/random-forest-with-more-numeric-features",
+      "current_notebook_sha256": "f500067d316e85a21d12b77ac2529cac4d75bfd0b187d1a1b271f0cdf4a500e1",
+      "exact_cell_indices_zero_based": [
+        13
+      ],
+      "source_verified_in_current_notebook": true,
+      "context_judgment": "pending_independent_human_review"
+    },
+    {
+      "case_id": "published-test-row-376",
+      "published_label": 1,
+      "predictions_seed_0_1_2": [
+        1,
+        1,
+        1
+      ],
+      "source_sha256": "3a95efca8fcdc4105001c7a2bff89af66663e4c667c0a8829fd9c912ad675350",
+      "exact_derivative_match": true,
+      "derived_code4ml_row_id": "7461",
+      "candidate_kernel_id": null,
+      "notebook_url": null,
+      "current_notebook_sha256": null,
+      "exact_cell_indices_zero_based": [],
+      "source_verified_in_current_notebook": false,
+      "context_judgment": "pending_independent_human_review"
+    }
+  ],
+  "limitations": [
+    "Current Kaggle notebook snapshots are not pinned historical annotation revisions.",
+    "Third-party recovered kernel IDs may not identify the original annotation source.",
+    "Exact code-cell matches verify current source presence, not leakage labels.",
+    "All 25 cases were selected by published positive label after test-set exploration.",
+    "No label correction or new detector accuracy is justified without independent review."
+  ]
+}

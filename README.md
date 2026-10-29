@@ -10,16 +10,22 @@ This repository begins with a narrow, reproducible scope: tabular classification
 
 ## Current status
 
-**27 October update:** The private Kaggle CodeBERT run completed all three
-prespecified seeds. The [validated results and limitations](results/2026-10-27/report.md)
-and [compact evidence archive](results/2026-10-27/codebert_evidence.zip) are available.
-Human review and independent confirmation are still missing; this is not yet a
-submission-ready paper. Older pending-status descriptions below are historical.
+**29 October update:** The private Kaggle CodeBERT run completed all three
+prespecified seeds. The [validated results](results/2026-10-27/report.md),
+[compact evidence archive](results/2026-10-27/codebert_evidence.zip), and
+[25-positive source-provenance audit](docs/POSITIVE_CONTEXT_GATE_2026-10-29.md)
+are available. Fifteen published positive snippets were verified as exact
+cells in current public notebooks; that verifies source presence, **not** their
+leakage labels. The [submission-readiness decision](docs/SUBMISSION_READINESS_2026-10-29.md)
+explains the remaining human-review, external-data, novelty, and author gates.
+The current paper candidate is an empirical reliability audit, not a new
+universal leakage detector or a proven invention. Older experiments and plans
+below are retained as project history.
 
 The [Kaggle readiness guide](docs/KAGGLE_READY.md) describes the staged private
 notebook, startup diagnostics, compact result export and local verification.
-The frozen build was uploaded to a private Kaggle notebook on October 27. It
-passed GPU setup and started three-seed training; full results remain pending.
+The frozen build ran to completion in private Kaggle notebook version 5 on
+October 27; its exported evidence was checked locally.
 The [independent review guide](docs/HUMAN_REVIEW_NEXT.md) explains the work that
 the two researchers can complete while Kaggle is unavailable.
 
@@ -29,39 +35,42 @@ invisible for 9/340 eligible snippets. This is preprocessing evidence, not a tra
 detector result or a demonstrated new invention.
 
 The [three-seed analysis guide](docs/neural_analysis.md) describes the validated
-aggregation step for returned full CodeBERT runs. It reports optimization variation
-without treating repeated seeds as independent test corpora. Actual full outputs
-are still required; test fixtures are not research evidence.
+aggregation step for the completed CodeBERT runs. It reports optimization
+variation without treating repeated seeds as independent test corpora.
 
 The [research-completion brief](docs/RESEARCH_COMPLETION_PROMPT.md) now governs the
 remaining task scope. The [October 3 literature update](docs/literature_update_2026-10-03.md)
 narrows novelty claims. A private [GPU transfer workflow](docs/compute_bundle.md)
-and three-way review validator are available; actual full training and human review
-remain incomplete. The brief is an execution plan, not evidence of completion.
+and three-way review validator are available; full training is complete, but
+human review remains incomplete. The brief is an execution plan, not evidence
+of submission readiness.
 
 The [September 29 CodeBERT runbook](docs/codebert_runbook.md) provides a pinned
 neural training pipeline and strict completed-run validation. Local smoke and
-real-checkpoint CPU preflight tests passed. These are engineering checks, not
-neural research results; full training and independent review are still required.
+real-checkpoint CPU preflight tests passed. Those were engineering checks;
+the later completed Kaggle run supplies the neural results. Independent review
+is still required.
 
 The [September 26 static-baseline evaluation](docs/mlscent_replication_2026-09-26.md)
 runs actual pinned MLScent code, accounts for skipped inputs, and confirms an
 executable preprocessing-warning failure. This is a current-tool evaluation, not
 historical-paper replication. Neural-baseline training and human review remain open.
 
-The active direction is now a **detector-robustness pilot**, with an
-[evidence-backed manuscript draft](paper/robustness_pilot_draft.md) and a
-[researcher handoff](docs/research_handoff_2026-09-21.md). Two local lexical models
-were trained and evaluated on published data. They are not reproductions of the
-published CodeBERT model, and the draft is not submission-ready.
+The current paper candidate is the
+[CodeBERT exposure audit](paper/codebert_exposure_audit_draft.md). The earlier
+[robustness pilot draft](paper/robustness_pilot_draft.md) and
+[researcher handoff](docs/research_handoff_2026-09-21.md) record how that
+direction developed; neither is a submission-ready paper.
 
 The [September 18 checkpoint](docs/progress_2026-09-18.md) adds a restricted
 GridSearchCV capture adapter. Across 18 searches and 54 constructed report-origin
 probes, it matches the library's choices but shows **no advantage over a simple
 split-role baseline**. All 118 tests pass; external usefulness remains unproven.
 
-See the [publication plan](docs/publication_plan.md) for the active paper scope,
-required external evaluation, coauthor tasks, and submission criteria. The new
+See the [current readiness decision](docs/SUBMISSION_READINESS_2026-10-29.md)
+for the active paper's gates. The historical
+[publication plan](docs/publication_plan.md) concerned an earlier system
+direction. The
 `scripts/run_persistence_pilot.py` tests saved evidence with actual model fits;
 it remains a development experiment, not an external benchmark.
 
@@ -78,8 +87,8 @@ external notebooks. These results narrow the next research question to evaluatio
 score provenance and instrumentation completeness. They do not establish a general
 detector or publication readiness.
 
-The project is at the benchmark-construction and external-validation stage. There are
-development observations, but no frozen research results yet.
+The current CodeBERT study has frozen within-corpus results but no independent
+confirmation result. Earlier framework experiments remain development work.
 
 The smallest executable pilot compares two versions of the same classification experiment:
 
