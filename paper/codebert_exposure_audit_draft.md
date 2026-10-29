@@ -49,6 +49,9 @@ already transform CodeBERT inputs in another task, and a [2026 CodeBERT
 preprint](https://arxiv.org/pdf/2609.21203) already reports directional flips
 and grouped uncertainty for vulnerability classification. [Draoui et al. (2026)](https://doi.org/10.1145/3808199)
 study leakage detection with static slicing and structured LLM prompts. A
+[2025 abstract-interpretation study](https://caterinaurban.github.io/pdf/scp2025.pdf)
+also finds that notebook leakage often spans multiple cells; context
+dependence is not a new observation. A
 [recent real-world notebook study](https://www.sciencedirect.com/science/article/abs/pii/S0950584926003253)
 reports fine-grained annotations of 614 model pairs. We have not established
 whether its artifact is available, licensed, or compatible with this task.
