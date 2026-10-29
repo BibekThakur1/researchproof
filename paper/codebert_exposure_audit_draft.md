@@ -151,9 +151,14 @@ because protocols differ.
 
 ## 6. Release gates before submission
 
-1. Two people must complete the frozen 20-case label-feasibility pilot and the
-   24-case targeted error packet independently; report agreement and adjudicate
-   disagreements without rewriting original judgments.
+1. Two people first complete the blinded eight-case notebook-context packet
+   independently; preserve the original forms, report agreement, and adjudicate
+   disagreements separately. This selected packet explains persistent misses
+   but cannot measure label-error prevalence. The older 20-case snippet pilot
+   and 24-case targeted packet are separate, still-unreviewed exploratory
+   materials—not substitutes for notebook-context review. If the eight cases
+   reveal a recurrent context problem, prespecify a larger balanced sample
+   including negatives before inspecting its model outcomes.
 2. Obtain or construct a separately sampled, licensed confirmation corpus
    with repository grouping. Freeze the sampling/exclusion rule before scoring.
    The [data-source audit](../docs/CONFIRMATION_DATA_AUDIT_2026-10-27.md)

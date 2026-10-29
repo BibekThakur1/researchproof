@@ -8,6 +8,12 @@ zero-based cell index. It deliberately omits published labels, model outputs,
 and this project's preliminary AI-assisted interpretation. The separate
 `review_key_keep_private.csv` must stay with a coordinator, not either reviewer.
 **Do not commit or publish the packet without checking third-party data rights.**
+The frozen packet SHA-256 is
+`bf9486c329fc79e686165db1fd8b4ca58973b261168477f73394fcc1d4b8fe11`.
+A more readable, equally blinded local rendering is
+`artifacts/blind_miss_review_2026-10-27/packet_readable.md`. It contains the
+same eight code blocks and notebook pointers, but no labels or predictions.
+Each reviewer should read this file and fill only their own CSV.
 
 Run `scripts/build_blind_miss_review.py` to rebuild the packet from the
 canonical PeerJ test CSV and the [provenance audit](../results/2026-10-27/persistent_false_negative_audit.csv).
@@ -52,3 +58,27 @@ post hoc for a population label-quality estimate.
 
 Human work remains genuinely required: the blank forms and my preliminary
 trace cannot be represented as independent human validation.
+
+## After both reviewers finish
+
+Keep both original CSVs unchanged and run the comparison before discussing
+disagreements. It checks the frozen packet hash, exactly eight distinct IDs,
+allowed values, and that completed answers have evidence and rationale. It
+reports coverage even when forms are incomplete; agreement is computed only
+when both are complete. The report does not certify that the reviews were
+independent or performed by humans.
+
+```bash
+PYTHONPATH=src .venv/bin/python scripts/compare_blind_miss_reviews.py \
+  --packet artifacts/blind_miss_review_2026-10-27/packet.jsonl \
+  --expected-packet-sha256 bf9486c329fc79e686165db1fd8b4ca58973b261168477f73394fcc1d4b8fe11 \
+  --first artifacts/blind_miss_review_2026-10-27/reviewer_a.csv \
+  --second artifacts/blind_miss_review_2026-10-27/reviewer_b.csv \
+  --output artifacts/blind_miss_review_2026-10-27/agreement_after_review.json
+```
+
+Do not use the private review key or model outputs in this step. Only after
+both original forms are frozen should a coordinator unblind case IDs and
+record adjudication in a **separate** file. Cohen's kappa is reported for
+completeness, but eight selected cases make it unstable; focus on the actual
+case-level disagreements and explanations.
